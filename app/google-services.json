@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "602824810099",
+    "project_id": "dietary-10f3f",
+    "storage_bucket": "dietary-10f3f.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:602824810099:android:282da71971bc79ae9d1406",
+        "android_client_info": {
+          "package_name": "edu.bluejack20_2.dietary"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "602824810099-9ra5lc7hkmg7kkm8nbcmtdqfddptvt8l.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAYXURf9FVNzKU9iN0t97GJOHg-CDPgBqs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "602824810099-9ra5lc7hkmg7kkm8nbcmtdqfddptvt8l.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
