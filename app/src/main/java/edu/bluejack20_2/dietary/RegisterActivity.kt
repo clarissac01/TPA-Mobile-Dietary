@@ -33,10 +33,7 @@ class RegisterActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_register)
         userPic = findViewById(R.id.img_pick_btn)
-        val email:TextInputEditText = findViewById(R.id.emailField)
-        val password:TextInputEditText = findViewById(R.id.passwordField)
-        userEmail = email.text.toString()
-        userPassword = password.text.toString()
+
     }
 
     private fun pickImageFromGallery(){
@@ -86,7 +83,10 @@ class RegisterActivity : AppCompatActivity() {
     }
 
     fun firstValidation(view: View) {
-
+        val email:TextInputEditText = findViewById(R.id.emailField)
+        val password:TextInputEditText = findViewById(R.id.passwordField)
+        userEmail = email.text.toString()
+        userPassword = password.text.toString()
 
     }
 }

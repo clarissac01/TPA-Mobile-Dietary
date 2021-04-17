@@ -46,7 +46,7 @@
                 app:bt_colorInactive="@color/green_inactive"
                 app:bt_icon="@drawable/ic_home"
                 app:bt_shape="@drawable/transition_background_drawable_home"
-                app:bt_title="HOME" />
+                app:bt_title="Home" />
 
             <!-- custom meal -->
             <com.gauravk.bubblenavigation.BubbleToggleView
