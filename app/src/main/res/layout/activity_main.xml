@@ -6,28 +6,109 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <com.google.android.material.appbar.AppBarLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintLayout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:theme="@style/Theme.Dietary.AppBarOverlay">
+        android:layout_height="match_parent">
 
-        <androidx.appcompat.widget.Toolbar
-            android:id="@+id/toolbar"
+        <FrameLayout
+            android:id="@+id/flFragment"
             android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:background="?attr/colorPrimary"
-            app:popupTheme="@style/Theme.Dietary.PopupOverlay" />
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-    </com.google.android.material.appbar.AppBarLayout>
+        <com.gauravk.bubblenavigation.BubbleNavigationConstraintView
+            android:id="@+id/bottom_navigation_view_linear"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="18dp"
+            android:layout_marginEnd="18dp"
+            android:layout_marginBottom="18dp"
+            android:background="@drawable/rounded_rect_white"
+            android:elevation="8dp"
+            android:orientation="horizontal"
+            android:padding="12dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:bnc_mode="spread">
 
-    <include layout="@layout/content_main" />
+            <!-- home -->
+            <com.gauravk.bubblenavigation.BubbleToggleView
+                android:id="@+id/l_item_home"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:bt_active="true"
+                app:bt_colorActive="@color/green_active"
+                app:bt_colorInactive="@color/green_inactive"
+                app:bt_icon="@drawable/ic_home"
+                app:bt_shape="@drawable/transition_background_drawable_home"
+                app:bt_iconHeight="@dimen/default_icon_size"
+                app:bt_iconWidth="@dimen/default_icon_size"
+                app:bt_title="@string/home" />
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fab"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end"
-        android:layout_margin="@dimen/fab_margin"
-        app:srcCompat="@android:drawable/ic_dialog_email" />
+            <!-- custom meal -->
+            <com.gauravk.bubblenavigation.BubbleToggleView
+                android:id="@+id/l_item_custom_meal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:bt_active="true"
+                app:bt_colorActive="@color/green_active"
+                app:bt_colorInactive="@color/green_inactive"
+                app:bt_icon="@drawable/ic_custom_meal"
+                app:bt_shape="@drawable/transition_background_drawable_home"
+                app:bt_iconHeight="@dimen/default_icon_size"
+                app:bt_iconWidth="@dimen/default_icon_size"
+                app:bt_title="@string/meal" />
+
+            <!-- friend -->
+            <com.gauravk.bubblenavigation.BubbleToggleView
+                android:id="@+id/l_item_friend"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:bt_active="true"
+                app:bt_colorActive="@color/green_active"
+                app:bt_colorInactive="@color/green_inactive"
+                app:bt_icon="@drawable/ic_friends"
+                app:bt_shape="@drawable/transition_background_drawable_home"
+                app:bt_iconHeight="@dimen/default_icon_size"
+                app:bt_iconWidth="@dimen/default_icon_size"
+                app:bt_title="@string/friends" />
+
+            <!-- journey -->
+            <com.gauravk.bubblenavigation.BubbleToggleView
+                android:id="@+id/l_item_journey"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:bt_active="true"
+                app:bt_colorActive="@color/green_active"
+                app:bt_colorInactive="@color/green_inactive"
+                app:bt_icon="@drawable/ic_journey"
+                app:bt_shape="@drawable/transition_background_drawable_home"
+                app:bt_iconHeight="@dimen/default_icon_size"
+                app:bt_iconWidth="@dimen/default_icon_size"
+                app:bt_title="@string/journey" />
+
+            <!-- profile -->
+            <com.gauravk.bubblenavigation.BubbleToggleView
+                android:id="@+id/l_item_profile"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:bt_active="true"
+                app:bt_colorActive="@color/green_active"
+                app:bt_colorInactive="@color/green_inactive"
+                app:bt_icon="@drawable/ic_profile"
+                app:bt_shape="@drawable/transition_background_drawable_home"
+                app:bt_iconHeight="@dimen/default_icon_size"
+                app:bt_iconWidth="@dimen/default_icon_size"
+                app:bt_title="@string/profile" />
+
+        </com.gauravk.bubblenavigation.BubbleNavigationConstraintView>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

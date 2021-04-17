@@ -1,4 +1,6 @@
 package edu.bluejack20_2.dietary
 
-class FriendsFragment {
+import androidx.fragment.app.Fragment
+
+class FriendsFragment : Fragment(R.layout.fragment_friends) {
 }

@@ -1,4 +1,7 @@
 package edu.bluejack20_2.dietary
 
-class HomeFragment {
+import androidx.fragment.app.Fragment
+
+class HomeFragment : Fragment(R.layout.fragment_home) {
+
 }
