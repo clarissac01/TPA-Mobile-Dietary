@@ -46,7 +46,7 @@ class MainActivity : AppCompatActivity() {
         }
 
 
-    fun gotoRegisterActivity(view: View) {
+    fun gotoRegister(view: View) {
         startActivity(Intent(this, RegisterActivity::class.java))
     }
 }

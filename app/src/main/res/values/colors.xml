@@ -39,4 +39,10 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+
+    <color name="beige">#fffbe6</color>
+    <color name="basilgreen">#356859</color>
+    <color name="green">#37966f</color>
+    <color name="lightgreen">#b9e4c9</color>
+
 </resources>
