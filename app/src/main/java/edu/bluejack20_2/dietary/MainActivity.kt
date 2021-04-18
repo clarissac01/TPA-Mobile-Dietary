@@ -11,6 +11,8 @@ import android.view.MenuItem
 import androidx.fragment.app.Fragment
 import com.gauravk.bubblenavigation.BubbleNavigationConstraintView
 import com.gauravk.bubblenavigation.BubbleNavigationLinearView
+import android.view.View
+import com.google.firebase.database.FirebaseDatabase
 
 class MainActivity : AppCompatActivity() {
 
@@ -44,4 +46,9 @@ class MainActivity : AppCompatActivity() {
             replace(R.id.flFragment, fragment)
             commit()
         }
+
+
+    fun gotoRegisterActivity(view: View) {
+        startActivity(Intent(this, RegisterActivity::class.java))
+    }
 }
