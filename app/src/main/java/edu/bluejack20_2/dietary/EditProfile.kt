@@ -62,6 +62,9 @@ class EditProfile : AppCompatActivity() {
             findViewById<TextView>(R.id.user_email_field).setHint(user.email)
             findViewById<TextView>(R.id.user_userame_field).setHint(user.displayName)
 
+            Log.wtf("current Email", user.email)
+            Log.wtf("current Username", user.displayName)
+            Log.wtf("current photourl", user.photoUrl.toString())
             currentEmail = user.email
             currentUsername = user.displayName
         }
