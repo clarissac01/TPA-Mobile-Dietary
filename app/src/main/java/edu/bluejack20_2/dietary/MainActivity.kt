@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.gauravk.bubblenavigation.BubbleNavigationConstraintView
 import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.firebase.auth.FirebaseAuth
 
 
 class MainActivity : AppCompatActivity() {
@@ -17,6 +18,9 @@ class MainActivity : AppCompatActivity() {
 // the GoogleSignInAccount will be non-null.
         val account = GoogleSignIn.getLastSignedInAccount(this)
 //        updateUI(account)
+        if(FirebaseAuth.getInstance().currentUser == null){
+            startActivity(Intent(this, LoginActivity::class.java))
+        }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -50,8 +54,4 @@ class MainActivity : AppCompatActivity() {
             commit()
         }
 
-
-    fun gotoRegister(view: View) {
-        startActivity(Intent(this, LoginActivity::class.java))
-    }
 }

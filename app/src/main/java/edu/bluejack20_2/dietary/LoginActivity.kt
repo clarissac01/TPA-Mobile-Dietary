@@ -22,7 +22,6 @@ import com.google.firebase.auth.UserProfileChangeRequest
 import com.google.firebase.firestore.FirebaseFirestore
 import java.io.ByteArrayOutputStream
 
-
 class LoginActivity : AppCompatActivity() {
     var db = FirebaseFirestore.getInstance()
     private lateinit var userUsername: String
@@ -33,7 +32,6 @@ class LoginActivity : AppCompatActivity() {
     private lateinit var auth: FirebaseAuth
 
     companion object {
-
         private const val RC_SIGN_IN = 123
     }
 
@@ -70,21 +68,32 @@ class LoginActivity : AppCompatActivity() {
         if (userPassword == "") {
             return Toast.makeText(this, "You must input Password!", Toast.LENGTH_SHORT).show()
         }
+
         db.collection("users")
                 .whereEqualTo("username", userUsername).whereEqualTo("password", userPassword).get()
                 .addOnSuccessListener {
                     if (it.isEmpty) {
                         Toast.makeText(this, "Wrong credentials", Toast.LENGTH_SHORT).show()
                     } else {
-                        for (i in it.documents) {
-                            if (i.getString("email") != null) {
-                                FirebaseAuth.getInstance().currentUser.updateEmail(i.getString("email"))
-                            }
-                            if (i.get("photoURL") != null) {
-                                FirebaseAuth.getInstance().currentUser.updateProfile(UserProfileChangeRequest.Builder().setDisplayName(userUsername).setPhotoUri(i.get("photoURL") as Uri?).build())
-                            }
-                        }
+                        Log.wtf("wtf", "Success Login")
                         Toast.makeText(this, "Success Login!", Toast.LENGTH_SHORT).show()
+
+                        var email:String? = ""
+                        var photourl:Any? = ""
+                        for (i in it.documents) {
+                            FirebaseAuth.getInstance().signInWithEmailAndPassword(i.getString("email"), i.getString("password")).addOnSuccessListener {
+                                if (i.getString("email") != null) {
+                                    email = i.getString("email")!!
+                                }
+                                if (i.get("photoURL") != null) {
+                                    photourl = i.get("photoURL")!!
+                                }
+
+                            }
+
+                        }
+                        FirebaseAuth.getInstance().currentUser.updateEmail(email)
+                        FirebaseAuth.getInstance().currentUser.updateProfile(UserProfileChangeRequest.Builder().setDisplayName(userUsername).setPhotoUri(photourl as Uri?).build())
                         startActivity(Intent(this, MainActivity::class.java))
                     }
                 }
