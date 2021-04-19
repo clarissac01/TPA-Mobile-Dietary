@@ -2,25 +2,31 @@ package edu.bluejack20_2.dietary
 
 import android.content.Intent
 import android.os.Bundle
-import android.view.View
+import android.util.Log
+import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.google.android.material.snackbar.Snackbar
 import androidx.appcompat.app.AppCompatActivity
+import android.view.Menu
+import android.view.MenuItem
 import androidx.fragment.app.Fragment
 import com.gauravk.bubblenavigation.BubbleNavigationConstraintView
+import com.gauravk.bubblenavigation.BubbleNavigationLinearView
+import android.view.View
+import com.google.firebase.database.FirebaseDatabase
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.firebase.auth.FirebaseAuth
-
 
 class MainActivity : AppCompatActivity() {
 
     override fun onStart() {
         super.onStart()
         // Check for existing Google Sign In account, if the user is already signed in
-// the GoogleSignInAccount will be non-null.
+        // the GoogleSignInAccount will be non-null.
         val account = GoogleSignIn.getLastSignedInAccount(this)
 //        updateUI(account)
-        if(FirebaseAuth.getInstance().currentUser == null){
+//        if(FirebaseAuth.getInstance().currentUser == null){
             startActivity(Intent(this, LoginActivity::class.java))
-        }
+//        }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -43,7 +49,6 @@ class MainActivity : AppCompatActivity() {
                 R.id.l_item_friend -> setCurrentFragment(friendsFragment)
                 R.id.l_item_journey -> setCurrentFragment(journeyFragment)
             }
-            true
         }
     }
 
@@ -54,4 +59,8 @@ class MainActivity : AppCompatActivity() {
             commit()
         }
 
+
+    fun gotoEditProfile(view: View) {
+        startActivity(Intent(this, EditProfile::class.java))
+    }
 }

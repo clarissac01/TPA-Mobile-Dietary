@@ -41,7 +41,7 @@ class LoginActivity : AppCompatActivity() {
         auth = FirebaseAuth.getInstance()
         // Configure Google Sign In
         // Configure sign-in to request the user's ID, email address, and basic
-// profile. ID and basic profile are included in DEFAULT_SIGN_IN.
+        // profile. ID and basic profile are included in DEFAULT_SIGN_IN.
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestEmail()
                 .build()
@@ -79,22 +79,26 @@ class LoginActivity : AppCompatActivity() {
                         Toast.makeText(this, "Success Login!", Toast.LENGTH_SHORT).show()
 
                         var email:String? = ""
-                        var photourl:Any? = ""
+                        var photourl:Uri? = null
+                        var password:String? = ""
                         for (i in it.documents) {
-                            FirebaseAuth.getInstance().signInWithEmailAndPassword(i.getString("email"), i.getString("password")).addOnSuccessListener {
-                                if (i.getString("email") != null) {
-                                    email = i.getString("email")!!
-                                }
-                                if (i.get("photoURL") != null) {
-                                    photourl = i.get("photoURL")!!
-                                }
+                            if (i.getString("email") != null) {
+                                email = i.getString("email")!!
+                            }
+                            if (i.get("photoURL") != null) {
+                                photourl = Uri.parse(i.get("photoURL") as String?)
 
                             }
 
                         }
-                        FirebaseAuth.getInstance().currentUser.updateEmail(email)
-                        FirebaseAuth.getInstance().currentUser.updateProfile(UserProfileChangeRequest.Builder().setDisplayName(userUsername).setPhotoUri(photourl as Uri?).build())
-                        startActivity(Intent(this, MainActivity::class.java))
+                        Log.wtf("email", email)
+                        Log.wtf("password", password)
+                        FirebaseAuth.getInstance().signInWithEmailAndPassword(email, password).addOnSuccessListener {
+                            FirebaseAuth.getInstance().currentUser.updateProfile(UserProfileChangeRequest.Builder().setDisplayName(userUsername).setPhotoUri(photourl).build())
+                            startActivity(Intent(this, EditProfile::class.java))
+                            Log.wtf("wtf", "Masuk")
+                        }
+//                        FirebaseAuth.getInstance().currentUser.updateEmail(email)
                     }
                 }
 
