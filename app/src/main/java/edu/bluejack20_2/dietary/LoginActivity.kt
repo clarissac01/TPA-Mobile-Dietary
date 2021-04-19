@@ -122,7 +122,7 @@ class LoginActivity : AppCompatActivity() {
 
                 db.collection("users")
                         .whereEqualTo("email", it.displayName).get().addOnSuccessListener {
-                            if (!it.isEmpty) {
+                            if (it.isEmpty) {
                                 val user: MutableMap<String, Any?> = HashMap()
                                 user["username"] = name
                                 user["email"] = email
@@ -138,11 +138,11 @@ class LoginActivity : AppCompatActivity() {
                                             .addOnSuccessListener { documentReference -> Log.d("ok", "DocumentSnapshot added with ID: " + documentReference.id) }
                                             .addOnFailureListener { e -> Log.w("ok", "Error adding document", e) }
                                 }
-                                FirebaseAuth.getInstance().currentUser.updateEmail(email)
-                                FirebaseAuth.getInstance().currentUser.updateProfile(UserProfileChangeRequest.Builder().setDisplayName(name).setPhotoUri(photo).build())
-                                startActivity(Intent(this, MainActivity::class.java))
                             }
 
+                            FirebaseAuth.getInstance().currentUser.updateEmail(email)
+                            FirebaseAuth.getInstance().currentUser.updateProfile(UserProfileChangeRequest.Builder().setDisplayName(name).setPhotoUri(photo).build())
+                            startActivity(Intent(this, MainActivity::class.java))
 
                         }
             }
