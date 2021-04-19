@@ -13,8 +13,17 @@ import com.gauravk.bubblenavigation.BubbleNavigationConstraintView
 import com.gauravk.bubblenavigation.BubbleNavigationLinearView
 import android.view.View
 import com.google.firebase.database.FirebaseDatabase
+import com.google.android.gms.auth.api.signin.GoogleSignIn
 
 class MainActivity : AppCompatActivity() {
+
+    override fun onStart() {
+        super.onStart()
+        // Check for existing Google Sign In account, if the user is already signed in
+        // the GoogleSignInAccount will be non-null.
+        val account = GoogleSignIn.getLastSignedInAccount(this)
+//        updateUI(account)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -49,7 +58,7 @@ class MainActivity : AppCompatActivity() {
 
 
     fun gotoRegister(view: View) {
-        startActivity(Intent(this, RegisterActivity::class.java))
+        startActivity(Intent(this, LoginActivity::class.java))
     }
 
     fun gotoEditProfile(view: View) {

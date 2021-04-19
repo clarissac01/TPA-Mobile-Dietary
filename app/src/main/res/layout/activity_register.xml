@@ -168,10 +168,11 @@
         app:layout_constraintStart_toStartOf="parent" />
 
     <ImageButton
-        android:id="@+id/imageButton"
+        android:id="@+id/exitBtn"
         android:layout_width="66dp"
         android:layout_height="66dp"
         android:layout_marginTop="16dp"
+        android:onClick="gotoLogin"
         android:backgroundTint="@color/beige"
         android:scaleType="fitEnd"
         app:layout_constraintStart_toStartOf="parent"

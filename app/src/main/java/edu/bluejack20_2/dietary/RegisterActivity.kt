@@ -13,7 +13,7 @@ import android.view.View
 import android.widget.Button
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.FragmentActivity
+import com.google.android.gms.tasks.Task
 import com.google.android.material.textfield.TextInputEditText
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
@@ -132,34 +132,42 @@ class RegisterActivity : AppCompatActivity() {
     fun writeNewUser(name: String, email: String, password: String, image: String?=null) {
 
         db.collection("users")
-            .whereEqualTo("username",  userUsername).get().addOnSuccessListener {
+            .whereEqualTo("username",  userUsername).whereEqualTo("email", userEmail).get().addOnSuccessListener {
                 if(it.isEmpty){
                     val user: MutableMap<String, Any> = HashMap()
                     user["username"] = name
                     user["password"] = password
                     user["email"] = email
-
                     if(bitmap!=null){
                         val stream = ByteArrayOutputStream()
                         bitmap!!.compress(Bitmap.CompressFormat.JPEG, 100, stream)
                         val imageRef = stream.toByteArray()
-                        storageRef.child("user/${userUsername}").putBytes(imageRef)
+                        storageRef.child("user/${userUsername}").putBytes(imageRef).addOnSuccessListener{
+
+                            storageRef.child("user/${userUsername}").downloadUrl.addOnSuccessListener {
+
+                                user["photoURL"] = it.toString()
+                                db.collection("users")
+                                        .add(user)
+                                        .addOnSuccessListener { documentReference -> Log.d("ok", "DocumentSnapshot added with ID: " + documentReference.id) }
+                                        .addOnFailureListener { e -> Log.w("ok", "Error adding document", e) }
+                            }
+                        }
+                    }else{
+                        db.collection("users")
+                                .add(user)
+                                .addOnSuccessListener { documentReference -> Log.d("ok", "DocumentSnapshot added with ID: " + documentReference.id) }
+                                .addOnFailureListener { e -> Log.w("ok", "Error adding document", e) }
                     }
-
-                    db.collection("users")
-                            .add(user)
-                            .addOnSuccessListener { documentReference -> Log.d("ok", "DocumentSnapshot added with ID: " + documentReference.id) }
-                            .addOnFailureListener { e -> Log.w("ok", "Error adding document", e) }
-
+                    startActivity(Intent(this, LoginActivity::class.java))
                 }else{
-                    Toast.makeText(this, "This username is taken!", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this, "This username or email is taken!", Toast.LENGTH_SHORT).show()
                 }
             }
     }
 
-    fun checkUsername(){
-
+    fun gotoLogin(view: View) {
+        startActivity(Intent(this, LoginActivity::class.java))
     }
-
 
 }

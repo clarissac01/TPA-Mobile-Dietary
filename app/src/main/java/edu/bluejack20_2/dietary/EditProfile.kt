@@ -44,12 +44,11 @@ class EditProfile : AppCompatActivity() {
     private lateinit var user: FirebaseUser
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        auth = FirebaseAuth.getInstance()
-
-        user = auth.currentUser
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_edit_profile)
 
+        auth = FirebaseAuth.getInstance()
+        user = auth.currentUser
 
         if (user != null) {
             if (user.photoUrl != null) {
