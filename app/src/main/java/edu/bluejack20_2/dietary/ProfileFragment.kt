@@ -33,17 +33,17 @@ class ProfileFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         val db = FirebaseFirestore.getInstance()
-        db.collection("Users").get().addOnCompleteListener{
-
-            val result: StringBuffer = StringBuffer()
-
-            if(it.isSuccessful) {
-                for(document in it.result!!) {
-                    result.append(document.data.getValue("UserName")).append(" ").append(document.data.getValue("UserEmail")).append("\n\n")
-                }
-                requireActivity().findViewById<TextView>(R.id.profile_fragment).setText(result)
-            }
-        }
+//        getInstancedb.collection("users").get().addOnCompleteListener{
+//
+//            val result: StringBuffer = StringBuffer()
+//
+//            if(it.isSuccessful) {
+//                for(document in it.result!!) {
+//                    result.append(document.data.getValue("username")).append(" ").append(document.data.getValue("email")).append("\n\n")
+//                }
+//                requireActivity().findViewById<TextView>(R.id.fragment).setText(result)
+//            }
+//        }
     }
 
 }
