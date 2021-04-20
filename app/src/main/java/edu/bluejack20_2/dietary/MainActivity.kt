@@ -26,6 +26,8 @@ class MainActivity : AppCompatActivity() {
 //        updateUI(account)
         if(FirebaseAuth.getInstance().currentUser == null){
             startActivity(Intent(this, LoginActivity::class.java))
+        }else{
+            FirebaseAuth.getInstance().signOut();
         }
     }
 

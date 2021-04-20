@@ -146,7 +146,7 @@ class LoginActivity : AppCompatActivity() {
                 val photo = it.photoUrl
 
                 db.collection("users")
-                        .whereEqualTo("email", it.displayName).get().addOnSuccessListener {
+                        .whereEqualTo("email", it.email).get().addOnSuccessListener {
                             if (it.isEmpty) {
                                 val user: MutableMap<String, Any?> = HashMap()
                                 user["username"] = name
