@@ -138,7 +138,7 @@
         android:textColor="@color/black"
         android:textSize="20sp"
         app:backgroundTint="@color/grey_bg_light"
-        app:icon="@drawable/chrome_logo"
+        app:icon="@drawable/googleg_standard_color_18"
         app:iconGravity="textStart"
         app:iconSize="19dp"
         app:iconTintMode="multiply"

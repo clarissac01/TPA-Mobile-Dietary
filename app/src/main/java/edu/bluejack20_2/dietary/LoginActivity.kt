@@ -93,7 +93,7 @@ class LoginActivity : AppCompatActivity() {
                         }
                         Log.wtf("email", email)
                         Log.wtf("password", password)
-                        FirebaseAuth.getInstance().signInWithEmailAndPassword(email, password).addOnSuccessListener {
+                        FirebaseAuth.getInstance().signInWithEmailAndPassword(email, userPassword).addOnSuccessListener {
                             FirebaseAuth.getInstance().currentUser.updateProfile(UserProfileChangeRequest.Builder().setDisplayName(userUsername).setPhotoUri(photourl).build())
                             startActivity(Intent(this, EditProfile::class.java))
                             Log.wtf("wtf", "Masuk")
