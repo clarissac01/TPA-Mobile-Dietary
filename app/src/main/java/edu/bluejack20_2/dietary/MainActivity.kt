@@ -24,9 +24,9 @@ class MainActivity : AppCompatActivity() {
         // the GoogleSignInAccount will be non-null.
         val account = GoogleSignIn.getLastSignedInAccount(this)
 //        updateUI(account)
-//        if(FirebaseAuth.getInstance().currentUser == null){
+        if(FirebaseAuth.getInstance().currentUser == null){
             startActivity(Intent(this, LoginActivity::class.java))
-//        }
+        }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

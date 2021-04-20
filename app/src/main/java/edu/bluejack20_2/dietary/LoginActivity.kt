@@ -21,6 +21,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.UserProfileChangeRequest
 import com.google.firebase.firestore.FirebaseFirestore
 import java.io.ByteArrayOutputStream
+import kotlin.math.log
 
 class LoginActivity : AppCompatActivity() {
     var db = FirebaseFirestore.getInstance()
@@ -89,16 +90,27 @@ class LoginActivity : AppCompatActivity() {
                                 photourl = Uri.parse(i.get("photoURL") as String?)
 
                             }
-
+                            if(i.getString("password")!=null){
+                                password = i.getString(i.getString("password")!!)
+                            }
                         }
-                        Log.wtf("email", email)
-                        Log.wtf("password", password)
                         FirebaseAuth.getInstance().signInWithEmailAndPassword(email, userPassword).addOnSuccessListener {
-                            FirebaseAuth.getInstance().currentUser.updateProfile(UserProfileChangeRequest.Builder().setDisplayName(userUsername).setPhotoUri(photourl).build())
-                            startActivity(Intent(this, EditProfile::class.java))
-                            Log.wtf("wtf", "Masuk")
+                            FirebaseAuth.getInstance().currentUser.updateProfile(UserProfileChangeRequest.Builder().setDisplayName(userUsername).setPhotoUri(photourl).build()).addOnSuccessListener {
+                                startActivity(Intent(this, MainActivity::class.java))
+                                Log.wtf("wtf", "Masuk")
+                            }.addOnFailureListener {
+                                Log.wtf("error", it.toString())
+                            }
+                        }.addOnFailureListener{
+                            FirebaseAuth.getInstance().createUserWithEmailAndPassword(email, userPassword).addOnSuccessListener {
+                                FirebaseAuth.getInstance().currentUser.updateProfile(UserProfileChangeRequest.Builder().setDisplayName(userUsername).setPhotoUri(photourl).build()).addOnSuccessListener {
+                                    startActivity(Intent(this, MainActivity::class.java))
+                                    Log.wtf("wtf", "Masuk")
+                                }.addOnFailureListener {
+                                    Log.wtf("error", it.toString())
+                                }
+                            }
                         }
-//                        FirebaseAuth.getInstance().currentUser.updateEmail(email)
                     }
                 }
 
@@ -153,10 +165,23 @@ class LoginActivity : AppCompatActivity() {
                                 }
                             }
 
-                            FirebaseAuth.getInstance().currentUser.updateEmail(email)
-                            FirebaseAuth.getInstance().currentUser.updateProfile(UserProfileChangeRequest.Builder().setDisplayName(name).setPhotoUri(photo).build())
-                            startActivity(Intent(this, MainActivity::class.java))
-
+                        FirebaseAuth.getInstance().signInWithEmailAndPassword(email, email).addOnSuccessListener {
+                            FirebaseAuth.getInstance().currentUser.updateProfile(UserProfileChangeRequest.Builder().setDisplayName(name).setPhotoUri(photo).build()).addOnSuccessListener {
+                                startActivity(Intent(this, MainActivity::class.java))
+                                Log.wtf("wtf", "Masuk")
+                            }.addOnFailureListener {
+                                Log.wtf("error", it.toString())
+                            }
+                        }.addOnFailureListener{
+                            FirebaseAuth.getInstance().createUserWithEmailAndPassword(email, email).addOnSuccessListener {
+                                FirebaseAuth.getInstance().currentUser.updateProfile(UserProfileChangeRequest.Builder().setDisplayName(name).setPhotoUri(photo).build()).addOnSuccessListener {
+                                    startActivity(Intent(this, MainActivity::class.java))
+                                    Log.wtf("wtf", "Masuk")
+                                }.addOnFailureListener {
+                                    Log.wtf("error", it.toString())
+                                }
+                            }
+                        }
                         }
             }
         } catch (e: ApiException) {
