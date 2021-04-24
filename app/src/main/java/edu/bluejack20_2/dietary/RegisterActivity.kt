@@ -91,7 +91,6 @@ class RegisterActivity : AppCompatActivity() {
     }
 
     fun firstValidation(view: View) {
-        Log.wtf("wtf", "wtf")
         val email:TextInputEditText = findViewById(R.id.emailText)
         val password:TextInputEditText = findViewById(R.id.passwordText)
         val username:TextInputEditText = findViewById(R.id.usernameText)

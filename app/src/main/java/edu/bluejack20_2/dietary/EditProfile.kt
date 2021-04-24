@@ -39,8 +39,9 @@ class EditProfile : AppCompatActivity() {
     private lateinit var userUsername: String
     private lateinit var userConfirmPassword: String
     private var bitmap: Bitmap? = null
-    private lateinit var currentEmail: String
-    private lateinit var currentUsername: String
+    private var currentEmail: String = ""
+    private var currentUsername: String = ""
+    private var currentPassword: String = ""
 
     private lateinit var user: FirebaseUser
 
@@ -74,6 +75,14 @@ class EditProfile : AppCompatActivity() {
 
             currentEmail = user.email
             currentUsername = user.displayName
+
+            db.collection("users").whereEqualTo("username", currentUsername).get()
+                .addOnSuccessListener {
+                    it.documents.forEach {
+                        currentPassword = it.getString("password").toString()
+                    }
+                }
+
         }
 
         findViewById<Button>(R.id.update_button).setOnClickListener {
@@ -115,7 +124,6 @@ class EditProfile : AppCompatActivity() {
     }
 
     fun updateValidation(view: View) {
-        Log.wtf("wtf", "wtf")
         val email: TextInputEditText = findViewById(R.id.user_email_text)
         val password: TextInputEditText = findViewById(R.id.user_password_text)
         val confirmPassword: TextInputEditText = findViewById(R.id.user_confirm_password_text)
@@ -132,26 +140,36 @@ class EditProfile : AppCompatActivity() {
         if (userUsername == "") {
             userUsername = currentUsername
         }
-        if (userEmail.matches(emailPattern.toRegex())) {
-            if (isLettersOrDigits(userPassword) && userPassword.length >= 8) {
-                updateUser(userUsername, userEmail, userPassword, bitmap.toString())
-            } else if (!userPassword.matches(passPattern.toRegex())) {
-                return Toast.makeText(this, "Password must be alphanumeric!", Toast.LENGTH_SHORT)
-                    .show()
-            } else {
-                return Toast.makeText(
-                    this,
-                    "Password must be more than 7 characters!",
-                    Toast.LENGTH_SHORT
-                ).show()
-            }
-        } else {
-            return Toast.makeText(this, "Invalid Email Address!", Toast.LENGTH_SHORT).show()
+        if (userPassword == "") {
+            userPassword = currentPassword
+        }
+        if (userConfirmPassword == "") {
+            userConfirmPassword = currentPassword
         }
         if (userPassword != userConfirmPassword) {
             return Toast.makeText(this, "Confirm password did not match!", Toast.LENGTH_SHORT)
                 .show()
         }
+        updateUser(userUsername, userEmail, userPassword, bitmap.toString())
+//        if (userPassword != "" && userConfirmPassword != "") {
+//            if (isLettersOrDigits(userPassword) && userPassword.length >= 8) {
+//                updateUser(userUsername, userEmail, userPassword, bitmap.toString())
+//            } else if (!userPassword.matches(passPattern.toRegex())) {
+//                return Toast.makeText(this, "Password must be alphanumeric!", Toast.LENGTH_SHORT)
+//                    .show()
+//            } else {
+//                return Toast.makeText(
+//                    this,
+//                    "Password must be more than 7 characters!",
+//                    Toast.LENGTH_SHORT
+//                ).show()
+//            }
+//        }
+//        if (userEmail != "") {
+//            if (!userEmail.matches(emailPattern.toRegex())) {
+//                return Toast.makeText(this, "Invalid Email Address!", Toast.LENGTH_SHORT).show()
+//            }
+//        }
     }
 
     fun isLettersOrDigits(chars: String): Boolean {
@@ -160,21 +178,53 @@ class EditProfile : AppCompatActivity() {
     }
 
     fun updateUser(name: String, email: String, password: String, image: String? = null) {
-        db.collection("users")
-            .whereEqualTo("username", userUsername).whereEqualTo("email", userEmail).get()
+        Log.wtf("asdf", user.uid)
+        user.updatePassword(password).addOnFailureListener { Log.wtf("hehe", it.toString()) }
             .addOnSuccessListener {
-                if (it.isEmpty) {
-                    user.updatePassword(userPassword)
-                    user.updateEmail(userEmail)
-                    user.updateProfile(
-                        UserProfileChangeRequest.Builder()
-                            .setDisplayName(userUsername)
-                            .build()
-                    )
-                } else {
-                    Toast.makeText(this, "Username or Email is taken!", Toast.LENGTH_SHORT).show()
-                }
+                Log.wtf("hehe1", user.uid)
+                user.updateEmail(email).addOnFailureListener { Log.wtf("hehe", it.toString()) }
+                    .addOnSuccessListener {
+                        Log.wtf("hehe2", user.uid)
+                        user.updateProfile(
+                            UserProfileChangeRequest.Builder()
+                                .setDisplayName(name)
+                                .build()
+                        ).addOnFailureListener { Log.wtf("hehe", it.toString()) }
+                            .addOnSuccessListener {
+                                Log.wtf("hehe3", user.uid)
+
+                                FirebaseFirestore.getInstance()
+                                    .collection("users")
+                                    .whereEqualTo("username", user.displayName)
+                                    .get()
+                                    .addOnSuccessListener { q ->
+                                        val doc = q.documents.first()
+                                        FirebaseFirestore.getInstance().runBatch {
+                                            val ref = doc.reference
+                                            it.update(ref, "email", email)
+                                            it.update(ref, "password", password)
+                                            it.update(ref, "username", name)
+                                        }.addOnFailureListener { Log.wtf("hehe", it.toString()) }
+                                            .addOnSuccessListener {
+                                                Toast.makeText(
+                                                    this,
+                                                    "Update Success",
+                                                    Toast.LENGTH_SHORT
+                                                ).show()
+                                            }
+                                    }
+                            }
+                    }
             }
+//        db.collection("users")
+//            .whereEqualTo("username", userUsername)
+//            .whereEqualTo("email", userEmail).get()
+//            .addOnSuccessListener {
+//                if (it.isEmpty) {
+//                } else {
+//                    Toast.makeText(this, "Username or Email is taken!", Toast.LENGTH_SHORT).show()
+//                }
+//            }
     }
 
     fun gotoEditProfile(view: View) {
