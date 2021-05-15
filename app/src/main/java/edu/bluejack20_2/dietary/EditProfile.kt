@@ -27,7 +27,6 @@ class EditProfile : AppCompatActivity() {
     private lateinit var auth: FirebaseAuth
 
     var db = FirebaseFirestore.getInstance()
-    var storageRef: StorageReference = FirebaseStorage.getInstance().getReference()
 
     private lateinit var userPic: CirleImageView
     private lateinit var userPicURI: Uri

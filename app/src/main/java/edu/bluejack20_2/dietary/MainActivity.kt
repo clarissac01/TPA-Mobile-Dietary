@@ -28,8 +28,6 @@ class MainActivity : AppCompatActivity() {
         if(FirebaseAuth.getInstance().currentUser == null){
             startActivity(Intent(this, LoginActivity::class.java))
         }
-
-//        FirebaseAuth.getInstance().signOut()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -60,7 +58,7 @@ class MainActivity : AppCompatActivity() {
     }
 
 
-    private fun setCurrentFragment(fragment : Fragment) =
+    fun setCurrentFragment(fragment : Fragment) =
         supportFragmentManager.beginTransaction().apply {
             replace(R.id.flFragment, fragment)
             commit()
@@ -73,5 +71,9 @@ class MainActivity : AppCompatActivity() {
 
     fun gotoEditProfile(view: View) {
         startActivity(Intent(this, EditProfile::class.java))
+    }
+
+    fun addFriend(view: View) {
+        startActivity(Intent(this, AddFriend::class.java))
     }
 }

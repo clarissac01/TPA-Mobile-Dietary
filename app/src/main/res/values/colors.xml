@@ -11,6 +11,8 @@
     <color name="colorPrimaryDark">#212121</color>
     <color name="colorAccent">#D81B60</color>
 
+
+
     <color name="red_active">#f44336</color>
     <color name="purple_active">#9c27b0</color>
     <color name="blue_active">#03a9f4</color>
@@ -57,4 +59,5 @@
     <color name="lighterblack">#302c2c</color>
     <color name="almostblack">#181414</color>
     <color name="lightblack">#383434</color>
+    <color name="rallygreen">#1eb980</color>
 </resources>
