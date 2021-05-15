@@ -51,6 +51,10 @@
     <color name="darkdarkerbeige">#cbc291</color>
     <color name="darkbasilgreen">#043d30</color>
     <color name="darkgreen">#006744</color>
-    <color name="darklighgreen">#b9e4c9</color>
+    <color name="darklightgreen">#b9e4c9</color>
     <color name="darkbasilorange">#c21900</color>
+
+    <color name="lighterblack">#302c2c</color>
+    <color name="almostblack">#181414</color>
+    <color name="lightblack">#383434</color>
 </resources>

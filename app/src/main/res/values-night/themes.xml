@@ -2,13 +2,13 @@
     <!-- Base application theme. -->
     <style name="Theme.Dietary" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/darkgreen</item>
-        <item name="colorPrimaryVariant">@color/darkbasilgreen</item>
-        <item name="colorOnPrimary">@color/darklighgreen</item>
+        <item name="colorPrimary">@color/darklightgreen</item>
+        <item name="colorPrimaryVariant">@color/darklightgreen</item>
+        <item name="colorOnPrimary">@color/darklightgreen</item>
         <!-- Secondary brand color. -->
-        <item name="colorSecondary">@color/darkbeige</item>
-        <item name="colorSecondaryVariant">@color/darkdarkerbeige</item>
-        <item name="colorOnSecondary">@color/darkbasilorange</item>
+        <item name="colorSecondary">@color/almostblack</item>
+        <item name="colorSecondaryVariant">@color/lighterblack</item>
+        <item name="colorOnSecondary">@color/lightblack</item>
         <!-- Status bar color. -->
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
