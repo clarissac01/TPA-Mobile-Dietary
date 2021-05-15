@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="90dp"
-    android:backgroundTint="@color/darkerbeige"
+    android:backgroundTint="?colorSecondaryVariant"
     android:layout_marginTop="20dp"
     android:layout_marginLeft="5dp"
     android:layout_marginRight="5dp"
@@ -21,7 +21,7 @@
             android:layout_marginStart="30dp"
             android:layout_marginTop="20dp"
             android:text="Carrot"
-            android:textColor="@color/basilgreen"
+            android:textColor="?colorPrimaryVariant"
             android:textSize="25dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -33,7 +33,7 @@
             android:layout_marginStart="30dp"
             android:layout_marginBottom="15dp"
             android:text="41Cal"
-            android:textColor="@color/green"
+            android:textColor="?colorPrimary"
             android:textSize="15dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
@@ -45,7 +45,7 @@
             android:layout_marginStart="75dp"
             android:layout_marginBottom="15dp"
             android:text="/100gr"
-            android:textColor="@color/green"
+            android:textColor="?colorPrimary"
             android:textSize="15dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
@@ -55,9 +55,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="30dp"
-            android:backgroundTint="@color/green"
+            android:backgroundTint="?colorPrimary"
             android:text="Add"
-            android:textColor="@color/beige"
+            android:textColor="?colorSecondary"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />

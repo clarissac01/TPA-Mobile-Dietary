@@ -46,4 +46,11 @@
     <color name="green">#37966f</color>
     <color name="lightgreen">#b9e4c9</color>
     <color name="basilorange">#fd5523</color>
+
+    <color name="darkbeige">#ccc8b4</color>
+    <color name="darkdarkerbeige">#cbc291</color>
+    <color name="darkbasilgreen">#043d30</color>
+    <color name="darkgreen">#006744</color>
+    <color name="darklighgreen">#b9e4c9</color>
+    <color name="darkbasilorange">#c21900</color>
 </resources>
