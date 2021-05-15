@@ -13,6 +13,7 @@ import android.util.Log
 import android.view.View
 import android.widget.*
 import com.google.android.material.textfield.TextInputEditText
+import com.google.android.material.textfield.TextInputLayout
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.UserProfileChangeRequest
@@ -29,18 +30,16 @@ class EditProfile : AppCompatActivity() {
     private lateinit var auth: FirebaseAuth
 
     var db = FirebaseFirestore.getInstance()
-    var storageRef: StorageReference = FirebaseStorage.getInstance().getReference()
 
     private lateinit var userPic: CirleImageView
     private lateinit var userPicURI: Uri
     private lateinit var userEmail: String
     private lateinit var userPassword: String
     private lateinit var userUsername: String
+    private lateinit var userConfirmPassword: String
     private var bitmap: Bitmap? = null
     private lateinit var currentEmail: String
     private lateinit var currentUsername: String
-    private lateinit var updatedEmail: String
-    private lateinit var updatedUsername: String
 
     private lateinit var user: FirebaseUser
 
@@ -52,6 +51,9 @@ class EditProfile : AppCompatActivity() {
         user = auth.currentUser
 
         if (user != null) {
+            findViewById<TextInputLayout>(R.id.user_username_field).hint = user.displayName
+            findViewById<TextInputLayout>(R.id.user_email_field).hint = user.email
+
             if (user.photoUrl != null) {
                 Picasso.get().load(user.photoUrl).into(findViewById<ImageView>(R.id.profile_pic))
             } else {
@@ -59,18 +61,22 @@ class EditProfile : AppCompatActivity() {
                     .into(findViewById<ImageView>(R.id.profile_pic))
             }
 
-            findViewById<TextView>(R.id.user_email_field).setHint(user.email)
-            findViewById<TextView>(R.id.user_userame_field).setHint(user.displayName)
+            findViewById<TextInputEditText>(R.id.user_username_text).setOnFocusChangeListener { v, hasFocus ->
+                findViewById<TextInputLayout>(R.id.user_username_field).hint =
+                    if (hasFocus) "Username" else user.displayName
+            }
 
-            Log.wtf("current Email", user.email)
-            Log.wtf("current Username", user.displayName)
-            Log.wtf("current photourl", user.photoUrl.toString())
+            findViewById<TextInputEditText>(R.id.user_email_text).setOnFocusChangeListener { v, hasFocus ->
+                findViewById<TextInputLayout>(R.id.user_email_field).hint =
+                    if (hasFocus) "Email" else user.email
+            }
+
             currentEmail = user.email
             currentUsername = user.displayName
         }
 
         findViewById<Button>(R.id.update_button).setOnClickListener {
-
+            updateValidation(it)
         }
     }
 
@@ -109,19 +115,21 @@ class EditProfile : AppCompatActivity() {
 
     fun updateValidation(view: View) {
         Log.wtf("wtf", "wtf")
-        val email: EditText = findViewById(R.id.user_email_field)
-        val password: EditText = findViewById(R.id.user_password_field)
-        val username: EditText = findViewById(R.id.user_userame_field)
+        val email: TextInputEditText = findViewById(R.id.user_email_text)
+        val password: TextInputEditText = findViewById(R.id.user_password_text)
+        val confirmPassword: TextInputEditText = findViewById(R.id.user_confirm_password_text)
+        val username: TextInputEditText = findViewById(R.id.user_username_text)
         userEmail = email.text.toString().trim()
         userPassword = password.text.toString()
+        userConfirmPassword = confirmPassword.text.toString()
         userUsername = username.text.toString()
         val emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+"
         val passPattern = "[a-zA-Z0-9]"
-        if (userEmail == currentEmail) {
-            updatedEmail = currentEmail
+        if (userEmail == "") {
+            userEmail = currentEmail
         }
-        if (userUsername == currentUsername) {
-            updatedUsername = currentUsername
+        if (userUsername == "") {
+            userUsername = currentUsername
         }
         if (userEmail.matches(emailPattern.toRegex())) {
             if (isLettersOrDigits(userPassword) && userPassword.length >= 8) {
@@ -139,6 +147,10 @@ class EditProfile : AppCompatActivity() {
         } else {
             return Toast.makeText(this, "Invalid Email Address!", Toast.LENGTH_SHORT).show()
         }
+        if (userPassword != userConfirmPassword) {
+            return Toast.makeText(this, "Confirm password did not match!", Toast.LENGTH_SHORT)
+                .show()
+        }
     }
 
     fun isLettersOrDigits(chars: String): Boolean {
@@ -147,16 +159,24 @@ class EditProfile : AppCompatActivity() {
     }
 
     fun updateUser(name: String, email: String, password: String, image: String? = null) {
-
         db.collection("users")
-            .whereEqualTo("username", userUsername).get().addOnSuccessListener {
-                user.updatePassword(userPassword)
-                user.updateEmail(userEmail)
-                user.updateProfile(
-                    UserProfileChangeRequest.Builder()
-                        .setDisplayName(userUsername)
-                        .build()
-                )
+            .whereEqualTo("username", userUsername).whereEqualTo("email", userEmail).get()
+            .addOnSuccessListener {
+                if (it.isEmpty) {
+                    user.updatePassword(userPassword)
+                    user.updateEmail(userEmail)
+                    user.updateProfile(
+                        UserProfileChangeRequest.Builder()
+                            .setDisplayName(userUsername)
+                            .build()
+                    )
+                } else {
+                    Toast.makeText(this, "Username or Email is taken!", Toast.LENGTH_SHORT).show()
+                }
             }
+    }
+
+    fun gotoEditProfile(view: View) {
+        startActivity(Intent(this, EditProfile::class.java))
     }
 }

@@ -11,6 +11,8 @@
     <color name="colorPrimaryDark">#212121</color>
     <color name="colorAccent">#D81B60</color>
 
+
+
     <color name="red_active">#f44336</color>
     <color name="purple_active">#9c27b0</color>
     <color name="blue_active">#03a9f4</color>
@@ -45,4 +47,5 @@
     <color name="green">#37966f</color>
     <color name="lightgreen">#b9e4c9</color>
     <color name="basilorange">#fd5523</color>
+    <color name="rallygreen">#1eb980</color>
 </resources>

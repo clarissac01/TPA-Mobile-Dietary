@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FFFFFF"
+    android:backgroundTint="?colorSecondary"
+    tools:context=".UserDetail">
+
+    <ImageButton
+        android:id="@+id/imageButton3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="18dp"
+        android:backgroundTint="?colorSecondary"
+        android:onClick="back"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_baseline_arrow_back_ios_24" />
+
+    <TextView
+        android:id="@+id/user_id"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:fontFamily="@font/rubik"
+        android:text="hello"
+        android:textColor="?colorOnSecondary"
+        android:textSize="30sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <edu.bluejack20_2.dietary.CirleImageView
+        android:id="@+id/user_profilepic"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/roundcorner"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageButton3"
+        app:srcCompat="@drawable/user" />
+
+    <Button
+        android:id="@+id/friend_count"
+        style="@style/Widget.MaterialComponents.Button.TextButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:fontFamily="@font/rubik"
+        android:onClick="seeUserFriend"
+        android:text="\nFRIENDS"
+        android:textColor="?colorPrimaryVariant"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/user_profilepic"
+        app:layout_constraintTop_toBottomOf="@+id/user_id" />
+
+    <Button
+        android:id="@+id/addfriendbtn"
+        android:layout_width="255dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:backgroundTint="@color/rallygreen"
+        android:fontFamily="sans-serif-medium"
+        android:text="ADD FRIEND"
+        android:visibility="invisible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/user_profilepic"
+        app:layout_constraintTop_toBottomOf="@+id/friend_count" />
+
+    <Button
+        android:id="@+id/unfriend_btn"
+        style="?attr/materialButtonOutlinedStyle"
+        android:layout_width="255dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:backgroundTint="?colorOnPrimary"
+        android:text="UNFRIEND"
+        android:textColor="?colorPrimary"
+        android:visibility="invisible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/user_profilepic"
+        app:layout_constraintTop_toBottomOf="@+id/friend_count" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
