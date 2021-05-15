@@ -13,12 +13,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Dietary">
-        <activity
-            android:name=".UserFriend"
-            android:label="@string/title_activity_user_friend"
-            android:theme="@style/Theme.Dietary.NoActionBar"></activity>
-        <activity android:name=".UserDetail" />
-        <activity android:name=".AddFriend" />
+
         <activity android:name=".EditProfile" />
         <activity android:name=".LoginActivity" />
         <activity android:name=".RegisterActivity" />

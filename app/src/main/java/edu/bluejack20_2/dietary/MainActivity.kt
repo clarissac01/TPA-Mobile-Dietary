@@ -12,6 +12,7 @@ import androidx.fragment.app.Fragment
 import com.gauravk.bubblenavigation.BubbleNavigationConstraintView
 import com.gauravk.bubblenavigation.BubbleNavigationLinearView
 import android.view.View
+import android.widget.Button
 import com.google.firebase.database.FirebaseDatabase
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.firebase.auth.FirebaseAuth
@@ -27,9 +28,6 @@ class MainActivity : AppCompatActivity() {
         if(FirebaseAuth.getInstance().currentUser == null){
             startActivity(Intent(this, LoginActivity::class.java))
         }
-//        else{
-//            FirebaseAuth.getInstance().signOut();
-//        }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -53,6 +51,10 @@ class MainActivity : AppCompatActivity() {
                 R.id.l_item_journey -> setCurrentFragment(journeyFragment)
             }
         }
+
+//        findViewById<Button>(R.id.main_ingredients_button).setOnClickListener {
+//            gotoMainIngredients(it)
+//        }
     }
 
 
@@ -62,6 +64,10 @@ class MainActivity : AppCompatActivity() {
             commit()
         }
 
+
+    fun gotoMainIngredients(view: View) {
+        startActivity(Intent(this, MainIngredients::class.java) )
+    }
 
     fun gotoEditProfile(view: View) {
         startActivity(Intent(this, EditProfile::class.java))
