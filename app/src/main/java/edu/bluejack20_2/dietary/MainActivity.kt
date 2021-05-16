@@ -36,7 +36,7 @@ class MainActivity : AppCompatActivity() {
 
         val homeFragment = HomeFragment()
         val profileFragment = ProfileFragment()
-        val customMealFragment = CustomMealFragment()
+//        val customMealFragment = CustomMealFragment()
         val friendsFragment = FriendsFragment()
         val journeyFragment = JourneyFragment()
 
@@ -45,7 +45,7 @@ class MainActivity : AppCompatActivity() {
         findViewById<BubbleNavigationConstraintView>(R.id.bottom_navigation_view_linear).setNavigationChangeListener {view, position ->
             when(view.id) {
                 R.id.l_item_home -> setCurrentFragment(homeFragment)
-                R.id.l_item_custom_meal -> setCurrentFragment(customMealFragment)
+//                R.id.l_item_custom_meal -> setCurrentFragment(customMealFragment)
                 R.id.l_item_profile -> setCurrentFragment(profileFragment)
                 R.id.l_item_friend -> setCurrentFragment(friendsFragment)
                 R.id.l_item_journey -> setCurrentFragment(journeyFragment)

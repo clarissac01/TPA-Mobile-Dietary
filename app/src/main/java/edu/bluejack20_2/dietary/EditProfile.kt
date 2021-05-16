@@ -150,25 +150,6 @@ class EditProfile : AppCompatActivity() {
                 .show()
         }
         updateUser(userUsername, userEmail, userPassword, bitmap.toString())
-//        if (userPassword != "" && userConfirmPassword != "") {
-//            if (isLettersOrDigits(userPassword) && userPassword.length >= 8) {
-//                updateUser(userUsername, userEmail, userPassword, bitmap.toString())
-//            } else if (!userPassword.matches(passPattern.toRegex())) {
-//                return Toast.makeText(this, "Password must be alphanumeric!", Toast.LENGTH_SHORT)
-//                    .show()
-//            } else {
-//                return Toast.makeText(
-//                    this,
-//                    "Password must be more than 7 characters!",
-//                    Toast.LENGTH_SHORT
-//                ).show()
-//            }
-//        }
-//        if (userEmail != "") {
-//            if (!userEmail.matches(emailPattern.toRegex())) {
-//                return Toast.makeText(this, "Invalid Email Address!", Toast.LENGTH_SHORT).show()
-//            }
-//        }
     }
 
     fun isLettersOrDigits(chars: String): Boolean {
@@ -215,15 +196,6 @@ class EditProfile : AppCompatActivity() {
                             }
                     }
             }
-//        db.collection("users")
-//            .whereEqualTo("username", userUsername)
-//            .whereEqualTo("email", userEmail).get()
-//            .addOnSuccessListener {
-//                if (it.isEmpty) {
-//                } else {
-//                    Toast.makeText(this, "Username or Email is taken!", Toast.LENGTH_SHORT).show()
-//                }
-//            }
     }
 
     fun gotoEditProfile(view: View) {

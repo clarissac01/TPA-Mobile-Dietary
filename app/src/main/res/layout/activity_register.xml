@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/beige"
+    android:background="?colorSecondary"
     tools:context=".RegisterActivity">
 
 
@@ -18,7 +18,7 @@
         android:text="REGISTER"
         android:textAlignment="viewStart"
         android:textAppearance="@style/TextAppearance.AppCompat.Body2"
-        android:textColor="@color/basilgreen"
+        android:textColor="?colorPrimaryVariant"
         android:textSize="36sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
@@ -34,7 +34,7 @@
         android:layout_marginBottom="50dp"
         android:fontFamily="@font/rubik"
         android:text="Upload your image"
-        android:textColor="@color/basilgreen"
+        android:textColor="?colorPrimaryVariant"
         android:textSize="18sp"
         android:textStyle="normal"
         app:layout_constraintBottom_toTopOf="@+id/usernameField"
@@ -90,10 +90,10 @@
             android:id="@+id/emailText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:backgroundTint="@color/beige"
+            android:backgroundTint="?colorSecondary"
             android:fontFamily="@font/rubik"
             android:textColor="@color/black"
-            android:textColorHint="@color/basilgreen" />
+            android:textColorHint="?colorPrimaryVariant" />
 
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -114,10 +114,10 @@
             android:id="@+id/usernameText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:backgroundTint="@color/beige"
+            android:backgroundTint="?colorSecondary"
             android:fontFamily="@font/rubik"
             android:textColor="@color/black"
-            android:textColorHint="@color/basilgreen" />
+            android:textColorHint="?colorPrimaryVariant" />
 
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -140,11 +140,11 @@
             android:id="@+id/passwordText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:backgroundTint="@color/beige"
+            android:backgroundTint="?colorSecondary"
             android:fontFamily="@font/rubik"
             android:password="true"
             android:textColor="@color/black"
-            android:textColorHint="@color/basilgreen" />
+            android:textColorHint="?colorPrimaryVariant" />
 
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -154,11 +154,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="104dp"
-        android:backgroundTint="@color/basilgreen"
+        android:backgroundTint="?colorPrimaryVariant"
 
         android:fontFamily="@font/rubik"
         android:text="SUBMIT"
-        android:textColor="@color/beige"
+        android:textColor="?colorSecondary"
         android:textSize="24sp"
         android:textStyle="bold"
         app:iconPadding="20dp"
@@ -172,8 +172,8 @@
         android:layout_width="66dp"
         android:layout_height="66dp"
         android:layout_marginTop="16dp"
+        android:backgroundTint="?colorSecondary"
         android:onClick="gotoLogin"
-        android:backgroundTint="@color/beige"
         android:scaleType="fitEnd"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"

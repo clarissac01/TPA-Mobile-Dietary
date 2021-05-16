@@ -9,8 +9,6 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.cardview.widget.CardView
-import androidx.core.content.ContextCompat
-import androidx.core.os.bundleOf
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -104,7 +102,7 @@ class FriendAdapter(private val friendList: List<FriendItem>?, private val conte
 
     class FriendHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val friendpic: ImageView = itemView.findViewById(R.id.friendpic)
-        val friendname: TextView = itemView.findViewById(R.id.name_text)
+        val friendname: TextView = itemView.findViewById(R.id.ingredientName)
         val daycount: MaterialButton = itemView.findViewById(R.id.daycountbtn)
         val delbtn = itemView.findViewById<MaterialButton>(R.id.deletefriend)
         val addBtn = itemView.findViewById<MaterialButton>(R.id.addfriend)

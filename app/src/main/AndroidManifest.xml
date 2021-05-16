@@ -13,9 +13,13 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Dietary">
-
+        <activity android:name=".MealDetail"></activity>
         <activity android:name=".EditProfile" />
         <activity android:name=".LoginActivity" />
+        <activity android:name=".UserDetail" />
+        <activity android:name=".UserFriend" />
+        <activity android:name=".AddFriend" />
+        <activity android:name=".MainIngredients" />
         <activity android:name=".RegisterActivity" />
         <activity
             android:name=".MainActivity"

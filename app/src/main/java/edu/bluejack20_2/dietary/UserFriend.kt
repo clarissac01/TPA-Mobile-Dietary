@@ -74,10 +74,6 @@ class UserFriend : AppCompatActivity() {
                                     .addOnSuccessListener {
                                         if (it != null) {
                                             Log.wtf("document data", "${it.data}")
-    //                                        var isFriend = false
-    //                                        if (userfriendlist?.contains(i.toString())!!) {
-    //                                            isFriend = true
-    //                                        }
                                             if (it.getString("photoURL") != null) {
                                                 var friend = FriendItem(it.getString("username")!!, true, it.getString("photoURL"), 1, i.toString(), isUserFriend)
                                                 list.add(friend)
