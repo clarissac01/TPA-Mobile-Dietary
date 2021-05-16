@@ -6,24 +6,21 @@ import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Build
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Log
 import android.view.View
 import android.widget.*
+import androidx.appcompat.app.AppCompatActivity
+import com.google.android.gms.tasks.Tasks
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseUser
-import com.google.firebase.auth.UserProfileChangeRequest
+import com.google.firebase.auth.*
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.auth.FirebaseAuthCredentialsProvider
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 import com.squareup.picasso.Picasso
 
-import java.io.ByteArrayOutputStream
 
 class EditProfile : AppCompatActivity() {
 
@@ -50,6 +47,15 @@ class EditProfile : AppCompatActivity() {
 
         auth = FirebaseAuth.getInstance()
         user = auth.currentUser
+
+        val userFire = FirebaseFirestore.getInstance().collection("users").document(user.uid).get().addOnSuccessListener {
+            if(it.getString("password") == null) {
+                findViewById<TextInputLayout>(R.id.user_email_field).isEnabled = false
+                findViewById<TextInputLayout>(R.id.user_password_field).isEnabled = false
+                findViewById<TextInputLayout>(R.id.user_confirm_password_field).isEnabled = false
+            }
+        }
+
 
         if (user != null) {
             findViewById<TextInputLayout>(R.id.user_username_field).hint = user.displayName
@@ -145,10 +151,6 @@ class EditProfile : AppCompatActivity() {
         if (userConfirmPassword == "") {
             userConfirmPassword = currentPassword
         }
-        if (userPassword != userConfirmPassword) {
-            return Toast.makeText(this, "Confirm password did not match!", Toast.LENGTH_SHORT)
-                .show()
-        }
         updateUser(userUsername, userEmail, userPassword, bitmap.toString())
     }
 
@@ -158,45 +160,65 @@ class EditProfile : AppCompatActivity() {
     }
 
     fun updateUser(name: String, email: String, password: String, image: String? = null) {
-        Log.wtf("asdf", user.uid)
-        user.updatePassword(password).addOnFailureListener { Log.wtf("hehe", it.toString()) }
-            .addOnSuccessListener {
-                Log.wtf("hehe1", user.uid)
-                user.updateEmail(email).addOnFailureListener { Log.wtf("hehe", it.toString()) }
-                    .addOnSuccessListener {
-                        Log.wtf("hehe2", user.uid)
-                        user.updateProfile(
-                            UserProfileChangeRequest.Builder()
-                                .setDisplayName(name)
-                                .build()
-                        ).addOnFailureListener { Log.wtf("hehe", it.toString()) }
-                            .addOnSuccessListener {
-                                Log.wtf("hehe3", user.uid)
+        val oldUname = user.displayName
+        FirebaseFirestore.getInstance()
+            .collection("users")
+            .whereEqualTo("username", oldUname)
+            .get()
+            .addOnFailureListener {
+                Log.wtf("hehe", it.toString())
+            }
+            .addOnSuccessListener { q ->
+//                Log.wtf("hehehehe", q.documents.toString())
+                val doc = q.documents.first()
 
-                                FirebaseFirestore.getInstance()
-                                    .collection("users")
-                                    .whereEqualTo("username", user.displayName)
-                                    .get()
-                                    .addOnSuccessListener { q ->
-                                        val doc = q.documents.first()
-                                        FirebaseFirestore.getInstance().runBatch {
-                                            val ref = doc.reference
-                                            it.update(ref, "email", email)
-                                            it.update(ref, "password", password)
-                                            it.update(ref, "username", name)
-                                        }.addOnFailureListener { Log.wtf("hehe", it.toString()) }
-                                            .addOnSuccessListener {
-                                                Toast.makeText(
-                                                    this,
-                                                    "Update Success",
-                                                    Toast.LENGTH_SHORT
-                                                ).show()
-                                            }
-                                    }
-                            }
+                val oldPassword = doc.getString("password")
+                Log.wtf("old", oldPassword)
+                Log.wtf("pass", password)
+
+                if (oldPassword != null && oldPassword != password) {
+                    Toast.makeText(this, "Old Password doesn't match!", Toast.LENGTH_SHORT).show()
+                    return@addOnSuccessListener
+                }
+
+                Log.wtf("hehe", listOf(userConfirmPassword, email, name).toString())
+//                val credential = GoogleAuthProvider
+//                    .getCredential("user@example.com", "password1234")
+                Tasks.whenAll(
+//                    FirebaseAuth.getInstance().currentUser.updatePassword(userConfirmPassword).addOnFailureListener {
+//                        Log.wtf("hehe", it.toString())
+//                    },
+                    user.updateEmail(email).addOnFailureListener {
+                        Log.wtf("hehe", it.toString())
+                    },
+                    user.updateProfile(
+                        UserProfileChangeRequest.Builder()
+                            .setDisplayName(name)
+                            .build()
+                    ).addOnFailureListener {
+                        Log.wtf("hehe", it.toString())
+                    },
+                    doc.reference.update(
+                        mapOf(
+                            "email" to email,
+                            "password" to userConfirmPassword,
+                            "username" to name
+                        )
+                    ).addOnFailureListener {
+                        Log.wtf("hehe", it.toString())
+                    }
+                )
+
+                    .addOnFailureListener {
+                        Log.wtf("hehe", it.toString())
+                    }
+                    .addOnSuccessListener {
+                        Toast.makeText(EditProfile@ this, "Update Success", Toast.LENGTH_SHORT)
+                            .show()
                     }
             }
     }
+
 
     fun gotoEditProfile(view: View) {
         startActivity(Intent(this, EditProfile::class.java))
