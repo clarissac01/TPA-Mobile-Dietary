@@ -8,21 +8,19 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.ImageView
 import android.widget.TextView
+import com.google.android.material.textview.MaterialTextView
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.FirebaseFirestore
+import com.squareup.picasso.Picasso
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
-/**
- * A simple [Fragment] subclass.
- * Use the [ProfileFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class ProfileFragment : Fragment() {
+    private lateinit var auth: FirebaseAuth
+
+    var db = FirebaseFirestore.getInstance()
+    private lateinit var user: FirebaseUser
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -34,8 +32,23 @@ class ProfileFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        auth = FirebaseAuth.getInstance()
+        user = auth.currentUser
 
-        val db = FirebaseFirestore.getInstance()
+        val authuser = FirebaseFirestore.getInstance().collection("users").whereEqualTo("username", user.displayName).get().addOnSuccessListener {
+            if (user.photoUrl != null) {
+                Picasso.get().load(user.photoUrl).into(requireActivity().findViewById<ImageView>(R.id.profile_pic))
+            } else {
+                Picasso.get().load("@drawable/ic_photo")
+                    .into(requireActivity().findViewById<ImageView>(R.id.profile_pic))
+            }
+            requireActivity().findViewById<MaterialTextView>(R.id.username_text).text = user.displayName
+            requireActivity().findViewById<MaterialTextView>(R.id.email_text).text = user.email
+        }
+
+        requireActivity().findViewById<Button>(R.id.bmi_button).setOnClickListener {
+            startActivity(Intent(requireContext(), DietPlanActivity::class.java))
+        }
 
         requireActivity().findViewById<Button>(R.id.settings_button).setOnClickListener {
             startActivity(Intent(requireContext(), SettingActivity::class.java))
@@ -45,6 +58,8 @@ class ProfileFragment : Fragment() {
             FirebaseAuth.getInstance().signOut();
             startActivity(Intent(requireContext(), LoginActivity::class.java))
         }
+
+
     }
 
 }

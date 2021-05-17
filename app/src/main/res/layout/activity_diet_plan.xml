@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="?colorSecondary"
+    tools:context=".DietPlanActivity">
+
+    <Button
+        android:id="@+id/lose_weight_btn"
+        style="?attr/materialButtonOutlinedStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="280dp"
+        android:width="300dp"
+        android:height="50dp"
+        android:backgroundTint="?colorPrimaryVariant"
+        android:fontFamily="@font/rubik"
+        android:text="Lose Weight"
+        android:textColor="@color/beige"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/maintain_weight_btn"
+        style="?attr/materialButtonOutlinedStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:width="300dp"
+        android:height="50dp"
+        android:backgroundTint="?colorPrimaryVariant"
+        android:fontFamily="@font/rubik"
+        android:text="Maintain Weight"
+        android:textColor="@color/beige"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.495"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/lose_weight_btn" />
+
+    <Button
+        android:id="@+id/gain_weight_btn"
+        style="?attr/materialButtonOutlinedStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:width="300dp"
+        android:height="50dp"
+        android:backgroundTint="?colorPrimaryVariant"
+        android:fontFamily="@font/rubik"
+        android:text="Gain Weight"
+        android:textColor="@color/beige"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.504"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/maintain_weight_btn" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -12,6 +12,11 @@ import android.util.Log
 import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
+import com.google.android.gms.common.api.ApiException
+import com.google.android.gms.common.api.CommonStatusCodes
+import com.google.android.gms.safetynet.SafetyNet
+import com.google.android.gms.tasks.OnFailureListener
+import com.google.android.gms.tasks.OnSuccessListener
 import com.google.android.gms.tasks.Tasks
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
@@ -20,6 +25,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 import com.squareup.picasso.Picasso
+import java.util.concurrent.Executor
 
 
 class EditProfile : AppCompatActivity() {
@@ -48,8 +54,10 @@ class EditProfile : AppCompatActivity() {
         auth = FirebaseAuth.getInstance()
         user = auth.currentUser
 
-        val userFire = FirebaseFirestore.getInstance().collection("users").document(user.uid).get().addOnSuccessListener {
-            if(it.getString("password") == null) {
+        val userFire = FirebaseFirestore.getInstance().collection("users").whereEqualTo("username", user.displayName).get().addOnSuccessListener {
+            if(it.documents.first().getString("password") == null) {
+//                Log.wtf("uid", user.uid)
+                Log.wtf("heh", it.documents.first().getString("password"))
                 findViewById<TextInputLayout>(R.id.user_email_field).isEnabled = false
                 findViewById<TextInputLayout>(R.id.user_password_field).isEnabled = false
                 findViewById<TextInputLayout>(R.id.user_confirm_password_field).isEnabled = false
@@ -138,7 +146,7 @@ class EditProfile : AppCompatActivity() {
         userConfirmPassword = confirmPassword.text.toString()
         userUsername = username.text.toString()
         val emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+"
-        val passPattern = "[a-zA-Z0-9]"
+        val passPattern = "^(?=.*[0-9])(?=.*[a-zA-Z])([a-zA-Z0-9]+)$"
         if (userEmail == "") {
             userEmail = currentEmail
         }
@@ -151,7 +159,31 @@ class EditProfile : AppCompatActivity() {
         if (userConfirmPassword == "") {
             userConfirmPassword = currentPassword
         }
+<<<<<<< HEAD
         updateUser(userUsername, userEmail, userPassword, bitmap.toString())
+=======
+//        updateUser(userUsername, userEmail, userPassword, bitmap.toString())
+        if (userPassword != "" && userConfirmPassword != "") {
+            if (!userConfirmPassword.matches(passPattern.toRegex())) {
+                return Toast.makeText(this, "Password must be alphanumeric!", Toast.LENGTH_SHORT)
+                    .show()
+            }
+            if (isLettersOrDigits(userConfirmPassword) && userConfirmPassword.length >= 8) {
+                updateUser(userUsername, userEmail, userPassword, bitmap.toString())
+            } else {
+                return Toast.makeText(
+                    this,
+                    "Password must be more than 7 characters!",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+        }
+        if (userEmail != "") {
+            if (!userEmail.matches(emailPattern.toRegex())) {
+                return Toast.makeText(this, "Invalid Email Address!", Toast.LENGTH_SHORT).show()
+            }
+        }
+>>>>>>> f5801b97b44c2de71722d7ae2e2a252e910bd672
     }
 
     fun isLettersOrDigits(chars: String): Boolean {
@@ -160,63 +192,89 @@ class EditProfile : AppCompatActivity() {
     }
 
     fun updateUser(name: String, email: String, password: String, image: String? = null) {
-        val oldUname = user.displayName
-        FirebaseFirestore.getInstance()
-            .collection("users")
-            .whereEqualTo("username", oldUname)
-            .get()
-            .addOnFailureListener {
-                Log.wtf("hehe", it.toString())
-            }
-            .addOnSuccessListener { q ->
-//                Log.wtf("hehehehe", q.documents.toString())
-                val doc = q.documents.first()
-
-                val oldPassword = doc.getString("password")
-                Log.wtf("old", oldPassword)
-                Log.wtf("pass", password)
-
-                if (oldPassword != null && oldPassword != password) {
-                    Toast.makeText(this, "Old Password doesn't match!", Toast.LENGTH_SHORT).show()
-                    return@addOnSuccessListener
-                }
-
-                Log.wtf("hehe", listOf(userConfirmPassword, email, name).toString())
-//                val credential = GoogleAuthProvider
-//                    .getCredential("user@example.com", "password1234")
-                Tasks.whenAll(
-//                    FirebaseAuth.getInstance().currentUser.updatePassword(userConfirmPassword).addOnFailureListener {
-//                        Log.wtf("hehe", it.toString())
-//                    },
-                    user.updateEmail(email).addOnFailureListener {
-                        Log.wtf("hehe", it.toString())
-                    },
-                    user.updateProfile(
-                        UserProfileChangeRequest.Builder()
-                            .setDisplayName(name)
-                            .build()
-                    ).addOnFailureListener {
-                        Log.wtf("hehe", it.toString())
-                    },
-                    doc.reference.update(
-                        mapOf(
-                            "email" to email,
-                            "password" to userConfirmPassword,
-                            "username" to name
-                        )
-                    ).addOnFailureListener {
-                        Log.wtf("hehe", it.toString())
-                    }
-                )
-
+        SafetyNet.getClient(this).verifyWithRecaptcha("6LfJCNYaAAAAAF7Dte27iGN9jt0iOeTUo3BJrh8x")
+            .addOnSuccessListener { response ->
+                val userResponseToken = response.tokenResult
+                val oldUname = user.displayName
+                FirebaseFirestore.getInstance()
+                    .collection("users")
+                    .whereEqualTo("username", oldUname)
+                    .get()
                     .addOnFailureListener {
                         Log.wtf("hehe", it.toString())
                     }
-                    .addOnSuccessListener {
-                        Toast.makeText(EditProfile@ this, "Update Success", Toast.LENGTH_SHORT)
-                            .show()
+                    .addOnSuccessListener { q ->
+//                Log.wtf("hehehehe", q.documents.toString())
+                        val doc = q.documents.first()
+
+                        val oldPassword = doc.getString("password")
+                        Log.wtf("id", doc.id)
+                        Log.wtf("hhhh", (oldPassword == null).toString())
+                        Log.wtf("hadoh", doc.getString("username"))
+                        Log.wtf("uname", oldUname)
+                        Log.wtf("old", oldPassword)
+                        Log.wtf("pass", password)
+
+                        if (oldPassword != null && oldPassword != password) {
+                            Toast.makeText(this, "Old Password doesn't match!", Toast.LENGTH_SHORT)
+                                .show()
+                            return@addOnSuccessListener
+                        }
+
+                        Log.wtf("hehe", listOf(userConfirmPassword, email, name).toString())
+//                val credential = GoogleAuthProvider
+//                    .getCredential("user@example.com", "password1234")
+                        val data = mutableListOf(
+                            user.updateEmail(email).addOnFailureListener {
+                            Log.wtf("hehe", it.toString())
+                        },
+                            user.updateProfile(
+                                UserProfileChangeRequest.Builder()
+                                    .setDisplayName(name)
+                                    .build()
+                            ).addOnFailureListener {
+                                Log.wtf("hehe", it.toString())
+                            },
+                            doc.reference.update(
+                                mapOf(
+                                    "email" to email,
+                                    "password" to userConfirmPassword,
+                                    "username" to name
+                                )
+                            ).addOnFailureListener {
+                                Log.wtf("hehe", it.toString())
+                            })
+                        if(doc.getString("password") != null) {
+                            data.add(FirebaseAuth.getInstance().currentUser.updatePassword(userConfirmPassword).addOnFailureListener {
+                                Log.wtf("hehe", it.toString())
+                            })
+                        }
+                        Tasks.whenAll(data)
+
+                            .addOnFailureListener {
+                                Log.wtf("hehe", it.toString())
+                            }
+                            .addOnSuccessListener {
+                                Toast.makeText(
+                                    EditProfile@ this,
+                                    "Update Success",
+                                    Toast.LENGTH_SHORT
+                                )
+                                    .show()
+                            }
                     }
             }
+            .addOnFailureListener { e ->
+                if (e is ApiException) {
+                    Log.d("TAG", "Error: ${CommonStatusCodes.getStatusCodeString(e.statusCode)}")
+                } else {
+                    Log.d("TAG", "Error: ${e.message}")
+                }
+            }
+    }
+
+    fun onClick(view: View) {
+
     }
 
 
