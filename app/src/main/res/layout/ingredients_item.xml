@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/user_detail"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="10dp"
     android:outlineProvider="background"
-    app:cardCornerRadius="15dp"
-    android:onClick="gotoUserDetail">
+    app:cardCornerRadius="15dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="15dp">
+        android:background="#FFFCED"
+        android:paddingStart="15dp"
+        android:paddingTop="15dp">
 
         <TextView
             android:id="@+id/ingredientName"
@@ -30,12 +30,79 @@
             android:id="@+id/ingredientCal"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="16dp"
             android:fontFamily="@font/rubik"
             android:text="500 kcal"
             android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/ingredientName" />
+
+        <Button
+            android:id="@+id/addwBtn"
+            style="@style/Widget.App.Button.OutlinedButton.Icon"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="40dp"
+            android:onClick="addWeight"
+            app:icon="@drawable/add"
+            app:iconGravity="textStart"
+            app:iconSize="15dp"
+            app:iconTint="@android:color/secondary_text_light_nodisable"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.MyApp.Button.Circle"
+            app:strokeColor="@android:color/secondary_text_light_nodisable"
+            app:strokeWidth="1.5dp" />
+
+        <Button
+            android:id="@+id/substractBtn"
+            style="@style/Widget.App.Button.OutlinedButton.Icon"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_marginStart="100dp"
+            android:layout_marginTop="8dp"
+            android:onClick="substractWeight"
+            app:icon="@drawable/ic_baseline_horizontal_rule_24"
+            app:iconGravity="textStart"
+            app:iconSize="15dp"
+            app:iconTint="@android:color/secondary_text_light_nodisable"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.MyApp.Button.Circle"
+            app:strokeColor="@android:color/secondary_text_dark_nodisable"
+            app:strokeWidth="1.5dp" />
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/ingredientWeight"
+            android:layout_width="60dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="1dp"
+            android:layout_marginBottom="8dp"
+            android:editable="true"
+            android:ems="10"
+            android:fontFamily="@font/rubik"
+            android:inputType="number"
+            android:textAlignment="center"
+            android:textColor="@color/cardview_dark_background"
+            android:textSize="14sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/textView"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="100" />
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="60dp"
+            android:layout_marginTop="10dp"
+            android:fontFamily="@font/rubik"
+            android:text="(in g)"
+            android:textColor="@color/cardview_dark_background"
+            app:layout_constraintEnd_toStartOf="@+id/addwBtn"
+            app:layout_constraintStart_toEndOf="@+id/substractBtn"
             app:layout_constraintTop_toTopOf="parent" />
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.cardview.widget.CardView>

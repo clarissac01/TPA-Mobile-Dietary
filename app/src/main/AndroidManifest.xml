@@ -13,8 +13,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Dietary">
-        <activity android:name=".MealDetail"></activity>
-        <activity android:name=".SettingActivity"/>
+        <activity android:name=".Meal"></activity>
+        <activity android:name=".MealDetail" />
+        <activity android:name=".SettingActivity" />
         <activity android:name=".MainIngredients" />
         <activity android:name=".EditProfile" />
         <activity android:name=".LoginActivity" />

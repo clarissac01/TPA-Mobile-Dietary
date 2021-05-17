@@ -1,6 +1,7 @@
 package edu.bluejack20_2.dietary
 
 import android.graphics.drawable.Drawable
+import android.icu.util.TimeUnit
 import android.opengl.Visibility
 import android.os.Bundle
 import android.util.Log
@@ -13,11 +14,19 @@ import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.progressindicator.CircularProgressIndicator
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
+import com.google.firebase.Timestamp
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.fragment_home.*
+import org.ocpsoft.prettytime.PrettyTime
 import org.w3c.dom.Text
+import java.time.Duration
+import java.time.Duration.between
+import java.time.LocalDate
+import java.time.LocalDate.parse
+import java.time.LocalDateTime
+import java.time.LocalDateTime.parse
 import java.util.*
 
 class HomeFragment : Fragment(R.layout.fragment_home) {
@@ -31,22 +40,28 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        requireActivity().findViewById<TextView>(R.id.salutation).text = "Hello, " + user.displayName + "!"
+        Log.wtf("duar", user?.toString())
 
-        profilepic = requireActivity().findViewById<CirleImageView>(R.id.user_profilepic)
+        view.findViewById<TextView>(R.id.salutation).text = "Hello, " + user.displayName + "!"
+
+        profilepic = view.findViewById<CirleImageView>(R.id.user_profilepic)
 
         db.collection("users").whereEqualTo("username", user.displayName).get().addOnSuccessListener {
             if(!it?.isEmpty!!){
                 if(it.documents.first().get("plan") != null){
-                    activatePlan()
+                    activatePlan(view)
                     val getMapping = it.documents.first().get("plan") as Map<*, *>
-                    requireActivity().findViewById<TextView>(R.id.planday).text = getMapping["duration"].toString()
-                    requireActivity().findViewById<TextView>(R.id.plancurrday).text = getMapping["currentDay"].toString()
-                    requireActivity().findViewById<CircularProgressIndicator>(R.id.planprogresscircle).max =
-                        getMapping["duration"].toString().toInt()
-                    requireActivity().findViewById<CircularProgressIndicator>(R.id.planprogresscircle).progress = getMapping["currentDay"].toString().toInt()
+                    val date1 = Date()
+                    val date2 = getMapping["startDate"] as Timestamp
+                    var diff = date1.time - date2.toDate().time
+                    var res = java.util.concurrent.TimeUnit.DAYS.convert(diff, java.util.concurrent.TimeUnit.MILLISECONDS)
+                    view.findViewById<TextView>(R.id.plancurrday).text = res.toString()
+                    view.findViewById<CircularProgressIndicator>(R.id.planprogresscircle).max =
+                        30
+                    view.findViewById<CircularProgressIndicator>(R.id.planprogresscircle).progress =
+                        res.toLong().toInt()
                 }else{
-                    activateNoPlan()
+                    activateNoPlan(view)
                 }
                 if(it.documents.first().getString("photoURL") != null){
                     Picasso.get().load(it.documents.first().getString("photoURL")).into(profilepic)
@@ -56,23 +71,24 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
 
     }
 
-    fun activatePlan(){
-        requireActivity().findViewById<TextView>(R.id.noplantext).visibility = View.INVISIBLE
-        requireActivity().findViewById<ImageView>(R.id.noplanpic).visibility = View.INVISIBLE
+    fun activatePlan(view: View){
+        view.findViewById<TextView>(R.id.noplantext).visibility = View.INVISIBLE
+        view.findViewById<ImageView>(R.id.noplanpic).visibility = View.INVISIBLE
 
-        requireActivity().findViewById<TextView>(R.id.plan1).visibility = View.VISIBLE
-        requireActivity().findViewById<TextView>(R.id.plan2).visibility = View.VISIBLE
-        requireActivity().findViewById<TextView>(R.id.plan3).visibility = View.VISIBLE
-        requireActivity().findViewById<TextView>(R.id.plan4).visibility = View.VISIBLE
-        requireActivity().findViewById<TextView>(R.id.plancal).visibility = View.VISIBLE
-        requireActivity().findViewById<TextView>(R.id.plancurrday).visibility = View.VISIBLE
-        requireActivity().findViewById<TextView>(R.id.planday).visibility = View.VISIBLE
-        requireActivity().findViewById<CircularProgressIndicator>(R.id.planprogresscircle).visibility = View.VISIBLE
+        view.findViewById<TextView>(R.id.plan1).visibility = View.VISIBLE
+        view.findViewById<TextView>(R.id.plan2).visibility = View.VISIBLE
+        view.findViewById<TextView>(R.id.plan3).visibility = View.VISIBLE
+        view.findViewById<TextView>(R.id.plan4).visibility = View.VISIBLE
+        view.findViewById<TextView>(R.id.plancal).visibility = View.VISIBLE
+        view.findViewById<TextView>(R.id.plancurrday).visibility = View.VISIBLE
+        view.findViewById<TextView>(R.id.planday).visibility = View.VISIBLE
+        view.findViewById<CircularProgressIndicator>(R.id.planprogresscircle).visibility = View.VISIBLE
 
-        tabLayout = requireActivity().findViewById(R.id.tabLayout)
-        viewPager2 = requireActivity().findViewById(R.id.viewPager)
-
-        viewPager2.adapter = HomeMealAdapter(requireActivity())
+        tabLayout = view.findViewById(R.id.tabLayout)
+        viewPager2 = view.findViewById(R.id.viewPager)
+        activity?.let {
+            viewPager2.adapter = HomeMealAdapter(it)
+        }
 
         tabLayout.addTab(tabLayout.newTab().setText("Breakfast"))
         tabLayout.addTab(tabLayout.newTab().setText("Lunch"))
@@ -89,18 +105,18 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         }.attach()
     }
 
-    fun activateNoPlan(){
-        requireActivity().findViewById<TextView>(R.id.noplantext).visibility = View.VISIBLE
-        requireActivity().findViewById<ImageView>(R.id.noplanpic).visibility = View.VISIBLE
+    fun activateNoPlan(view: View){
+        view.findViewById<TextView>(R.id.noplantext).visibility = View.VISIBLE
+        view.findViewById<ImageView>(R.id.noplanpic).visibility = View.VISIBLE
 
-        requireActivity().findViewById<TextView>(R.id.plan1).visibility = View.INVISIBLE
-        requireActivity().findViewById<TextView>(R.id.plan2).visibility = View.INVISIBLE
-        requireActivity().findViewById<TextView>(R.id.plan3).visibility = View.INVISIBLE
-        requireActivity().findViewById<TextView>(R.id.plan4).visibility = View.INVISIBLE
-        requireActivity().findViewById<TextView>(R.id.plancal).visibility = View.INVISIBLE
-        requireActivity().findViewById<TextView>(R.id.plancurrday).visibility = View.INVISIBLE
-        requireActivity().findViewById<TextView>(R.id.planday).visibility = View.INVISIBLE
-        requireActivity().findViewById<CircularProgressIndicator>(R.id.planprogresscircle).visibility = View.INVISIBLE
+        view.findViewById<TextView>(R.id.plan1).visibility = View.INVISIBLE
+        view.findViewById<TextView>(R.id.plan2).visibility = View.INVISIBLE
+        view.findViewById<TextView>(R.id.plan3).visibility = View.INVISIBLE
+        view.findViewById<TextView>(R.id.plan4).visibility = View.INVISIBLE
+        view.findViewById<TextView>(R.id.plancal).visibility = View.INVISIBLE
+        view.findViewById<TextView>(R.id.plancurrday).visibility = View.INVISIBLE
+        view.findViewById<TextView>(R.id.planday).visibility = View.INVISIBLE
+        view.findViewById<CircularProgressIndicator>(R.id.planprogresscircle).visibility = View.INVISIBLE
 
     }
 

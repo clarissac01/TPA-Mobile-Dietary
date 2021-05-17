@@ -1,11 +1,14 @@
 package edu.bluejack20_2.dietary
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.TextView
+import androidx.constraintlayout.widget.ConstraintLayout
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 
@@ -15,6 +18,7 @@ class DinnerFragment : Fragment() {
     var user = FirebaseAuth.getInstance().currentUser
     private lateinit var menuName: TextView
     private lateinit var calCount: TextView
+    private lateinit var menuId: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,16 +41,37 @@ class DinnerFragment : Fragment() {
         calCount = view.findViewById(R.id.calCount)
 
         initMenu()
+        view.findViewById<ConstraintLayout>(R.id.dinnerLayout).setOnClickListener{
+            val intent = Intent(
+                context,
+                MealDetail::class.java
+            )
+            intent.putExtra("menuId", menuId)
+            context?.startActivity(
+                intent
+            )
+        }
+
+        view.findViewById<Button>(R.id.changeDinner).setOnClickListener {
+            val intent = Intent(
+                context,
+                Meal::class.java
+            )
+            intent.putExtra("type", "Dinner")
+            context?.startActivity(
+                intent
+            )
+        }
     }
 
     fun initMenu(){
 
-        db.collection("users").whereEqualTo("username", user.displayName).get().addOnSuccessListener {
+        db.collection("users").whereEqualTo("username", user.displayName).addSnapshotListener() { it, _ ->
             if(!it?.isEmpty!!){
                 val getMapping = it.documents.first().get("plan") as Map<*, *>
-                val menuId = getMapping["dinnerMenu"].toString()
-                db.collection("CustomMeals").document(menuId).get().addOnSuccessListener {
-                    if(it.exists()){
+                menuId = getMapping["dinnerMenu"].toString()
+                db.collection("CustomMeals").document(menuId).addSnapshotListener() { it, _ ->
+                    if(it?.exists()!!){
                         menuName.text = it.getString("CustomMealName")
                         calCount.text = it.get("Calories").toString() + " kcal"
                     }

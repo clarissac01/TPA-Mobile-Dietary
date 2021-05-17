@@ -2,13 +2,14 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/snackLayout"
     android:layout_width="340dp"
     android:layout_height="200dp"
     android:background="#D2FDE5"
     tools:context=".SnackFragment">
 
     <Button
-        android:id="@+id/button5"
+        android:id="@+id/changeSnack"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="4dp"
@@ -46,7 +47,7 @@
         android:layout_marginStart="24dp"
         android:layout_marginTop="50dp"
         android:fontFamily="@font/rubik"
-        android:text="Menu Name"
+        android:text=""
         android:textColor="#00C853"
         android:textSize="30sp"
         android:textStyle="bold"
@@ -59,7 +60,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
         android:fontFamily="@font/rubik"
-        android:text="300 kcal"
+        android:text=""
         android:textColor="#69F0AE"
         android:textSize="30sp"
         app:layout_constraintStart_toStartOf="parent"

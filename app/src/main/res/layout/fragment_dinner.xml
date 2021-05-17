@@ -2,6 +2,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/dinnerLayout"
     android:layout_width="340dp"
     android:layout_height="200dp"
     android:background="#E6E6FB"
@@ -19,7 +20,7 @@
         app:layout_constraintEnd_toEndOf="parent" />
 
     <Button
-        android:id="@+id/button4"
+        android:id="@+id/changeDinner"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="4dp"
@@ -45,7 +46,7 @@
         android:layout_marginStart="24dp"
         android:layout_marginTop="50dp"
         android:fontFamily="@font/rubik"
-        android:text="Menu Name"
+        android:text=""
         android:textColor="#7C4DFF"
         android:textSize="30sp"
         android:textStyle="bold"
@@ -58,7 +59,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
         android:fontFamily="@font/rubik"
-        android:text="300 kcal"
+        android:text=""
         android:textColor="#EA80FC"
         android:textSize="30sp"
         android:translationZ="15dp"

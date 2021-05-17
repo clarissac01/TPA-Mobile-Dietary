@@ -102,7 +102,7 @@ class FriendAdapter(private val friendList: List<FriendItem>?, private val conte
 
     class FriendHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val friendpic: ImageView = itemView.findViewById(R.id.friendpic)
-        val friendname: TextView = itemView.findViewById(R.id.ingredientName)
+        val friendname: TextView = itemView.findViewById(R.id.non_ingredientName)
         val daycount: MaterialButton = itemView.findViewById(R.id.daycountbtn)
         val delbtn = itemView.findViewById<MaterialButton>(R.id.deletefriend)
         val addBtn = itemView.findViewById<MaterialButton>(R.id.addfriend)

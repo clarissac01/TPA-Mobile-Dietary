@@ -7,6 +7,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.google.firebase.auth.FirebaseAuth
@@ -43,7 +44,17 @@ class BreakfastFragment : Fragment() {
                 MealDetail::class.java
             )
             intent.putExtra("menuId", menuId)
-            Log.wtf("menuId", menuId)
+            context?.startActivity(
+                intent
+            )
+        }
+
+        view.findViewById<Button>(R.id.changeBreakfast).setOnClickListener {
+            val intent = Intent(
+                context,
+                Meal::class.java
+            )
+            intent.putExtra("type", "Breakfast")
             context?.startActivity(
                 intent
             )
@@ -52,12 +63,12 @@ class BreakfastFragment : Fragment() {
 
     fun initMenu(){
 
-        db.collection("users").whereEqualTo("username", user.displayName).get().addOnSuccessListener {
+        db.collection("users").whereEqualTo("username", user.displayName).addSnapshotListener(){ it, _ ->
             if(!it?.isEmpty!!){
                 val getMapping = it.documents.first().get("plan") as Map<*, *>
                 menuId = getMapping["breakfastMenu"].toString()
-                db.collection("CustomMeals").document(menuId).get().addOnSuccessListener {
-                    if(it.exists()){
+                db.collection("CustomMeals").document(menuId).addSnapshotListener() { it, _ ->
+                    if(it?.exists()!!){
                         menuName.text = it.getString("CustomMealName")
                         calCount.text = it.get("Calories").toString() + " kcal"
                     }
@@ -68,5 +79,6 @@ class BreakfastFragment : Fragment() {
 
 
     }
+
 
 }
