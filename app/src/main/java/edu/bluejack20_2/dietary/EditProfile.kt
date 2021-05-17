@@ -159,10 +159,6 @@ class EditProfile : AppCompatActivity() {
         if (userConfirmPassword == "") {
             userConfirmPassword = currentPassword
         }
-<<<<<<< HEAD
-        updateUser(userUsername, userEmail, userPassword, bitmap.toString())
-=======
-//        updateUser(userUsername, userEmail, userPassword, bitmap.toString())
         if (userPassword != "" && userConfirmPassword != "") {
             if (!userConfirmPassword.matches(passPattern.toRegex())) {
                 return Toast.makeText(this, "Password must be alphanumeric!", Toast.LENGTH_SHORT)
@@ -183,7 +179,6 @@ class EditProfile : AppCompatActivity() {
                 return Toast.makeText(this, "Invalid Email Address!", Toast.LENGTH_SHORT).show()
             }
         }
->>>>>>> f5801b97b44c2de71722d7ae2e2a252e910bd672
     }
 
     fun isLettersOrDigits(chars: String): Boolean {

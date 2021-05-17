@@ -7,8 +7,11 @@ import android.view.View
 import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.firebase.Timestamp
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import java.util.*
+import kotlin.collections.ArrayList
 
 class UserFriend : AppCompatActivity() {
 
@@ -72,13 +75,26 @@ class UserFriend : AppCompatActivity() {
                                         Log.wtf("error", it.toString())
                                     }
                                     .addOnSuccessListener {
+
+                                        var res:Int = 0
+
+                                        if(it?.data?.get("plan") != null){
+                                            var plan = it?.data?.get("plan") as Map<*, *>
+                                            val date1 = Date()
+                                            val date2 = plan["startDate"] as Timestamp
+                                            var diff = date1.time - date2.toDate().time
+                                            res = java.util.concurrent.TimeUnit.DAYS.convert(diff, java.util.concurrent.TimeUnit.MILLISECONDS)
+                                                .toInt()
+
+                                        }
+
                                         if (it != null) {
                                             Log.wtf("document data", "${it.data}")
                                             if (it.getString("photoURL") != null) {
-                                                var friend = FriendItem(it.getString("username")!!, true, it.getString("photoURL"), 1, i.toString(), isUserFriend)
+                                                var friend = FriendItem(it.getString("username")!!, true, it.getString("photoURL"), res, i.toString(), isUserFriend)
                                                 list.add(friend)
                                             } else {
-                                                var friend = FriendItem(it.getString("username")!!, false, null, 1, i.toString(), isUserFriend)
+                                                var friend = FriendItem(it.getString("username")!!, false, null, res, i.toString(), isUserFriend)
                                                 list.add(friend)
                                             }
                                             userfriend_recyclerview.adapter?.notifyDataSetChanged()
@@ -92,42 +108,7 @@ class UserFriend : AppCompatActivity() {
 
                     }
                 }
-//            }
         }
-//        db.collection("users").document(userfriend.docId).get().addOnSuccessListener {
-//            db.collection("users").whereEqualTo("username", user.displayName).get()
-//                .addOnSuccessListener {
-//                    if (!it?.isEmpty!!) {
-//                        val userfriendlist = it.documents.first().get("friends") as List<String>
-//                        for (i in userfriendlist) {
-//                            Log.wtf("friend id", i)
-//                            db.collection("users").document(i).get()
-//                                .addOnFailureListener {
-//                                    Log.wtf("error", it.toString())
-//                                }
-//                                .addOnSuccessListener {
-//                                    if (it != null) {
-//                                        Log.wtf("document data", "${it.data}")
-//                                        var isFriend = false
-//                                        if (userfriendlist?.contains(i.toString())!!) {
-//                                            isFriend = true
-//                                        }
-//                                        if (it.getString("photoURL") != null) {
-//                                            var friend = FriendItem(it.getString("username")!!, true, it.getString("photoURL"), 1, i.toString(), isFriend)
-//                                            list.add(friend)
-//                                        } else {
-//                                            var friend = FriendItem(it.getString("username")!!, false, null, 1, i.toString(), isFriend)
-//                                            list.add(friend)
-//                                        }
-//                                        userfriend_recyclerview.adapter?.notifyDataSetChanged()
-//                                    } else {
-//                                        Log.wtf("ERROR", "errorr")
-//                                    }
-//                                }
-//                        }
-//                    }
-//                }
-//        }
         Log.wtf("list", list.toString())
         return list
     }

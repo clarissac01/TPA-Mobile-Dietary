@@ -1,7 +1,5 @@
 package edu.bluejack20_2.dietary
 
-<<<<<<< HEAD
-=======
 import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -68,4 +66,3 @@ class CustomMealFragment : Fragment() {
 
     }
 }
->>>>>>> f5801b97b44c2de71722d7ae2e2a252e910bd672

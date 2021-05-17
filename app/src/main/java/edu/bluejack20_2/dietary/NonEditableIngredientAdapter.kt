@@ -30,15 +30,13 @@ class NonEditableIngredientAdapter(private val ingredientList: MutableList<Ingre
 
     class NonEditableIngredientHolder(itemView: View): RecyclerView.ViewHolder(itemView){
         val non_ingredientName: TextView = itemView.findViewById(R.id.non_ingredientName)
-        val non_ingredientCal: TextView = itemView.findViewById(R.id.non_ingredientCal)
         val non_ingredientWeight: TextView = itemView.findViewById(R.id.non_ingredientWeight)
     }
 
     override fun onBindViewHolder(holder: NonEditableIngredientHolder, position: Int) {
         val ingredientItem = ingredientList?.get(position)
         holder.non_ingredientName.text = ingredientItem?.ingredientName!!
-        holder.non_ingredientCal.text = ingredientItem.calory.roundToInt().toString() + " kcal"
-        holder.non_ingredientWeight.setText(ingredientItem.weight.roundToInt().toString())
+        holder.non_ingredientWeight.setText(ingredientItem.weight.roundToInt().toString() + " g")
 
     }
 

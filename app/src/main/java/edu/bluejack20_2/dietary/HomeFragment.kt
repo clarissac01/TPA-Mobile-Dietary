@@ -19,7 +19,6 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.fragment_home.*
-import org.ocpsoft.prettytime.PrettyTime
 import org.w3c.dom.Text
 import java.time.Duration
 import java.time.Duration.between

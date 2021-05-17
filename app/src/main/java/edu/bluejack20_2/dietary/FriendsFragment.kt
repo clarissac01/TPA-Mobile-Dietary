@@ -11,6 +11,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.button.MaterialButton
+import com.google.firebase.Timestamp
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.DocumentId
 import com.google.firebase.firestore.FieldPath
@@ -19,6 +20,8 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
 import java.lang.reflect.Field
 import java.net.URI
+import java.util.*
+import kotlin.collections.ArrayList
 
 class FriendsFragment : Fragment(R.layout.fragment_friends) {
 
@@ -41,7 +44,6 @@ class FriendsFragment : Fragment(R.layout.fragment_friends) {
     private fun getUserFriends(): List<FriendItem>? {
         val list = ArrayList<FriendItem>()
         var docId: String
-        Log.wtf("current user name", user.displayName)
         db.collection("users").whereEqualTo("username", user.displayName)
             .addSnapshotListener { it, _ ->
                 list.clear()
@@ -53,11 +55,22 @@ class FriendsFragment : Fragment(R.layout.fragment_friends) {
                             .addSnapshotListener { it, _ ->
                                 var username = it?.data?.getValue("username")
                                 var photo = it?.data?.get("photoURL")
-                                Log.wtf("fotonya", photo.toString())
+
+                                var res:Int = 0
+
+                                if(it?.data?.get("plan") != null){
+                                    var plan = it?.data?.get("plan") as Map<*, *>
+                                    val date1 = Date()
+                                    val date2 = plan["startDate"] as Timestamp
+                                    var diff = date1.time - date2.toDate().time
+                                    res = java.util.concurrent.TimeUnit.DAYS.convert(diff, java.util.concurrent.TimeUnit.MILLISECONDS)
+                                        .toInt()
+
+                                }
 
                                 if (photo == null) {
                                     var friend =
-                                        FriendItem(username.toString(), false, null, 1, docId, true)
+                                        FriendItem(username.toString(), false, null, res, docId, true)
                                     list += friend
                                 } else {
                                     var friend =
@@ -65,7 +78,7 @@ class FriendsFragment : Fragment(R.layout.fragment_friends) {
                                             username.toString(),
                                             true,
                                             photo.toString(),
-                                            1,
+                                            res,
                                             docId,
                                             true
                                         )

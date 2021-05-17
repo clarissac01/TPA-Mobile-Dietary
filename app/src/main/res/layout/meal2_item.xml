@@ -15,7 +15,7 @@
         android:paddingTop="15dp">
 
         <TextView
-            android:id="@+id/chooseMealName"
+            android:id="@+id/chooseMealName2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
@@ -26,7 +26,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <Button
-            android:id="@+id/choosethisMeal"
+            android:id="@+id/choosethisMeal2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="15dp"
@@ -35,7 +35,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/chooseMealCalories"
+            android:id="@+id/chooseMealCalories2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
@@ -46,7 +46,7 @@
             app:layout_constraintTop_toBottomOf="@+id/chooseMealName" />
 
         <TextView
-            android:id="@+id/detailBtn"
+            android:id="@+id/detailBtn2"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
@@ -62,7 +62,7 @@
             app:layout_constraintTop_toBottomOf="@+id/chooseMealCalories" />
 
         <ImageView
-            android:id="@+id/detailArrow"
+            android:id="@+id/detailArrow2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="75dp"
@@ -74,7 +74,7 @@
             app:srcCompat="@drawable/ic_baseline_expand_more_24" />
 
         <com.github.aakira.expandablelayout.ExpandableLinearLayout
-            android:id="@+id/expandable_layout"
+            android:id="@+id/expandable_layout2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/white"
@@ -84,11 +84,11 @@
             app:ael_interpolator="anticipateOvershoot"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/detailBtn">
+            app:layout_constraintTop_toBottomOf="@id/detailBtn2">
 
 
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/expandable_view"
+                android:id="@+id/expandable_view2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
 

@@ -70,8 +70,10 @@ class FriendAdapter(private val friendList: List<FriendItem>?, private val conte
         if (currentFriend != null) {
             holder.friendname.text = currentFriend.username
         }
-        if (currentFriend != null) {
+        if (currentFriend?.daycount!! > 0) {
             holder.daycount.text = "Day\n" + currentFriend.daycount
+        }else{
+            holder.daycount.visibility = View.INVISIBLE
         }
 
         holder.user_detail.setOnClickListener {
@@ -81,7 +83,7 @@ class FriendAdapter(private val friendList: List<FriendItem>?, private val conte
                     currentFriend?.username!!,
                     currentFriend.hasPhoto,
                     currentFriend.photoUrl,
-                    1,
+                    currentFriend.daycount,
                     currentFriend.docId,
                     currentFriend.isFriend
                 )
@@ -90,7 +92,7 @@ class FriendAdapter(private val friendList: List<FriendItem>?, private val conte
                     currentFriend?.username!!,
                     currentFriend.hasPhoto,
                     null,
-                    1,
+                    currentFriend.daycount,
                     currentFriend.docId,
                     currentFriend.isFriend
                 )

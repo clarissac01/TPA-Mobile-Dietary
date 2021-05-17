@@ -56,11 +56,7 @@ dependencies {
     implementation 'com.squareup.picasso:picasso:2.71828'
     implementation 'com.google.firebase:firebase-auth:20.0.4'
     implementation 'androidx.recyclerview:recyclerview:1.2.0'
-<<<<<<< HEAD
-    implementation 'org.ocpsoft.prettytime:prettytime:4.0.4.Final'
-=======
-    implementation 'com.google.android.gms:play-services-safetynet:17.0.0'
->>>>>>> f5801b97b44c2de71722d7ae2e2a252e910bd672
+    implementation 'androidx.gridlayout:gridlayout:1.0.0'
 
     testImplementation 'junit:junit:4.+'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
