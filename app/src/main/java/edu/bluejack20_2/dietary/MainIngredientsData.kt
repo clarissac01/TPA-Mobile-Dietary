@@ -1,7 +1,8 @@
 package edu.bluejack20_2.dietary
 
 data class MainIngredientsData(
-    val ingredientsName: String,
-    val ingredientsCalories: Int,
-    val ingredientsWeight: Int
+    var ingredientsId: String,
+    var ingredientsName: String,
+    var ingredientsCalories: Int,
+    var ingredientsWeight: Int
 )

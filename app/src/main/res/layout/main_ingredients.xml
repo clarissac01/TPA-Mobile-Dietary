@@ -50,17 +50,54 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/add_main_ingredients_button"
+        <Button
+            android:id="@+id/substractBtn"
+            style="@style/Widget.App.Button.OutlinedButton.Icon"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_marginStart="280dp"
+            android:onClick="substractWeight"
+            app:icon="@drawable/ic_baseline_horizontal_rule_24"
+            app:iconGravity="textStart"
+            app:iconSize="15dp"
+            app:iconTint="@android:color/secondary_text_light_nodisable"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.MyApp.Button.Circle"
+            app:strokeColor="@android:color/secondary_text_dark_nodisable"
+            app:strokeWidth="1.5dp" />
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/gram_amount"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:inputType="number"
+            android:text="0"
+            android:textSize="10dp"
+            android:gravity="center"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/addwBtn"
+            app:layout_constraintStart_toEndOf="@+id/substractBtn"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <Button
+            android:id="@+id/addwBtn"
+            style="@style/Widget.App.Button.OutlinedButton.Icon"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
             android:layout_marginEnd="30dp"
-            android:backgroundTint="?colorPrimary"
-            android:text="Add"
-            android:textColor="?colorSecondary"
+            android:onClick="addWeight"
+            app:icon="@drawable/add"
+            app:iconGravity="textStart"
+            app:iconSize="15dp"
+            app:iconTint="@android:color/secondary_text_light_nodisable"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.MyApp.Button.Circle"
+            app:strokeColor="@android:color/secondary_text_light_nodisable"
+            app:strokeWidth="1.5dp" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

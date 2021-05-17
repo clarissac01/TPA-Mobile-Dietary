@@ -1,24 +1,25 @@
 package edu.bluejack20_2.dietary
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.button.MaterialButton
+import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.FirebaseFirestore
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
-/**
- * A simple [Fragment] subclass.
- * Use the [CustomMealFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class CustomMealFragment : Fragment() {
+
+    private lateinit var auth: FirebaseAuth
+    private lateinit var user: FirebaseUser
+    var db = FirebaseFirestore.getInstance()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -31,17 +32,37 @@ class CustomMealFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val db = FirebaseFirestore.getInstance()
-        db.collection("CustomMeals").get().addOnCompleteListener{
+        auth = FirebaseAuth.getInstance()
+        user = auth.currentUser
 
-            val result: StringBuffer = StringBuffer()
 
-            if(it.isSuccessful) {
-                for(document in it.result!!) {
-                    result.append(document.data.getValue("CustomMealName")).append("\n\n")
+        db.collection("users").whereEqualTo("username", user.displayName).get().addOnSuccessListener {
+            val userID = it.documents.first().id
+            db.collection("CustomMeals").whereEqualTo("UserID", userID).get().addOnCompleteListener{
+
+                val result: StringBuffer = StringBuffer()
+
+                var customMealList = mutableListOf<CustomMealData>()
+                for (document in it.result!!) {
+                    if(document.data?.get("isCustom").toString().toBoolean()) {
+                        val data = CustomMealData(
+                            document.data?.getValue("CustomMealName").toString(),
+                            document.data?.getValue("Calories").toString().toFloat(),
+                            document.id
+                        )
+                        customMealList.add(data)
+                    }
                 }
-                requireActivity().findViewById<TextView>(R.id.custom_meal_fragment).setText(result)
+
+                var adapter = CustomMealAdapter(customMealList)
+                requireActivity().findViewById<RecyclerView>(R.id.rvCustomMeal).adapter = adapter
+                requireActivity().findViewById<RecyclerView>(R.id.rvCustomMeal).layoutManager = LinearLayoutManager(context)
             }
         }
+
+        requireActivity().findViewById<FloatingActionButton>(R.id.add_custom_meal_btn).setOnClickListener {
+            startActivity(Intent(requireContext(), AddCustomMealActivity::class.java))
+        }
+
     }
 }

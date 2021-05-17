@@ -39,6 +39,7 @@ class MainActivity : AppCompatActivity() {
         val customMealFragment = CustomMealFragment()
         val friendsFragment = FriendsFragment()
         val journeyFragment = JourneyFragment()
+        findViewById<BubbleNavigationConstraintView>(R.id.bottom_navigation_view_linear).bringToFront()
 
         setCurrentFragment(homeFragment)
 

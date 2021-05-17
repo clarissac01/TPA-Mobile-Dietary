@@ -12,7 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <FrameLayout
+        <androidx.fragment.app.FragmentContainerView
             android:id="@+id/flFragment"
             android:layout_width="match_parent"
             android:layout_height="0dp"
@@ -20,7 +20,8 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent" >
+        </androidx.fragment.app.FragmentContainerView>
 
         <com.gauravk.bubblenavigation.BubbleNavigationConstraintView
             android:id="@+id/bottom_navigation_view_linear"
@@ -30,7 +31,7 @@
             android:layout_marginEnd="18dp"
             android:layout_marginBottom="18dp"
             android:background="@drawable/rounded_rect_white"
-            android:elevation="8dp"
+            android:elevation="16dp"
             android:orientation="horizontal"
             android:padding="12dp"
             app:layout_constraintBottom_toBottomOf="parent"

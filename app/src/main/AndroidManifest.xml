@@ -13,7 +13,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Dietary">
-        <activity android:name=".SettingActivity"/>
+        <activity android:name=".AddCustomMealActivity"></activity>
+        <activity android:name=".DietPlanActivity" />
+        <activity android:name=".BMIActivity" />
+        <activity android:name=".SettingActivity" />
         <activity android:name=".MainIngredients" />
         <activity android:name=".EditProfile" />
         <activity android:name=".LoginActivity" />
