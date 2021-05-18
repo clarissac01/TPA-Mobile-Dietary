@@ -16,6 +16,7 @@ import com.google.android.material.textview.MaterialTextView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.FirebaseFirestore
+import com.squareup.picasso.MemoryPolicy
 import com.squareup.picasso.Picasso
 
 class ProfileFragment : Fragment() {
@@ -37,7 +38,7 @@ class ProfileFragment : Fragment() {
 
         if (user != null) {
             if (user.photoUrl != null) {
-                Picasso.get().load(user.photoUrl).into(requireActivity().findViewById<ImageView>(R.id.profile_pic))
+                Picasso.get().load(user.photoUrl).memoryPolicy(MemoryPolicy.NO_CACHE).into(requireActivity().findViewById<ImageView>(R.id.profile_pic))
             } else {
                 Picasso.get().load("@drawable/ic_photo")
                     .into(requireActivity().findViewById<ImageView>(R.id.profile_pic))

@@ -92,7 +92,7 @@ class   AddFriend : AppCompatActivity() {
             .addSnapshotListener { it, _ ->
                 list.clear()
                 if (!it?.isEmpty!!) {
-                    friendlist = it.documents.first().get("friends") as List<*>
+                    friendlist = (it.documents.first().get("friends") as? List<*>) ?: emptyList<Any>()
                     db.collection("users").get().addOnSuccessListener {
                         var userid: String = ""
                         var username: String = ""

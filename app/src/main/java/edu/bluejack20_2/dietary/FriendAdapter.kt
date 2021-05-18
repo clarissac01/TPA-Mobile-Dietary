@@ -41,12 +41,12 @@ class FriendAdapter(private val friendList: List<FriendItem>?, private val conte
         holder.friendid.text = friendItem?.docId
         holder.delbtn.setOnClickListener {
             friendUsername = holder.friendname.text.toString()
-            unfriend(it)
+            unfriend(it, friendItem?.docId.toString())
         }
 
         holder.addBtn.setOnClickListener {
             friendUsername = holder.friendname.text.toString()
-            friend(it, holder)
+            friend(it, holder, friendItem?.docId.toString())
         }
 
         if(friendItem?.username.equals(user.displayName)){
@@ -113,7 +113,7 @@ class FriendAdapter(private val friendList: List<FriendItem>?, private val conte
         val friendid = itemView.findViewById<TextView>(R.id.thisfriendid)
     }
 
-    fun unfriend(view: View) {
+    fun unfriend(view: View, friendID: String) {
         MaterialAlertDialogBuilder(view.context)
             .setTitle("Are you sure?")
             .setPositiveButton("NO") { dialog, which ->
@@ -128,7 +128,7 @@ class FriendAdapter(private val friendList: List<FriendItem>?, private val conte
                             userid = it.id
                         }
                         db.collection("users").document(userid)
-                            .update("friends", FieldValue.arrayRemove(friendDocId))
+                            .update("friends", FieldValue.arrayRemove(friendID))
                             .addOnSuccessListener {
 
                             }
@@ -137,7 +137,7 @@ class FriendAdapter(private val friendList: List<FriendItem>?, private val conte
             .show()
     }
 
-    fun friend(view: View, holder: FriendHolder) {
+    fun friend(view: View, holder: FriendHolder, friendID: String) {
         db.collection("users").whereEqualTo("username", user.displayName).get()
             .addOnSuccessListener {
                 var userid: String = ""
@@ -145,7 +145,7 @@ class FriendAdapter(private val friendList: List<FriendItem>?, private val conte
                     userid = it.id
                 }
                 db.collection("users").document(userid)
-                    .update("friends", FieldValue.arrayUnion(friendDocId)).addOnSuccessListener {
+                    .update("friends", FieldValue.arrayUnion(friendID)).addOnSuccessListener {
                         holder.delbtn.visibility = View.VISIBLE
                         holder.addBtn.visibility = View.INVISIBLE
                     }

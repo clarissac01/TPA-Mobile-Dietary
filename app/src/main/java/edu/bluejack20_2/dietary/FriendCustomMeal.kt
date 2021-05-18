@@ -39,7 +39,7 @@ class FriendCustomMeal(var FriendID: String) : Fragment() {
                 db.collection("CustomMeals").whereEqualTo("UserID", it.documents.first().id).get().addOnSuccessListener {
                     if(!it.isEmpty) {
                         it.documents.forEach {
-                            if(it?.get("OwnerID")!! != null){
+                            if(it?.get("OwnerID") != null){
                                 if(it.get("OwnerID")?.equals(FriendID)!!) {
                                     currentuserlist.add(it.id)
                                 }

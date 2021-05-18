@@ -14,7 +14,7 @@ class NotificationService: BroadcastReceiver() {
             NotificationCompat.Builder(context!!, "GabyChannelID")
                 .setSmallIcon(R.drawable.default_icon)
                 .setContentTitle("Dietary")
-                .setContentText("Hi, we missed you!")
+                .setContentText("Hi, Time to Log Your Meal! :D")
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT)
 
         val notificationManager = NotificationManagerCompat.from(context!!)
