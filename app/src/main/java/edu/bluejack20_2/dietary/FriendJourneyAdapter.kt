@@ -75,6 +75,7 @@ class FriendJourneyAdapter(private val journeyList: MutableList<JourneyItem>?, p
         holder.journeyCalories.text = journeyItem?.calories.toString() + " kcal"
         holder.journeyDate.text = date
 
+
         holder.breakfast.setOnClickListener{
             var journeyId = journeyList?.get(position)!!.journeyId
             val ingredientsList = getIngredients(journeyId, "breakfastMenu", holder.expandableViewBreakfast)

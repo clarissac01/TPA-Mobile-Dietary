@@ -12,7 +12,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 
-class FriendCustomMeal(var FriendID: String) : Fragment() {
+class FriendCustomMeal(var FriendID: String = "") : Fragment() {
 
     var db = FirebaseFirestore.getInstance()
 
@@ -30,6 +30,13 @@ class FriendCustomMeal(var FriendID: String) : Fragment() {
         var mealList = getList(view)!!
     }
 
+    override fun onResume() {
+        super.onResume()
+        Log.wtf("this friend iddd", FriendID)
+
+        var mealList = getList(requireView())
+    }
+
     fun getList(view: View) : MutableList<MealItem>?{
         val list = mutableListOf<MealItem>()
 
@@ -41,11 +48,11 @@ class FriendCustomMeal(var FriendID: String) : Fragment() {
                         it.documents.forEach {
                             if(it?.get("OwnerID") != null){
                                 if(it.get("OwnerID")?.equals(FriendID)!!) {
-                                    currentuserlist.add(it.id)
+                                    currentuserlist.add(it.getString("OwnerMenuID")!!)
                                 }
                             }
                         }
-
+                        Log.wtf("dalam list", currentuserlist.toString())
                         db.collection("CustomMeals").whereEqualTo("UserID", FriendID).get().addOnSuccessListener {
                             if(!it.isEmpty){
                                 it.documents.forEach{
@@ -54,24 +61,31 @@ class FriendCustomMeal(var FriendID: String) : Fragment() {
                                     var calories = it.get("Calories").toString().toFloat()
                                                     Log.wtf("thisuserdetail, onfail", menuID)
                                     if(currentuserlist.contains(menuID)) {
+                                        Log.wtf("sajkdhajkshda", "duahdad")
                                         list.add(MealItem(menuID, mealname!!, calories, true, true))
                                         view.findViewById<RecyclerView>(R.id.friendmealrecyclerview)?.adapter?.notifyDataSetChanged()
                                     }
                                     else{
-                                        list.add(MealItem(menuID, mealname!!, calories, true))
+                                        list.add(MealItem(menuID, mealname!!, calories, true, false))
                                         view.findViewById<RecyclerView>(R.id.friendmealrecyclerview)?.adapter?.notifyDataSetChanged()
                                     }
                                 }
                                 if(list.size > 0){
-                                    view.findViewById<RecyclerView>(R.id.friendmealrecyclerview).adapter = FriendCustomMealAdapter(list, view.context)
+                                    view.findViewById<RecyclerView>(R.id.friendmealrecyclerview).adapter = FriendCustomMealAdapter(FriendID, list, view.context)
                                     view.findViewById<RecyclerView>(R.id.friendmealrecyclerview).layoutManager =
                                         GridLayoutManager(view.context, 2)
                                 }else{
                                     view.findViewById<TextView>(R.id.nofriendcustommealmessage).visibility = View.VISIBLE
                                 }
+                            }else{
+                                view.findViewById<TextView>(R.id.nofriendcustommealmessage).visibility = View.VISIBLE
                             }
+                        }.addOnFailureListener {
+                            view.findViewById<TextView>(R.id.nofriendcustommealmessage).visibility = View.VISIBLE
                         }
                     }
+                }.addOnFailureListener {
+
                 }
 
             }
