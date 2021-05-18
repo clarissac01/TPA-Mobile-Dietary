@@ -196,7 +196,11 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView14"
-        app:tabIndicatorFullWidth="false"
+        android:isScrollContainer="true"
+        android:textAlignment="center"
+        app:flow_horizontalAlign="center"
+        app:flow_verticalAlign="center"
+        app:tabGravity="fill"
         app:tabMode="scrollable">
 
     </com.google.android.material.tabs.TabLayout>

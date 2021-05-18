@@ -19,18 +19,21 @@ import androidx.recyclerview.widget.RecyclerView
 import com.github.aakira.expandablelayout.ExpandableLayoutListenerAdapter
 import com.github.aakira.expandablelayout.ExpandableLinearLayout
 import com.github.aakira.expandablelayout.Utils
+import com.google.android.gms.tasks.Tasks
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlin.math.roundToInt
 
 
-class FriendCustomMealAdapter(private val mealList: MutableList<MealItem>?, private val context: Context)
+class FriendCustomMealAdapter(var friendid: String, private val mealList: MutableList<MealItem>?, private val context: Context)
     : RecyclerView.Adapter<FriendCustomMealAdapter.FriendCustomMealHolder>(){
 
     var db = FirebaseFirestore.getInstance()
     var user = FirebaseAuth.getInstance().currentUser
+    lateinit var currentUserID : String
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
@@ -57,15 +60,21 @@ class FriendCustomMealAdapter(private val mealList: MutableList<MealItem>?, priv
     override fun onBindViewHolder(holder: FriendCustomMealHolder, position: Int) {
         val mealItem = mealList?.get(position)
 
+        db.collection("users").whereEqualTo("username", user.displayName).get().addOnSuccessListener {
+            if(!it?.isEmpty!!){
+                currentUserID = it.documents.first().id
+            }
+        }
+
         holder.friendMenuCal.text = mealItem?.mealCalories.toString() + " kcal"
         holder.friendMenuName.text = mealItem?.mealName.toString()
 
         var listviewB= mutableListOf<Int>()
 
         if(mealItem?.hasMeal!!){
-            holder.addmealBtn.visibility = View.VISIBLE
-        }else{
             holder.addmealBtn.visibility = View.INVISIBLE
+        }else{
+            holder.addmealBtn.visibility = View.VISIBLE
         }
 
         for(i in 1..mealList!!.size step 4){
@@ -82,19 +91,40 @@ class FriendCustomMealAdapter(private val mealList: MutableList<MealItem>?, priv
         holder.cardView.setOnClickListener {
             val intent = Intent(
                 it.context,
-                FriendCustomMealDetail::class.java
+                FriendCustomMealDetail(mealItem)::class.java
             )
             intent.putExtra("menuId", mealItem?.mealId)
             intent.putExtra("hasMeal", mealItem.hasMeal)
+            intent.putExtra("friendid", friendid)
             it.context.startActivity(intent)
         }
 
         holder.addmealBtn.setOnClickListener{
-            db.collection("CustomMeals").document(mealItem.mealId).get().addOnSuccessListener {
-                if(it.exists()){
-
+            MaterialAlertDialogBuilder(context)
+                .setTitle("Are you sure?")
+                .setPositiveButton("NO") { dialog, which ->
+                    // Respond to negative button press
                 }
-            }
+                .setNegativeButton("YES") { dialog, which ->
+                    // Respond to positive button press
+                    db.collection("CustomMeals").document(mealItem.mealId).get().addOnSuccessListener {
+                        if(it.exists()){
+                            db.collection("CustomMeals").add(it.data!!).addOnSuccessListener {
+                                Tasks.whenAll(
+                                    db.collection("CustomMeals").document(it.id).update("UserID", currentUserID),
+                                    db.collection("CustomMeals").document(it.id).update("OwnerID", friendid),
+                                    db.collection("CustomMeals").document(it.id).update("OwnerMenuID", mealItem.mealId)
+
+                                ).addOnSuccessListener {
+                                    notifyDataSetChanged()
+                                }
+                            }
+                        }
+                    }
+                    holder.addmealBtn.visibility = View.INVISIBLE
+                    mealItem.hasMeal = true
+                }
+                .show()
         }
 
     }

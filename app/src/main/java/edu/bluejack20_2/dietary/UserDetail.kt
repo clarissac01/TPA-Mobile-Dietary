@@ -37,6 +37,7 @@ class UserDetail() : AppCompatActivity() {
     private lateinit var tabLayout: TabLayout
     private lateinit var viewPager2: ViewPager2
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         var user_detail:FriendItem? = getIntent().getExtras()?.get("user") as FriendItem?
 

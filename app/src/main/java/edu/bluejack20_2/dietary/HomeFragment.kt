@@ -85,23 +85,24 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
 
         tabLayout = view.findViewById(R.id.tabLayout)
         viewPager2 = view.findViewById(R.id.viewPager)
+
         activity?.let {
             viewPager2.adapter = HomeMealAdapter(it)
+            TabLayoutMediator(tabLayout, viewPager2){tab, position->
+                when(position){
+                    0 -> tab.text = "Breakfast"
+                    1 -> tab.text = "Lunch"
+                    2 -> tab.text = "Dinner"
+                    3 -> tab.text = "Snack"
+                }
+            }.attach()
         }
 
-        tabLayout.addTab(tabLayout.newTab().setText("Breakfast"))
-        tabLayout.addTab(tabLayout.newTab().setText("Lunch"))
-        tabLayout.addTab(tabLayout.newTab().setText("Dinner"))
-        tabLayout.addTab(tabLayout.newTab().setText("Snack"))
+//        tabLayout.addTab(tabLayout.newTab().setText("Breakfast"))
+//        tabLayout.addTab(tabLayout.newTab().setText("Lunch"))
+//        tabLayout.addTab(tabLayout.newTab().setText("Dinner"))
+//        tabLayout.addTab(tabLayout.newTab().setText("Snack"))
 
-        TabLayoutMediator(tabLayout, viewPager2){tab, position->
-            when(position){
-                0 -> tab.text = "Breakfast"
-                1 -> tab.text = "Lunch"
-                2 -> tab.text = "Dinner"
-                3 -> tab.text = "Snack"
-            }
-        }.attach()
     }
 
     fun activateNoPlan(view: View){

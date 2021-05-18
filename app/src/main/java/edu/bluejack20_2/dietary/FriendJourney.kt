@@ -39,6 +39,7 @@ class FriendJourney(var FriendID: String) : Fragment() {
                     view.findViewById<RecyclerView>(R.id.friendjourneyrecyclerview)?.adapter?.notifyDataSetChanged()
                 }
                 Log.wtf("wihi id", list.toString())
+                Log.wtf("the size", list.size.toString())
                 if(list.size > 0){
                     view.findViewById<RecyclerView>(R.id.friendjourneyrecyclerview).adapter = FriendJourneyAdapter(list, view.context)
                     view.findViewById<RecyclerView>(R.id.friendjourneyrecyclerview).layoutManager =
@@ -47,9 +48,13 @@ class FriendJourney(var FriendID: String) : Fragment() {
                 }else{
                     view.findViewById<TextView>(R.id.nofriendjourneymessage).visibility = View.VISIBLE
                 }
-            }
-        }
+            }else{
+                view.findViewById<TextView>(R.id.nofriendjourneymessage).visibility = View.VISIBLE
 
+            }
+        }.addOnFailureListener {
+            Log.wtf("faill", it.toString())
+        }
 
         return list
     }
