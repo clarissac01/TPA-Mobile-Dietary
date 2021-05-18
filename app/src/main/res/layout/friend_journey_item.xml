@@ -1,0 +1,235 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/friendjourneycardview"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="10dp"
+    android:outlineProvider="background"
+    app:cardCornerRadius="15dp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#40FFE57F"
+        android:paddingTop="15dp">
+
+        <TextView
+            android:id="@+id/journeyDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            android:fontFamily="@font/rubik"
+            android:textSize="24sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/journeyCalories"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="24dp"
+            android:fontFamily="@font/rubik"
+            android:textAlignment="viewEnd"
+            android:textSize="24sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/breakfastDetail"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:background="@color/darkdarkerbeige"
+            android:fontFamily="@font/rubik"
+            android:paddingTop="4dp"
+            android:paddingBottom="2dp"
+            android:text="Breakfast Detail"
+            android:textAlignment="center"
+            android:textSize="18sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/journeyDate" />
+
+        <ImageView
+            android:id="@+id/breakfastDetailBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="155dp"
+            android:layout_marginTop="3dp"
+            app:layout_constraintBottom_toBottomOf="@+id/detailBtn"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/breakfastDetail"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/breakfastDetail"
+            app:srcCompat="@drawable/ic_baseline_expand_more_24" />
+
+        <com.github.aakira.expandablelayout.ExpandableLinearLayout
+            android:id="@+id/expandable_layout_breakfast"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:backgroundTint="@color/white"
+            android:orientation="vertical"
+            app:ael_duration="1000"
+            app:ael_interpolator="anticipateOvershoot"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/breakfastDetail">
+
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/expandable_breakfast_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+
+        </com.github.aakira.expandablelayout.ExpandableLinearLayout>
+
+        <TextView
+            android:id="@+id/lunchDetail"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:background="@color/darkdarkerbeige"
+            android:fontFamily="@font/rubik"
+            android:paddingTop="4dp"
+            android:paddingBottom="2dp"
+            android:text="Lunch Detail"
+            android:textAlignment="center"
+            android:textSize="18sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/expandable_layout_breakfast" />
+
+        <ImageView
+            android:id="@+id/lunchDetailBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="130dp"
+            app:layout_constraintBottom_toBottomOf="@+id/lunchDetail"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:srcCompat="@drawable/ic_baseline_expand_more_24" />
+
+        <com.github.aakira.expandablelayout.ExpandableLinearLayout
+            android:id="@+id/expandable_layout_lunch"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:backgroundTint="@color/white"
+            android:orientation="vertical"
+            app:ael_duration="1000"
+            app:ael_interpolator="anticipateOvershoot"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/lunchDetail">
+
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/expandable_lunch_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+
+        </com.github.aakira.expandablelayout.ExpandableLinearLayout>
+
+        <TextView
+            android:id="@+id/dinnerDetail"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:background="@color/darkdarkerbeige"
+            android:fontFamily="@font/rubik"
+            android:paddingTop="4dp"
+            android:paddingBottom="2dp"
+            android:text="Dinner Detail"
+            android:textAlignment="center"
+            android:textSize="18sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/expandable_layout_lunch" />
+
+        <ImageView
+            android:id="@+id/dinnerDetailBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="130dp"
+            app:layout_constraintBottom_toBottomOf="@+id/dinnerDetail"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:srcCompat="@drawable/ic_baseline_expand_more_24" />
+
+        <com.github.aakira.expandablelayout.ExpandableLinearLayout
+            android:id="@+id/expandable_layout_dinner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:backgroundTint="@color/white"
+            android:orientation="vertical"
+            app:ael_duration="1000"
+            app:ael_interpolator="anticipateOvershoot"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/dinnerDetail">
+
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/expandable_dinner_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+
+        </com.github.aakira.expandablelayout.ExpandableLinearLayout>
+
+        <TextView
+            android:id="@+id/snackDetail"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:background="@color/darkdarkerbeige"
+            android:fontFamily="@font/rubik"
+            android:paddingTop="4dp"
+            android:paddingBottom="2dp"
+            android:text="Snack Detail"
+            android:textAlignment="center"
+            android:textSize="18sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/expandable_layout_dinner" />
+
+        <ImageView
+            android:id="@+id/snackDetailBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="130dp"
+            app:layout_constraintBottom_toBottomOf="@+id/snackDetail"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:srcCompat="@drawable/ic_baseline_expand_more_24" />
+
+        <com.github.aakira.expandablelayout.ExpandableLinearLayout
+            android:id="@+id/expandable_layout_snack"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:backgroundTint="@color/white"
+            android:orientation="vertical"
+            app:ael_duration="1000"
+            app:ael_interpolator="anticipateOvershoot"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/snackDetail">
+
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/expandable_snack_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+
+        </com.github.aakira.expandablelayout.ExpandableLinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+</androidx.cardview.widget.CardView>

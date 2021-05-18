@@ -2,6 +2,10 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="edu.bluejack20_2.dietary">
 
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+
+    <uses-feature android:name="android.hardware.type.watch"  />
+
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <application
@@ -13,9 +17,12 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Dietary">
-        <activity android:name=".Meal"></activity>
+
+        <activity
+            android:name=".FriendCustomMealDetail"/>
+        <activity android:name=".Meal" />
         <activity android:name=".MealDetail" />
-        <activity android:name=".AddCustomMealActivity"></activity>
+        <activity android:name=".AddCustomMealActivity" />
         <activity android:name=".DietPlanActivity" />
         <activity android:name=".BMIActivity" />
         <activity android:name=".SettingActivity" />

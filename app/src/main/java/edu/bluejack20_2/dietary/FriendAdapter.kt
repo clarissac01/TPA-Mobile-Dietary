@@ -38,6 +38,7 @@ class FriendAdapter(private val friendList: List<FriendItem>?, private val conte
         val friendItem = friendList?.get(position)
         friendDocId = friendItem?.docId.toString()
 
+        holder.friendid.text = friendItem?.docId
         holder.delbtn.setOnClickListener {
             friendUsername = holder.friendname.text.toString()
             unfriend(it)
@@ -104,11 +105,12 @@ class FriendAdapter(private val friendList: List<FriendItem>?, private val conte
 
     class FriendHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val friendpic: ImageView = itemView.findViewById(R.id.friendpic)
-        val friendname: TextView = itemView.findViewById(R.id.non_ingredientName)
+        val friendname: TextView = itemView.findViewById(R.id.friendname)
         val daycount: MaterialButton = itemView.findViewById(R.id.daycountbtn)
         val delbtn = itemView.findViewById<MaterialButton>(R.id.deletefriend)
         val addBtn = itemView.findViewById<MaterialButton>(R.id.addfriend)
         val user_detail = itemView.findViewById<CardView>(R.id.user_detail)
+        val friendid = itemView.findViewById<TextView>(R.id.thisfriendid)
     }
 
     fun unfriend(view: View) {

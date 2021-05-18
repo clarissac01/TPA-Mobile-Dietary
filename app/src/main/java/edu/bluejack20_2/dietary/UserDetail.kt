@@ -8,8 +8,14 @@ import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.TextView
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.android.material.tabs.TabLayout
+import com.google.android.material.tabs.TabLayoutMediator
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
@@ -28,6 +34,8 @@ class UserDetail() : AppCompatActivity() {
     private lateinit var unfriendbtn:MaterialButton
     private lateinit var profilepic:CirleImageView
     private lateinit var userFriend: FriendItem
+    private lateinit var tabLayout: TabLayout
+    private lateinit var viewPager2: ViewPager2
 
     override fun onCreate(savedInstanceState: Bundle?) {
         var user_detail:FriendItem? = getIntent().getExtras()?.get("user") as FriendItem?
@@ -78,7 +86,24 @@ class UserDetail() : AppCompatActivity() {
             Picasso.get().load(user_detail.photoUrl).into(profilepic)
         }
 
+        tabLayout = findViewById(R.id.tabLayout2)
+
+        tabLayout.addTab(tabLayout.newTab().setText("CUSTOM MEAL"))
+        tabLayout.addTab(tabLayout.newTab().setText("JOURNEY"))
+        
+        viewPager2 = findViewById(R.id.friendviewpager)
+        viewPager2.adapter = ChooseUserDetailPageNavigator(this, userDocId)
+
+        TabLayoutMediator(tabLayout, viewPager2){tab, position->
+            when(position){
+                0 -> tab.text = "CUSTOM MEAL"
+                1 -> tab.text = "JOURNEY"
+            }
+        }.attach()
+
     }
+
+
 
     fun back(view: View) {
         this.finish()
