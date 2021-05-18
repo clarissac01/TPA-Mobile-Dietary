@@ -1,5 +1,7 @@
 package edu.bluejack20_2.dietary
 
+import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -19,9 +21,6 @@ import com.squareup.picasso.Picasso
 class ProfileFragment : Fragment() {
     private lateinit var auth: FirebaseAuth
 
-    var db = FirebaseFirestore.getInstance()
-    private lateinit var user: FirebaseUser
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -32,16 +31,18 @@ class ProfileFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        auth = FirebaseAuth.getInstance()
-        user = auth.currentUser
 
-        val authuser = FirebaseFirestore.getInstance().collection("users").whereEqualTo("username", user.displayName).get().addOnSuccessListener {
+        val auth = FirebaseAuth.getInstance()
+        val user = auth.currentUser
+
+        if (user != null) {
             if (user.photoUrl != null) {
                 Picasso.get().load(user.photoUrl).into(requireActivity().findViewById<ImageView>(R.id.profile_pic))
             } else {
                 Picasso.get().load("@drawable/ic_photo")
                     .into(requireActivity().findViewById<ImageView>(R.id.profile_pic))
             }
+
             requireActivity().findViewById<MaterialTextView>(R.id.username_text).text = user.displayName
             requireActivity().findViewById<MaterialTextView>(R.id.email_text).text = user.email
         }
@@ -51,14 +52,13 @@ class ProfileFragment : Fragment() {
         }
 
         requireActivity().findViewById<Button>(R.id.settings_button).setOnClickListener {
-            startActivity(Intent(requireContext(), SettingActivity::class.java))
+            startActivity(Intent(requireActivity(), SettingActivity::class.java))
         }
 
         requireActivity().findViewById<Button>(R.id.logout_button).setOnClickListener {
             FirebaseAuth.getInstance().signOut();
             startActivity(Intent(requireContext(), LoginActivity::class.java))
         }
-
 
     }
 

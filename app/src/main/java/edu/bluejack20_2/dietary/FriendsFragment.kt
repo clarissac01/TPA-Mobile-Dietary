@@ -48,8 +48,8 @@ class FriendsFragment : Fragment(R.layout.fragment_friends) {
             .addSnapshotListener { it, _ ->
                 list.clear()
                 if (!it?.isEmpty!!) {
-                    var friendlist = it.documents.first().get("friends") as List<*>
-                    friendlist.forEach {
+                    var friendlist = it.documents.first().get("friends") as List<*>?
+                    friendlist?.forEach {
                         var docId = it.toString()
                         db.collection("users").document(docId)
                             .addSnapshotListener { it, _ ->

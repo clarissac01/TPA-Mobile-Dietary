@@ -14,6 +14,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.FirebaseFirestore
+import com.malinskiy.superrecyclerview.SuperRecyclerView
 
 class CustomMealFragment : Fragment() {
 
@@ -55,8 +56,30 @@ class CustomMealFragment : Fragment() {
                 }
 
                 var adapter = CustomMealAdapter(customMealList)
-                requireActivity().findViewById<RecyclerView>(R.id.rvCustomMeal).adapter = adapter
-                requireActivity().findViewById<RecyclerView>(R.id.rvCustomMeal).layoutManager = LinearLayoutManager(context)
+
+                val paginated = mutableListOf<CustomMealData>()
+                paginated.addAll(customMealList.take(5))
+
+                view.findViewById<SuperRecyclerView>(R.id.rvCustomMeal).adapter = adapter
+                view.findViewById<SuperRecyclerView>(R.id.rvCustomMeal).setLayoutManager(LinearLayoutManager(context))
+                view.findViewById<SuperRecyclerView>(R.id.rvCustomMeal).setupMoreListener({ overallItemsCount, itemsBeforeMore, maxLastVisiblePosition ->
+                    if (maxLastVisiblePosition + 5 >= overallItemsCount - 1) {
+
+                    }
+
+                    val from = maxLastVisiblePosition + 1
+                    paginated.clear()
+
+                    var takenCount = 0
+                    for (i in from until overallItemsCount) {
+                        if (takenCount >= 5) {
+                            break
+                        }
+
+                        paginated.add(customMealList[i])
+                        takenCount++
+                    }
+                }, 5)
             }
         }
 

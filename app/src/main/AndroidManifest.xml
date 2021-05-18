@@ -18,6 +18,8 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Dietary">
 
+        <activity android:name=".MainIngredientsUpdateActivity"></activity>
+        <activity android:name=".CustomMealDetail"/>
         <activity
             android:name=".FriendCustomMealDetail"/>
         <activity android:name=".Meal" />
@@ -47,6 +49,8 @@
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
+
+        <receiver android:name=".services.NotificationService" />
     </application>
 
 </manifest>

@@ -36,13 +36,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="5dp"
-        android:layout_marginTop="163dp"
-        android:layout_marginEnd="80dp"
         android:text="Username"
         android:textSize="25dp"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="@+id/welcome_text"
         app:layout_constraintStart_toEndOf="@+id/welcome_text"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="@+id/welcome_text" />
 
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/email_text"
@@ -98,7 +96,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
-        android:text="BMI"
+        android:text="Change Plan"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/logout_button" />
