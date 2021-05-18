@@ -18,7 +18,7 @@ class NotificationService: BroadcastReceiver() {
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT)
 
         val notificationManager = NotificationManagerCompat.from(context!!)
-        notificationManager.notify(200, builder!!.build())
+        notificationManager.notify(1, builder!!.build())
         Log.i("NotificationService", "Alarm Called!")
     }
 }

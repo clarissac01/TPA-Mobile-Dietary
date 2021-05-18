@@ -96,17 +96,18 @@ class MainActivity : AppCompatActivity() {
         val lunchAlarm = PendingIntent.getBroadcast(this, 2, intent, 0)
 
         val alarmManager = getSystemService(Context.ALARM_SERVICE) as AlarmManager
-        // Set the alarm to start at approximately 2:00 p.m.
+        val hour = intent.extras?.getString("hour")
+        val minute = intent.extras?.getString("minute")
+
+        Log.wtf("hour", hour)
+        Log.wtf("minute", minute)
+
         val calendar: Calendar = Calendar.getInstance().apply {
             timeInMillis = System.currentTimeMillis()
-            set(Calendar.HOUR_OF_DAY, 8)
-            set(Calendar.MINUTE, 17)
-        }
-
-        val lunchCalendar: Calendar = Calendar.getInstance().apply {
-            timeInMillis = System.currentTimeMillis()
-            set(Calendar.HOUR_OF_DAY, 9)
-            set(Calendar.MINUTE, 14)
+            if(hour != null && minute != null) {
+                set(Calendar.HOUR_OF_DAY, hour.toString().toInt())
+                set(Calendar.MINUTE, minute.toString().toInt())
+            }
         }
 
         alarmManager?.setRepeating(
@@ -115,13 +116,6 @@ class MainActivity : AppCompatActivity() {
             AlarmManager.INTERVAL_DAY,
             breakfastAlarm
         )
-
-//        alarmManager?.setRepeating(
-//            AlarmManager.RTC_WAKEUP,
-//            lunchCalendar.timeInMillis,
-//            AlarmManager.INTERVAL_DAY,
-//            lunchAlarm
-//        )
 
         Log.i("MainActivity", "Notification Set!")
     }

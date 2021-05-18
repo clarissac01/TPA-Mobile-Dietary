@@ -3,7 +3,7 @@
     <style name="Theme.Dietary" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <!-- Primary brand color. -->
         <item name="colorPrimary">@color/darklightgreen</item>
-        <item name="colorPrimaryVariant">@color/darklightgreen</item>
+        <item name="colorPrimaryVariant">@color/lighterblack</item>
         <item name="colorOnPrimary">@color/darklightgreen</item>
         <!-- Secondary brand color. -->
         <item name="colorSecondary">@color/almostblack</item>
