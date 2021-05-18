@@ -10,10 +10,13 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
+import com.google.android.gms.tasks.Tasks
+import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.google.firebase.Timestamp
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 
-class BreakfastFragment : Fragment() {
+class BreakfastFragment(var currDay: Int) : Fragment() {
 
     var db = FirebaseFirestore.getInstance()
     var user = FirebaseAuth.getInstance().currentUser
@@ -49,15 +52,94 @@ class BreakfastFragment : Fragment() {
             )
         }
 
+        var userId = ""
+
+        db.collection("users").whereEqualTo("username", user.displayName).get().addOnSuccessListener {
+            if(!it.isEmpty){
+                userId = it.documents.first().id
+                db.collection("Journey").whereEqualTo("userID", userId).whereEqualTo("Date", Timestamp.now()).get().addOnSuccessListener {
+                    if(!it?.isEmpty!!){
+                        if(it.documents.first().get("breakfastMenu")!= null){
+                            view.findViewById<Button>(R.id.changeBreakfast).visibility = View.INVISIBLE
+                            view.findViewById<Button>(R.id.floatingActionButton3).visibility = View.INVISIBLE
+                        }
+                    }else{
+                        view.findViewById<Button>(R.id.changeBreakfast).visibility = View.VISIBLE
+                        view.findViewById<Button>(R.id.floatingActionButton3).visibility = View.VISIBLE
+                    }
+                }
+
+            }
+        }
+
         view.findViewById<Button>(R.id.changeBreakfast).setOnClickListener {
             val intent = Intent(
                 context,
                 Meal::class.java
             )
             intent.putExtra("type", "Breakfast")
+            intent.putExtra("currentDay", currDay)
             context?.startActivity(
                 intent
             )
+        }
+
+        view.findViewById<FloatingActionButton>(R.id.floatingActionButton3).setOnClickListener{
+            var menucal = 0
+            val customIngredient = mutableListOf<Map<*, *>>()
+            Tasks.whenAll(
+                db.collection("CustomMeals").document(menuId).get().addOnSuccessListener {
+                    if(it.exists()){
+                        menucal = it.get("Calories").toString().toInt()
+                        var inglist = it.get("CustomMealIngredients") as List<Map<*, *>>
+                        inglist.forEach {
+                            customIngredient.add(mapOf(
+                                "ingredientID" to it["IngredientID"],
+                                "weight" to it["Weight"]
+                            ))
+                        }
+                    }
+                }
+            ).addOnSuccessListener {
+                db.collection("Journey").whereEqualTo("userID", userId).whereEqualTo("Date", Timestamp.now()).get().addOnSuccessListener {
+                    if(!it.isEmpty){
+                        var journeyid = it.documents.first().id
+                        db.collection("Journey").document(journeyid).get().addOnSuccessListener {
+                            if(it.exists()){
+                                var totalCal = menucal + it.get("totalCalories").toString().toInt()
+                                db.collection("Journey").document(journeyid).update(
+                                    "breakfastMenu", hashMapOf(
+                                        "calories" to menucal,
+                                        "ingredients" to customIngredient,
+                                        "menuID" to menuId
+                                    )
+                                ).addOnSuccessListener {
+                                    db.collection("Journey").document(journeyid).update("totalCalories", totalCal)
+                                    view.findViewById<FloatingActionButton>(R.id.floatingActionButton3).visibility = View.INVISIBLE
+                                    view.findViewById<FloatingActionButton>(R.id.changeBreakfast).visibility = View.INVISIBLE
+                                }
+
+                            }
+                        }
+                    }else{
+                        db.collection("Journey").add(
+                            hashMapOf(
+                                "userID" to userId,
+                                "totalCalories" to menucal,
+                                "Date" to Timestamp.now(),
+                                "breakfastMenu" to hashMapOf(
+                                    "calories" to menucal,
+                                    "ingredients" to customIngredient,
+                                    "menuID" to menuId
+                                )
+                            )
+                        ).addOnSuccessListener {
+                            view.findViewById<FloatingActionButton>(R.id.floatingActionButton3).visibility = View.INVISIBLE
+                            view.findViewById<FloatingActionButton>(R.id.changeBreakfast).visibility = View.INVISIBLE
+                        }
+                    }
+                }
+            }
         }
     }
 
