@@ -9,7 +9,7 @@ import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textview.MaterialTextView
 
 class MainIngredientsAdapter(
-    var mainIngredientsItem: MutableList<MainIngredientsData>,
+    var mainIngredientsItem: List<MainIngredientsData>,
     val ingredient: MutableMap<String, Int>
 ) : RecyclerView.Adapter<MainIngredientsAdapter.MainIngredientsViewHolder>() {
     inner class MainIngredientsViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)

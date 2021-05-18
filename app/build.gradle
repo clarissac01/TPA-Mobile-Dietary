@@ -52,6 +52,7 @@ dependencies {
     implementation 'com.google.firebase:firebase-auth:20.0.4'
     implementation 'androidx.recyclerview:recyclerview:1.2.0'
     implementation 'com.google.android.gms:play-services-safetynet:17.0.0'
+    implementation 'com.malinskiy:superrecyclerview:1.1.4'
 
     testImplementation 'junit:junit:4.+'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'

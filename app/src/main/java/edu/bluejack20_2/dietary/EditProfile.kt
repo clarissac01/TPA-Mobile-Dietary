@@ -25,6 +25,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 import com.squareup.picasso.Picasso
+import java.io.ByteArrayOutputStream
 import java.util.concurrent.Executor
 
 
@@ -33,6 +34,7 @@ class EditProfile : AppCompatActivity() {
     private lateinit var auth: FirebaseAuth
 
     var db = FirebaseFirestore.getInstance()
+    var storageRef: StorageReference = FirebaseStorage.getInstance().getReference()
 
     private lateinit var userPic: CirleImageView
     private lateinit var userPicURI: Uri
@@ -53,9 +55,11 @@ class EditProfile : AppCompatActivity() {
 
         auth = FirebaseAuth.getInstance()
         user = auth.currentUser
+        userPic = findViewById(R.id.profile_pic)
 
-        val userFire = FirebaseFirestore.getInstance().collection("users").whereEqualTo("username", user.displayName).get().addOnSuccessListener {
-            if(it.documents.first().getString("password") == null) {
+        val userFire = FirebaseFirestore.getInstance().collection("users")
+            .whereEqualTo("username", user.displayName).get().addOnSuccessListener {
+            if (it.documents.first().getString("password") == null) {
 //                Log.wtf("uid", user.uid)
                 Log.wtf("heh", it.documents.first().getString("password"))
                 findViewById<TextInputLayout>(R.id.user_email_field).isEnabled = false
@@ -129,10 +133,24 @@ class EditProfile : AppCompatActivity() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
+        user = auth.currentUser
         if (resultCode == Activity.RESULT_OK && requestCode == IMAGE_PICK_CODE) {
             userPicURI = data?.data!!
             bitmap = MediaStore.Images.Media.getBitmap(this.contentResolver, userPicURI)
             userPic.setImageBitmap(bitmap!!)
+
+            if(bitmap!=null){
+                val stream = ByteArrayOutputStream()
+                bitmap!!.compress(Bitmap.CompressFormat.JPEG, 100, stream)
+                val imageRef = stream.toByteArray()
+                storageRef.child("user/${user.displayName}").putBytes(imageRef).addOnSuccessListener{
+                    storageRef.child("user/${user.displayName}").downloadUrl.addOnSuccessListener { uri ->
+                        FirebaseFirestore.getInstance().collection("users").whereEqualTo("username", user.displayName).get().addOnSuccessListener {
+                            it.documents.first().reference.update("photoURL", uri.toString())
+                        }
+                    }
+                }
+            }
         }
     }
 
@@ -179,6 +197,8 @@ class EditProfile : AppCompatActivity() {
             if (!userEmail.matches(emailPattern.toRegex())) {
                 return Toast.makeText(this, "Invalid Email Address!", Toast.LENGTH_SHORT).show()
             }
+        } else {
+            updateUser(userUsername, userEmail, userPassword, bitmap.toString())
         }
     }
 
@@ -222,8 +242,8 @@ class EditProfile : AppCompatActivity() {
 //                    .getCredential("user@example.com", "password1234")
                         val data = mutableListOf(
                             user.updateEmail(email).addOnFailureListener {
-                            Log.wtf("hehe", it.toString())
-                        },
+                                Log.wtf("hehe", it.toString())
+                            },
                             user.updateProfile(
                                 UserProfileChangeRequest.Builder()
                                     .setDisplayName(name)
@@ -239,11 +259,17 @@ class EditProfile : AppCompatActivity() {
                                 )
                             ).addOnFailureListener {
                                 Log.wtf("hehe", it.toString())
-                            })
-                        if(doc.getString("password") != null) {
-                            data.add(FirebaseAuth.getInstance().currentUser.updatePassword(userConfirmPassword).addOnFailureListener {
-                                Log.wtf("hehe", it.toString())
-                            })
+                            }
+                        )
+                        if (doc.getString("password") != null) {
+                            user.reauthenticate(EmailAuthProvider.getCredential(user.email, userPassword))
+
+                            data.add(
+                                FirebaseAuth.getInstance().currentUser.updatePassword(
+                                    userConfirmPassword
+                                ).addOnFailureListener {
+                                    Log.wtf("hehe", it.toString())
+                                })
                         }
                         Tasks.whenAll(data)
 

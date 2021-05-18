@@ -1,11 +1,13 @@
 package edu.bluejack20_2.dietary
 
+import android.content.Intent
 import android.opengl.Visibility
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.Toast
+import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.textfield.TextInputEditText
@@ -31,6 +33,12 @@ class CustomMealAdapter(
                 R.string.calories,
                 customMealItem[position].customMealCalories.toString()
             )
+
+            findViewById<CardView>(R.id.cvCustomMeal).setOnClickListener{
+                val intent = Intent(context, CustomMealDetail::class.java)
+                intent.putExtra("customMealId", customMealItem[position].customMealId)
+                this.context.startActivity(intent)
+            }
 
             findViewById<MaterialButton>(R.id.remove_custom_meal_btn).setOnClickListener {
                 val customMealId = customMealItem[position].customMealId
