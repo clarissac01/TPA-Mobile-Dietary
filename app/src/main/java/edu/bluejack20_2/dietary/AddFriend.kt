@@ -10,10 +10,13 @@ import android.widget.SearchView
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.firebase.Timestamp
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import java.util.*
+import kotlin.collections.ArrayList
 
-class AddFriend : AppCompatActivity() {
+class   AddFriend : AppCompatActivity() {
 
     var db = FirebaseFirestore.getInstance()
     var user = FirebaseAuth.getInstance().currentUser
@@ -105,15 +108,24 @@ class AddFriend : AppCompatActivity() {
                             val isNotMyFriend = !friendlist.contains(userid)
                             val isNotMe = username != user.displayName
 
-                            Log.wtf("hehe", isNotMyFriend.toString())
-                            Log.wtf("hehe", isNotMe.toString())
+                            var res:Int = 0
+
+                            if(it?.data?.get("plan") != null){
+                                var plan = it?.data?.get("plan") as Map<*, *>
+                                val date1 = Date()
+                                val date2 = plan["startDate"] as Timestamp
+                                var diff = date1.time - date2.toDate().time
+                                res = java.util.concurrent.TimeUnit.DAYS.convert(diff, java.util.concurrent.TimeUnit.MILLISECONDS)
+                                    .toInt()
+
+                            }
 
                             if (isNotMyFriend && isNotMe) {
                                 if (photoUrl == null) {
-                                    var currentUser = FriendItem(username, false, null, 1, userid, false)
+                                    var currentUser = FriendItem(username, false, null, res, userid, false)
                                     list.add(currentUser)
                                 } else {
-                                    var currentUser = FriendItem(username, true, photoUrl, 1, userid, false)
+                                    var currentUser = FriendItem(username, true, photoUrl, res, userid, false)
                                     list.add(currentUser)
                                 }
                                 usernames.add(username)

@@ -95,6 +95,7 @@ class LoginActivity : AppCompatActivity() {
                             }
                         }
                         FirebaseAuth.getInstance().signInWithEmailAndPassword(email, userPassword).addOnSuccessListener {
+                                Log.wtf("wtf", "Masuk")
                             FirebaseAuth.getInstance().currentUser.updateProfile(UserProfileChangeRequest.Builder().setDisplayName(userUsername).setPhotoUri(photourl).build()).addOnSuccessListener {
                                 startActivity(Intent(this, MainActivity::class.java))
                                 Log.wtf("wtf", "Masuk")

@@ -24,13 +24,32 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
+        debug {
+            clean
+        }
     }
+
+    project.afterEvaluate {
+        android.applicationVariants.all { variant ->
+            variant.outputs.each { output ->
+                def capitalizedVariant = variant.name.capitalize()
+                def assembleVariantTask = project.tasks."assemble${capitalizedVariant}"
+                assembleVariantTask.dependsOn clean
+            }
+        }
+    }
+
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
     kotlinOptions {
         jvmTarget = '1.8'
+    }
+    buildscript {
+        repositories {
+            jcenter()
+        }
     }
 }
 
@@ -53,9 +72,13 @@ dependencies {
     implementation 'androidx.recyclerview:recyclerview:1.2.0'
     implementation 'com.google.android.gms:play-services-safetynet:17.0.0'
     implementation 'com.malinskiy:superrecyclerview:1.1.4'
+    implementation 'androidx.gridlayout:gridlayout:1.0.0'
+    implementation 'androidx.wear:wear:1.1.0'
 
     testImplementation 'junit:junit:4.+'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
     implementation 'com.google.android.gms:play-services-auth:19.0.0'
+    compile 'com.github.aakira:expandable-layout:1.6.0@aar'
+    compileOnly 'com.google.android.wearable:wearable:2.8.1'
 }

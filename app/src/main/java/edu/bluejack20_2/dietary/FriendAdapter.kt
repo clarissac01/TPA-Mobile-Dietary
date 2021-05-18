@@ -9,8 +9,6 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.cardview.widget.CardView
-import androidx.core.content.ContextCompat
-import androidx.core.os.bundleOf
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -40,6 +38,7 @@ class FriendAdapter(private val friendList: List<FriendItem>?, private val conte
         val friendItem = friendList?.get(position)
         friendDocId = friendItem?.docId.toString()
 
+        holder.friendid.text = friendItem?.docId
         holder.delbtn.setOnClickListener {
             friendUsername = holder.friendname.text.toString()
             unfriend(it)
@@ -72,8 +71,10 @@ class FriendAdapter(private val friendList: List<FriendItem>?, private val conte
         if (currentFriend != null) {
             holder.friendname.text = currentFriend.username
         }
-        if (currentFriend != null) {
+        if (currentFriend?.daycount!! > 0) {
             holder.daycount.text = "Day\n" + currentFriend.daycount
+        }else{
+            holder.daycount.visibility = View.INVISIBLE
         }
 
         holder.user_detail.setOnClickListener {
@@ -83,7 +84,7 @@ class FriendAdapter(private val friendList: List<FriendItem>?, private val conte
                     currentFriend?.username!!,
                     currentFriend.hasPhoto,
                     currentFriend.photoUrl,
-                    1,
+                    currentFriend.daycount,
                     currentFriend.docId,
                     currentFriend.isFriend
                 )
@@ -92,7 +93,7 @@ class FriendAdapter(private val friendList: List<FriendItem>?, private val conte
                     currentFriend?.username!!,
                     currentFriend.hasPhoto,
                     null,
-                    1,
+                    currentFriend.daycount,
                     currentFriend.docId,
                     currentFriend.isFriend
                 )
@@ -104,11 +105,12 @@ class FriendAdapter(private val friendList: List<FriendItem>?, private val conte
 
     class FriendHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val friendpic: ImageView = itemView.findViewById(R.id.friendpic)
-        val friendname: TextView = itemView.findViewById(R.id.name_text)
+        val friendname: TextView = itemView.findViewById(R.id.friendname)
         val daycount: MaterialButton = itemView.findViewById(R.id.daycountbtn)
         val delbtn = itemView.findViewById<MaterialButton>(R.id.deletefriend)
         val addBtn = itemView.findViewById<MaterialButton>(R.id.addfriend)
         val user_detail = itemView.findViewById<CardView>(R.id.user_detail)
+        val friendid = itemView.findViewById<TextView>(R.id.thisfriendid)
     }
 
     fun unfriend(view: View) {

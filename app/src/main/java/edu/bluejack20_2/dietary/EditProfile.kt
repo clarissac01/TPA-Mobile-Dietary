@@ -177,7 +177,6 @@ class EditProfile : AppCompatActivity() {
         if (userConfirmPassword == "") {
             userConfirmPassword = currentPassword
         }
-//        updateUser(userUsername, userEmail, userPassword, bitmap.toString())
         if (userPassword != "" && userConfirmPassword != "") {
             if (!userConfirmPassword.matches(passPattern.toRegex())) {
                 return Toast.makeText(this, "Password must be alphanumeric!", Toast.LENGTH_SHORT)

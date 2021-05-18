@@ -33,38 +33,23 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <edu.bluejack20_2.dietary.CirleImageView
-        android:id="@+id/user_profilepic"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="16dp"
-        android:background="@drawable/roundcorner"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageButton3"
-        app:srcCompat="@drawable/user" />
-
     <Button
-        android:id="@+id/friend_count"
-        style="@style/Widget.MaterialComponents.Button.TextButton"
-        android:layout_width="wrap_content"
+        android:id="@+id/unfriend_btn"
+        style="?attr/materialButtonOutlinedStyle"
+        android:layout_width="255dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:fontFamily="@font/rubik"
-        android:onClick="seeUserFriend"
-        android:text="\nFRIENDS"
-        android:textColor="?colorPrimaryVariant"
-        android:textStyle="bold"
+        android:backgroundTint="?colorOnPrimary"
+        android:text="UNFRIEND"
+        android:textColor="?colorPrimary"
+        android:visibility="invisible"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/user_profilepic"
-        app:layout_constraintTop_toBottomOf="@+id/user_id" />
+        app:layout_constraintTop_toBottomOf="@+id/friend_count" />
 
     <Button
         android:id="@+id/addfriendbtn"
         android:layout_width="255dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:layout_marginEnd="20dp"
         android:backgroundTint="@color/rallygreen"
         android:fontFamily="sans-serif-medium"
         android:text="ADD FRIEND"
@@ -74,18 +59,53 @@
         app:layout_constraintTop_toBottomOf="@+id/friend_count" />
 
     <Button
-        android:id="@+id/unfriend_btn"
-        style="?attr/materialButtonOutlinedStyle"
-        android:layout_width="255dp"
+        android:id="@+id/friend_count"
+        style="@style/Widget.MaterialComponents.Button.TextButton"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:layout_marginEnd="20dp"
-        android:backgroundTint="?colorOnPrimary"
-        android:text="UNFRIEND"
-        android:textColor="?colorPrimary"
-        android:visibility="invisible"
+        android:layout_marginTop="13dp"
+        android:fontFamily="@font/rubik"
+        android:onClick="seeUserFriend"
+        android:text="\nFRIENDS"
+        android:textColor="?colorPrimaryVariant"
+        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/user_profilepic"
-        app:layout_constraintTop_toBottomOf="@+id/friend_count" />
+        app:layout_constraintTop_toBottomOf="@+id/user_id" />
+
+    <edu.bluejack20_2.dietary.CirleImageView
+        android:id="@+id/user_profilepic"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="7dp"
+        android:background="@drawable/roundcorner"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageButton3"
+        app:srcCompat="@drawable/user" />
+
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/tabLayout2"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:isScrollContainer="true"
+        android:textAlignment="center"
+        app:flow_horizontalAlign="center"
+        app:flow_verticalAlign="center"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/user_profilepic"
+        app:tabGravity="fill">
+
+    </com.google.android.material.tabs.TabLayout>
+
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/friendviewpager"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tabLayout2" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

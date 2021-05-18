@@ -6,7 +6,6 @@
         <item name="colorOnPrimary">@color/lightgreen</item>
         <!-- Secondary brand color. -->
         <item name="colorSecondary">@color/beige</item>
-        <item name="colorSecondaryVariant">@color/darkerbeige</item>
         <item name="colorOnSecondary">@color/basilorange</item>
         <!-- Status bar color. -->
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
@@ -20,8 +19,11 @@
 
     <style name="Theme.Dietary.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
-    <style name="Theme.Dietary.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+    <style name="Theme.Dietary.CircularProgressIndicator" parent="">
+        <item name="colorPrimary">#DA7F84</item>
+    </style>
 
+    <style name="Theme.Dietary.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
     <style name="ShapeAppearanceOverlay.MyApp.Button.Circle" parent="">
         <item name="cornerFamily">rounded</item>
         <item name="cornerSize">50%</item>

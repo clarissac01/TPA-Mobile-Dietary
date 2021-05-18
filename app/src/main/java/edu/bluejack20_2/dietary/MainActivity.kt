@@ -29,19 +29,27 @@ import java.util.*
 class MainActivity : AppCompatActivity() {
 
     override fun onStart() {
+//        FirebaseAuth.getInstance().signOut()
+
+
         super.onStart()
+
         // Check for existing Google Sign In account, if the user is already signed in
         // the GoogleSignInAccount will be non-null.
-        val account = GoogleSignIn.getLastSignedInAccount(this)
 //        updateUI(account)
-        if(FirebaseAuth.getInstance().currentUser == null){
-            startActivity(Intent(this, LoginActivity::class.java))
-        }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        if(FirebaseAuth.getInstance().currentUser == null){
+            startActivity(Intent(this, LoginActivity::class.java))
+            return
+        }else{
+            val account = GoogleSignIn.getLastSignedInAccount(this)
+        }
+
 
         val homeFragment = HomeFragment()
         val profileFragment = ProfileFragment()
