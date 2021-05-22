@@ -23,7 +23,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 import kotlin.math.roundToInt
 
 
-class RecommendMealsAdapter(parentActivity: AppCompatActivity, private val mealType: String, private val mealList: MutableList<MealItem>?, private val context: Context)
+class RecommendMealsAdapter(val currday: Int, parentActivity: AppCompatActivity, private val mealType: String, private val mealList: MutableList<MealItem>?, private val context: Context)
     : RecyclerView.Adapter<RecommendMealsAdapter.RecommendMealsHolder>(){
 
     var db = FirebaseFirestore.getInstance()
@@ -145,27 +145,71 @@ class RecommendMealsAdapter(parentActivity: AppCompatActivity, private val mealT
                             val userid = it.documents.first().id.toString()
                             when(mealType){
                                 "Breakfast" -> {
-                                    db.collection("users").document(userid).update("plan.breakfastMenu", mealItem.mealId).addOnSuccessListener {
-                                        Toast.makeText(view.context, "Update " + mealType + " meal success!", Toast.LENGTH_LONG)
-                                        parentActivity.finish()
+                                    db.collection("CustomMeals").whereEqualTo("UserID", userid).whereEqualTo("type", "Breakfast").whereEqualTo("day", currday).get().addOnSuccessListener {
+                                        if(!it.isEmpty){
+                                            var changeid = it.documents.first().id
+                                            var changeday = 0
+                                            db.collection("CustomMeals").document(mealItem.mealId).get().addOnSuccessListener {
+                                                if(it.exists()){
+                                                    changeday = it.get("day").toString().toInt()
+                                                    db.collection("CustomMeals").document(changeid).update("day", changeday)
+                                                    db.collection("CustomMeals").document(mealItem.mealId).update("day", currday)
+                                                    Toast.makeText(view.context, "Update " + mealType + " meal success!", Toast.LENGTH_LONG)
+                                                    parentActivity.finish()
+                                                }
+                                            }
+                                        }
                                     }
                                 }
                                 "Lunch" -> {
-                                    db.collection("users").document(userid).update("plan.lunchMenu", mealItem.mealId).addOnSuccessListener {
-                                        Toast.makeText(view.context, "Update " + mealType + " meal success!", Toast.LENGTH_LONG)
-                                        parentActivity.finish()
+                                    db.collection("CustomMeals").whereEqualTo("UserID", userid).whereEqualTo("type", "Lunch").whereEqualTo("day", currday).get().addOnSuccessListener {
+                                        if(!it.isEmpty){
+                                            var changeid = it.documents.first().id
+                                            var changeday = 0
+                                            db.collection("CustomMeals").document(mealItem.mealId).get().addOnSuccessListener {
+                                                if(it.exists()){
+                                                    changeday = it.get("day").toString().toInt()
+                                                    db.collection("CustomMeals").document(changeid).update("day", changeday)
+                                                    db.collection("CustomMeals").document(mealItem.mealId).update("day", currday)
+                                                    Toast.makeText(view.context, "Update " + mealType + " meal success!", Toast.LENGTH_LONG)
+                                                    parentActivity.finish()
+                                                }
+                                            }
+                                        }
                                     }
                                 }
                                 "Dinner" -> {
-                                    db.collection("users").document(userid).update("plan.dinnerMenu", mealItem.mealId).addOnSuccessListener {
-                                        Toast.makeText(view.context, "Update " + mealType + " meal success!", Toast.LENGTH_LONG)
-                                        parentActivity.finish()
+                                    db.collection("CustomMeals").whereEqualTo("UserID", userid).whereEqualTo("type", "Dinner").whereEqualTo("day", currday).get().addOnSuccessListener {
+                                        if(!it.isEmpty){
+                                            var changeid = it.documents.first().id
+                                            var changeday = 0
+                                            db.collection("CustomMeals").document(mealItem.mealId).get().addOnSuccessListener {
+                                                if(it.exists()){
+                                                    changeday = it.get("day").toString().toInt()
+                                                    db.collection("CustomMeals").document(changeid).update("day", changeday)
+                                                    db.collection("CustomMeals").document(mealItem.mealId).update("day", currday)
+                                                    Toast.makeText(view.context, "Update " + mealType + " meal success!", Toast.LENGTH_LONG)
+                                                    parentActivity.finish()
+                                                }
+                                            }
+                                        }
                                     }
                                 }
                                 "Snack" -> {
-                                    db.collection("users").document(userid).update("plan.snackMenu", mealItem.mealId).addOnSuccessListener {
-                                        Toast.makeText(view.context, "Update " + mealType + " meal success!", Toast.LENGTH_LONG)
-                                        parentActivity.finish()
+                                    db.collection("CustomMeals").whereEqualTo("UserID", userid).whereEqualTo("type", "Snack").whereEqualTo("day", currday).get().addOnSuccessListener {
+                                        if(!it.isEmpty){
+                                            var changeid = it.documents.first().id
+                                            var changeday = 0
+                                            db.collection("CustomMeals").document(mealItem.mealId).get().addOnSuccessListener {
+                                                if(it.exists()){
+                                                    changeday = it.get("day").toString().toInt()
+                                                    db.collection("CustomMeals").document(changeid).update("day", changeday)
+                                                    db.collection("CustomMeals").document(mealItem.mealId).update("day", currday)
+                                                    Toast.makeText(view.context, "Update " + mealType + " meal success!", Toast.LENGTH_LONG)
+                                                    parentActivity.finish()
+                                                }
+                                            }
+                                        }
                                     }
                                 }
 

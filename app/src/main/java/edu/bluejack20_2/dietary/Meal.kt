@@ -31,14 +31,14 @@ class Meal : AppCompatActivity() {
 
         val mealList = getMealList()
         findViewById<RecyclerView>(R.id.recommend_meal_view).adapter =
-            RecommendMealsAdapter(this, type, mealList, this)
+            RecommendMealsAdapter(currentDay, this, type, mealList, this)
         findViewById<RecyclerView>(R.id.recommend_meal_view).layoutManager =
             LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
         findViewById<RecyclerView>(R.id.recommend_meal_view).setHasFixedSize(true)
 
         val mealList2 = getMealList2()
         findViewById<RecyclerView>(R.id.custom_meal_view).adapter =
-            RecommendMealsAdapter(this, type, mealList2, this)
+            RecommendMealsAdapter(currentDay, this, type, mealList2, this)
         findViewById<RecyclerView>(R.id.custom_meal_view).layoutManager =
             LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
         findViewById<RecyclerView>(R.id.custom_meal_view).setHasFixedSize(true)
@@ -52,14 +52,19 @@ class Meal : AppCompatActivity() {
 
         Tasks.whenAll(
 
-            db.collection("CustomMeals").whereEqualTo("type", type).orderBy("day").get().addOnSuccessListener {
-                if(!it?.isEmpty!!){
-                    it.documents.forEach{
-                        list.add(MealItem(it.id.toString(), it.get("CustomMealName") as String,
-                            it.get("Calories").toString().toFloat(), FALSE
-                        ))
+            db.collection("users").whereEqualTo("username", FirebaseAuth.getInstance().currentUser).get().addOnSuccessListener {
+                if(!it.isEmpty){
+                    db.collection("CustomMeals").whereEqualTo("type", type).whereEqualTo("UserID", it.documents.first().id).orderBy("day").get().addOnSuccessListener {
+                        if(!it?.isEmpty!!){
+                            it.documents.forEach{
+                                list.add(MealItem(it.id.toString(), it.get("CustomMealName") as String,
+                                    it.get("Calories").toString().toFloat(), FALSE
+                                ))
 
+                            }
+                        }
                     }
+
                 }
             }
 

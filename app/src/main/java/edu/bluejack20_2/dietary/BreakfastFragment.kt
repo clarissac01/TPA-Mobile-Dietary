@@ -61,11 +61,11 @@ class BreakfastFragment(var currDay: Int) : Fragment() {
                     if(!it?.isEmpty!!){
                         if(it.documents.first().get("breakfastMenu")!= null){
                             view.findViewById<Button>(R.id.changeBreakfast).visibility = View.INVISIBLE
-                            view.findViewById<Button>(R.id.floatingActionButton3).visibility = View.INVISIBLE
+                            view.findViewById<FloatingActionButton>(R.id.floatingActionButton3).visibility = View.INVISIBLE
                         }
                     }else{
                         view.findViewById<Button>(R.id.changeBreakfast).visibility = View.VISIBLE
-                        view.findViewById<Button>(R.id.floatingActionButton3).visibility = View.VISIBLE
+                        view.findViewById<FloatingActionButton>(R.id.floatingActionButton3).visibility = View.VISIBLE
                     }
                 }
 
@@ -147,14 +147,14 @@ class BreakfastFragment(var currDay: Int) : Fragment() {
 
         db.collection("users").whereEqualTo("username", user.displayName).addSnapshotListener(){ it, _ ->
             if(!it?.isEmpty!!){
-                val getMapping = it.documents.first().get("plan") as Map<*, *>
-                menuId = getMapping["breakfastMenu"].toString()
-                db.collection("CustomMeals").document(menuId).addSnapshotListener() { it, _ ->
-                    if(it?.exists()!!){
-                        menuName.text = it.getString("CustomMealName")
-                        calCount.text = it.get("Calories").toString() + " kcal"
+                db.collection("CustomMeals").whereEqualTo("UserID", it.documents.first().id).whereEqualTo("type", "Breakfast").whereEqualTo("day", currDay).addSnapshotListener() {it,_->
+                    if(!it?.isEmpty!!){
+                        menuName.text = it.documents.first().getString("CustomMealName")
+                        calCount.text = it.documents.first().get("Calories").toString() + " kcal"
+
                     }
                 }
+
 
             }
         }

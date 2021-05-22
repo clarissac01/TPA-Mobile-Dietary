@@ -63,11 +63,11 @@ class LunchFragment(var currDay: Int) : Fragment() {
                     if(!it?.isEmpty!!){
                         if(it.documents.first().get("dinnerMenu")!= null){
                             view.findViewById<Button>(R.id.changeLunch).visibility = View.INVISIBLE
-                            view.findViewById<Button>(R.id.floatingActionButton2).visibility = View.INVISIBLE
+                            view.findViewById<FloatingActionButton>(R.id.floatingActionButton2).visibility = View.INVISIBLE
                         }
                     }else{
                         view.findViewById<Button>(R.id.changeLunch).visibility = View.VISIBLE
-                        view.findViewById<Button>(R.id.floatingActionButton2).visibility = View.VISIBLE
+                        view.findViewById<FloatingActionButton>(R.id.floatingActionButton2).visibility = View.VISIBLE
                     }
                 }
 
@@ -147,16 +147,17 @@ class LunchFragment(var currDay: Int) : Fragment() {
 
     fun initMenu(){
 
-        db.collection("users").whereEqualTo("username", user.displayName).addSnapshotListener() { it, _ ->
+        db.collection("users").whereEqualTo("username", user.displayName).addSnapshotListener(){ it, _ ->
             if(!it?.isEmpty!!){
-                val getMapping = it.documents.first().get("plan") as Map<*, *>
-                menuId = getMapping["lunchMenu"].toString()
-                db.collection("CustomMeals").document(menuId).addSnapshotListener() { it, _ ->
-                    if(it?.exists()!!){
-                        menuName.text = it.getString("CustomMealName")
-                        calCount.text = it.get("Calories").toString() + " kcal"
+                db.collection("CustomMeals").whereEqualTo("UserID", it.documents.first().id).whereEqualTo("type", "Lunch").whereEqualTo("day", currDay).addSnapshotListener() {it,_->
+                    if(!it?.isEmpty!!){
+                        menuName.text = it.documents.first().getString("CustomMealName")
+                        calCount.text = it.documents.first().get("Calories").toString() + " kcal"
+
                     }
                 }
+
+
             }
         }
 
