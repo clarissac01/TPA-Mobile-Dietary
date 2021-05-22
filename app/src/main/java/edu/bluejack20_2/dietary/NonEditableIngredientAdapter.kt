@@ -3,6 +3,7 @@ package edu.bluejack20_2.dietary
 import android.content.Context
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -34,6 +35,7 @@ class NonEditableIngredientAdapter(private val ingredientList: MutableList<Ingre
     }
 
     override fun onBindViewHolder(holder: NonEditableIngredientHolder, position: Int) {
+        Log.wtf("the list", ingredientList.toString())
         val ingredientItem = ingredientList?.get(position)
         holder.non_ingredientName.text = ingredientItem?.ingredientName!!
         holder.non_ingredientWeight.setText(ingredientItem.weight.roundToInt().toString() + " g")

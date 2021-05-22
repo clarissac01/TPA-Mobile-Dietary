@@ -64,7 +64,7 @@ class JourneyFragment : Fragment(R.layout.fragment_journey) {
                     for(document in journey.documents) {
                         val breakfast = document?.get("breakfastMenu") as Map<String, Any>
                         val lunch = document.get("lunchMenu") as Map<String, Any>
-                        val dinner = document.get("dinnerMenu") as Map<String, Any>
+                        val dinner = document.get("dinnerMenu") as Map<String, Any>?
                         val snack = document.get("snackMenu") as Map<String, Any>
                         val pattern = "yyyy-MM-dd"
                         val simpleDateFormat = SimpleDateFormat(pattern)
@@ -79,7 +79,7 @@ class JourneyFragment : Fragment(R.layout.fragment_journey) {
                             it.id == lunch["menuID"]
                         }?.get("CustomMealName").toString()
                         perDay["dinner"] = it.find {
-                            it.id == dinner["menuID"]
+                            it.id == dinner!!["menuID"]
                         }?.get("CustomMealName").toString()
                         perDay["snack"] = it.find {
                             it.id == snack["menuID"]

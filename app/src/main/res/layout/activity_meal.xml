@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:fillViewport="true"
     android:background="?colorSecondary"
-    tools:context=".Meal"
+    tools:context=".services.home_page.Meal"
     >
 
 

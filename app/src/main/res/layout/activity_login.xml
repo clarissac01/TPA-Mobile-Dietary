@@ -5,14 +5,14 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="?colorSecondary"
-    tools:context=".LoginActivity">
+    tools:context=".services.login.LoginActivity">
 
     <Button
         android:id="@+id/loginBtn"
         style="?attr/materialButtonOutlinedStyle"
         android:layout_width="310dp"
         android:layout_height="60dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="32dp"
         android:layout_marginBottom="45dp"
         android:backgroundTint="?colorPrimaryVariant"
         android:fontFamily="@font/rubik"
@@ -58,7 +58,7 @@
         android:id="@+id/passwordField"
         android:layout_width="310dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="24dp"
         android:backgroundTint="#FFFFFF"
         android:hint="Password"
         android:inputType="textPassword"
@@ -108,14 +108,13 @@
         app:layout_constraintEnd_toStartOf="@+id/button3"
         app:layout_constraintTop_toBottomOf="@+id/loginBtn" />
 
-    <Button
+    <TextView
         android:id="@+id/button3"
         style="@style/Widget.MaterialComponents.Button.TextButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="80dp"
-        android:backgroundTint="@color/beige"
         android:onClick="gotoRegister"
         android:text="Sign Up"
         android:textAllCaps="false"
@@ -145,6 +144,35 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.495"
         app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/nametextnull"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/rubik"
+        android:text="@string/username_null"
+        android:textColor="@color/red_active"
+        android:textSize="12sp"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toTopOf="@+id/passwordField"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/usernameField" />
+
+    <TextView
+        android:id="@+id/passwordTextnull"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:fontFamily="@font/rubik"
+        android:text="@string/password_null"
+        android:textAlignment="center"
+        android:textColor="@color/red_active"
+        android:textSize="12sp"
+        android:visibility="invisible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/passwordField" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,9 +1,7 @@
-package edu.bluejack20_2.dietary
+package edu.bluejack20_2.dietary.services.home_page.adapter
 
 import android.animation.ObjectAnimator
 import android.content.Context
-import android.util.Log
-import android.util.SparseBooleanArray
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,12 +12,15 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.github.aakira.expandablelayout.ExpandableLayoutListenerAdapter
 import com.github.aakira.expandablelayout.ExpandableLinearLayout
 import com.github.aakira.expandablelayout.Utils
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import edu.bluejack20_2.dietary.IngredientItem
+import edu.bluejack20_2.dietary.MealItem
+import edu.bluejack20_2.dietary.NonEditableIngredientAdapter
+import edu.bluejack20_2.dietary.R
 import kotlin.math.roundToInt
 
 
@@ -34,10 +35,13 @@ class RecommendMealsAdapter(val currday: Int, parentActivity: AppCompatActivity,
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
-    ): RecommendMealsAdapter.RecommendMealsHolder {
+    ): RecommendMealsHolder {
         val recommendMealView = LayoutInflater.from(parent.context).inflate(R.layout.meal_item, parent, false)
 
-        return RecommendMealsHolder(recommendMealView, false)
+        return RecommendMealsHolder(
+            recommendMealView,
+            false
+        )
     }
 
     override fun getItemCount(): Int {
@@ -75,7 +79,10 @@ class RecommendMealsAdapter(val currday: Int, parentActivity: AppCompatActivity,
                 if(it?.exists()!!){
                     if(!mealList.get(position).isExpand){
                         holder.expandableView.adapter =
-                            NonEditableIngredientAdapter(ingredientsList, context)
+                            NonEditableIngredientAdapter(
+                                ingredientsList,
+                                context
+                            )
                         holder.expandableView.layoutManager =
                             LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
 
@@ -120,7 +127,14 @@ class RecommendMealsAdapter(val currday: Int, parentActivity: AppCompatActivity,
                             calCount *= it.data?.get("IngredientsCalories")!!.toString().toFloat()
                             calCount = calCount.roundToInt().toFloat()
                             name = it.data?.get("IngredientsName")!!.toString()
-                            list.add(IngredientItem(ingredientId, name, calCount, weight))
+                            list.add(
+                                IngredientItem(
+                                    ingredientId,
+                                    name,
+                                    calCount,
+                                    weight
+                                )
+                            )
                             rv.adapter?.notifyDataSetChanged()
                         }
                     }

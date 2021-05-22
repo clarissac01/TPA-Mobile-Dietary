@@ -12,7 +12,7 @@
             android:layout_width="match_parent"
             android:layout_height="520dp"
             android:layout_marginTop="15dp"
-            android:background="@color/beige"
+            android:background="?colorSecondary"
             android:paddingBottom="100dp"
             android:scrollbars="vertical"
             app:layout_constraintBottom_toTopOf="@+id/journey_more_btn"

@@ -1,22 +1,18 @@
 package edu.bluejack20_2.dietary
 
-import android.app.Activity
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageView
-import android.widget.TextView
 import com.google.android.material.textview.MaterialTextView
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseUser
-import com.google.firebase.firestore.FirebaseFirestore
+import com.squareup.picasso.MemoryPolicy
 import com.squareup.picasso.Picasso
+import edu.bluejack20_2.dietary.services.login.LoginActivity
 
 class ProfileFragment : Fragment() {
     private lateinit var auth: FirebaseAuth
@@ -37,7 +33,7 @@ class ProfileFragment : Fragment() {
 
         if (user != null) {
             if (user.photoUrl != null) {
-                Picasso.get().load(user.photoUrl).into(requireActivity().findViewById<ImageView>(R.id.profile_pic))
+                Picasso.get().load(user.photoUrl).memoryPolicy(MemoryPolicy.NO_CACHE).into(requireActivity().findViewById<ImageView>(R.id.profile_pic))
             } else {
                 Picasso.get().load("@drawable/ic_photo")
                     .into(requireActivity().findViewById<ImageView>(R.id.profile_pic))

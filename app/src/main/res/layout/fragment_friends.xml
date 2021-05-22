@@ -28,15 +28,16 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/friend_view"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="55dp"
+        android:layout_height="0dp"
 
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="100dp"
         android:background="?colorSecondary"
         android:clipToPadding="false"
         android:padding="4dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView5"
-        tools:listitem="@layout/friend_item" />
+        app:layout_constraintTop_toBottomOf="@+id/textView5" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/floatingActionButton"

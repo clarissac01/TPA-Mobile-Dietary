@@ -164,18 +164,19 @@
         android:id="@+id/plan3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="42dp"
         android:fontFamily="@font/rubik"
         android:text="kcal left"
         android:textColor="#0D47A1"
         android:textSize="18sp"
         android:translationZ="10dp"
+        app:layout_constraintBottom_toBottomOf="@+id/plan2"
         app:layout_constraintEnd_toEndOf="@+id/plan2"
-        app:layout_constraintHorizontal_bias="0.504"
-        app:layout_constraintStart_toEndOf="@+id/planprogresscircle"
-        app:layout_constraintTop_toBottomOf="@+id/plancal" />
+        app:layout_constraintHorizontal_bias="0.496"
+        app:layout_constraintStart_toEndOf="@+id/planprogresscircle" />
 
     <TextView
-        android:id="@+id/textView14"
+        android:id="@+id/mealtext"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
@@ -185,6 +186,7 @@
         android:textColor="?colorPrimary"
         android:textSize="18sp"
         android:textStyle="bold"
+        android:visibility="invisible"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/plan2" />
 
@@ -193,13 +195,14 @@
         android:layout_width="340dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView14"
         android:isScrollContainer="true"
         android:textAlignment="center"
+        android:visibility="invisible"
         app:flow_horizontalAlign="center"
         app:flow_verticalAlign="center"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/mealtext"
         app:tabGravity="fill"
         app:tabMode="scrollable">
 
@@ -214,5 +217,16 @@
         app:layout_constraintTop_toBottomOf="@+id/tabLayout">
 
     </androidx.viewpager2.widget.ViewPager2>
+
+    <TextView
+        android:id="@+id/todaygoals"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:elevation="5dp"
+        android:fontFamily="@font/rubik"
+        android:text="@string/today_calories"
+        app:layout_constraintStart_toEndOf="@+id/planprogresscircle"
+        app:layout_constraintTop_toTopOf="@+id/noplanpic" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

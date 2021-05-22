@@ -1,7 +1,8 @@
-package edu.bluejack20_2.dietary
+package edu.bluejack20_2.dietary.services.home_page
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -14,6 +15,8 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.firebase.Timestamp
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import edu.bluejack20_2.dietary.MealDetail
+import edu.bluejack20_2.dietary.R
 
 class DinnerFragment(var currDay: Int) : Fragment() {
 
@@ -22,6 +25,7 @@ class DinnerFragment(var currDay: Int) : Fragment() {
     private lateinit var menuName: TextView
     private lateinit var calCount: TextView
     private lateinit var menuId: String
+    private var isEditable: Boolean = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -51,6 +55,8 @@ class DinnerFragment(var currDay: Int) : Fragment() {
             )
             intent.putExtra("menuId", menuId)
             intent.putExtra("currentDay", currDay)
+            intent.putExtra("isEditable", isEditable)
+            Log.wtf("gotoMealDetail", isEditable.toString())
             context?.startActivity(
                 intent
             )
@@ -61,15 +67,24 @@ class DinnerFragment(var currDay: Int) : Fragment() {
         db.collection("users").whereEqualTo("username", user.displayName).get().addOnSuccessListener {
             if(!it.isEmpty){
                 userId = it.documents.first().id
-                db.collection("Journey").whereEqualTo("userID", userId).whereEqualTo("Date", Timestamp.now()).get().addOnSuccessListener {
+                db.collection("Journey").whereEqualTo("userID", userId).whereEqualTo("day", currDay).get().addOnSuccessListener {
                     if(!it?.isEmpty!!){
                         if(it.documents.first().get("dinnerMenu")!= null){
                             view.findViewById<Button>(R.id.changeDinner).visibility = View.INVISIBLE
                             view.findViewById<FloatingActionButton>(R.id.floatingActionButton4).visibility = View.INVISIBLE
+                            isEditable = false
+                        }else{
+                            view.findViewById<Button>(R.id.changeDinner).visibility = View.VISIBLE
+                            view.findViewById<FloatingActionButton>(R.id.floatingActionButton4).visibility = View.VISIBLE
+                            isEditable = true
+                            Log.wtf("make isEditable true", isEditable.toString())
+
                         }
                     }else{
                         view.findViewById<Button>(R.id.changeDinner).visibility = View.VISIBLE
                         view.findViewById<FloatingActionButton>(R.id.floatingActionButton4).visibility = View.VISIBLE
+                        isEditable = true
+                        Log.wtf("make isEditable true", isEditable.toString())
                     }
                 }
 
@@ -82,18 +97,25 @@ class DinnerFragment(var currDay: Int) : Fragment() {
                 Meal::class.java
             )
             intent.putExtra("type", "Dinner")
+            intent.putExtra("currentDay", currDay)
             context?.startActivity(
                 intent
             )
         }
 
         view.findViewById<FloatingActionButton>(R.id.floatingActionButton4).setOnClickListener{
+            isEditable = false
             var menucal = 0
             val customIngredient = mutableListOf<Map<*, *>>()
             Tasks.whenAll(
                 db.collection("CustomMeals").document(menuId).get().addOnSuccessListener {
                     if(it.exists()){
-                        menucal = it.get("Calories").toString().toInt()
+                        var totalCal = 0
+                        if(it.get("totalCalories") != null){
+                            totalCal = menucal + it.get("totalCalories").toString().toInt()
+                        }else{
+                            totalCal = menucal
+                        }
                         var inglist = it.get("CustomMealIngredients") as List<Map<*, *>>
                         inglist.forEach {
                             customIngredient.add(mapOf(
@@ -104,7 +126,7 @@ class DinnerFragment(var currDay: Int) : Fragment() {
                     }
                 }
             ).addOnSuccessListener {
-                db.collection("Journey").whereEqualTo("userID", userId).whereEqualTo("Date", Timestamp.now()).get().addOnSuccessListener {
+                db.collection("Journey").whereEqualTo("userID", userId).whereEqualTo("day", currDay).get().addOnSuccessListener {
                     if(!it.isEmpty){
                         var journeyid = it.documents.first().id
                         db.collection("Journey").document(journeyid).get().addOnSuccessListener {
@@ -119,7 +141,7 @@ class DinnerFragment(var currDay: Int) : Fragment() {
                                 ).addOnSuccessListener {
                                     db.collection("Journey").document(journeyid).update("totalCalories", totalCal)
                                     view.findViewById<FloatingActionButton>(R.id.floatingActionButton4).visibility = View.INVISIBLE
-                                    view.findViewById<FloatingActionButton>(R.id.changeDinner).visibility = View.INVISIBLE
+                                    view.findViewById<Button>(R.id.changeDinner).visibility = View.INVISIBLE
                                 }
 
                             }
@@ -138,7 +160,7 @@ class DinnerFragment(var currDay: Int) : Fragment() {
                             )
                         ).addOnSuccessListener {
                             view.findViewById<FloatingActionButton>(R.id.floatingActionButton4).visibility = View.INVISIBLE
-                            view.findViewById<FloatingActionButton>(R.id.changeDinner).visibility = View.INVISIBLE
+                            view.findViewById<Button>(R.id.changeDinner).visibility = View.INVISIBLE
                         }
                     }
                 }
@@ -154,7 +176,7 @@ class DinnerFragment(var currDay: Int) : Fragment() {
                     if(!it?.isEmpty!!){
                         menuName.text = it.documents.first().getString("CustomMealName")
                         calCount.text = it.documents.first().get("Calories").toString() + " kcal"
-
+                        menuId = it.documents.first().id
                     }
                 }
 

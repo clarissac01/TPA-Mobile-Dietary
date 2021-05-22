@@ -10,5 +10,6 @@ data class MealItem(
     var mealName: String,
     var mealCalories: Float,
     var isExpand: Boolean,
-    var hasMeal: Boolean = false
+    var hasMeal: Boolean = false,
+    var isEditable: Boolean =  true
 ) : Parcelable

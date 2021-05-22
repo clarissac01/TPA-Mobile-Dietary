@@ -24,8 +24,10 @@ import com.google.firebase.auth.*
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
+import com.squareup.picasso.MemoryPolicy
 import com.squareup.picasso.Picasso
 import java.io.ByteArrayOutputStream
+import java.security.AccessController.getContext
 import java.util.concurrent.Executor
 
 
@@ -74,7 +76,7 @@ class EditProfile : AppCompatActivity() {
             findViewById<TextInputLayout>(R.id.user_email_field).hint = user.email
 
             if (user.photoUrl != null) {
-                Picasso.get().load(user.photoUrl).into(findViewById<ImageView>(R.id.profile_pic))
+                Picasso.get().load(user.photoUrl).memoryPolicy(MemoryPolicy.NO_CACHE).into(findViewById<ImageView>(R.id.profile_pic))
             } else {
                 Picasso.get().load("@drawable/ic_photo")
                     .into(findViewById<ImageView>(R.id.profile_pic))

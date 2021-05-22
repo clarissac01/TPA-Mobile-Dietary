@@ -1,4 +1,4 @@
-package edu.bluejack20_2.dietary
+package edu.bluejack20_2.dietary.services.home_page
 
 import android.content.Intent
 import android.os.Bundle
@@ -15,6 +15,8 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.firebase.Timestamp
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import edu.bluejack20_2.dietary.MealDetail
+import edu.bluejack20_2.dietary.R
 
 class BreakfastFragment(var currDay: Int) : Fragment() {
 
@@ -23,6 +25,7 @@ class BreakfastFragment(var currDay: Int) : Fragment() {
     private lateinit var menuName: TextView
     private lateinit var calCount: TextView
     private lateinit var menuId: String
+    private var isEditable: Boolean = false
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -47,6 +50,8 @@ class BreakfastFragment(var currDay: Int) : Fragment() {
                 MealDetail::class.java
             )
             intent.putExtra("menuId", menuId)
+            intent.putExtra("currentDay", currDay)
+            intent.putExtra("isEditable", isEditable)
             context?.startActivity(
                 intent
             )
@@ -57,15 +62,21 @@ class BreakfastFragment(var currDay: Int) : Fragment() {
         db.collection("users").whereEqualTo("username", user.displayName).get().addOnSuccessListener {
             if(!it.isEmpty){
                 userId = it.documents.first().id
-                db.collection("Journey").whereEqualTo("userID", userId).whereEqualTo("Date", Timestamp.now()).get().addOnSuccessListener {
+                db.collection("Journey").whereEqualTo("userID", userId).whereEqualTo("day", currDay).get().addOnSuccessListener {
                     if(!it?.isEmpty!!){
                         if(it.documents.first().get("breakfastMenu")!= null){
                             view.findViewById<Button>(R.id.changeBreakfast).visibility = View.INVISIBLE
                             view.findViewById<FloatingActionButton>(R.id.floatingActionButton3).visibility = View.INVISIBLE
+                            isEditable = false
+                        }else{
+                            view.findViewById<Button>(R.id.changeBreakfast).visibility = View.VISIBLE
+                            view.findViewById<FloatingActionButton>(R.id.floatingActionButton3).visibility = View.VISIBLE
+                            isEditable = true
                         }
                     }else{
                         view.findViewById<Button>(R.id.changeBreakfast).visibility = View.VISIBLE
                         view.findViewById<FloatingActionButton>(R.id.floatingActionButton3).visibility = View.VISIBLE
+                        isEditable = true
                     }
                 }
 
@@ -87,6 +98,7 @@ class BreakfastFragment(var currDay: Int) : Fragment() {
         view.findViewById<FloatingActionButton>(R.id.floatingActionButton3).setOnClickListener{
             var menucal = 0
             val customIngredient = mutableListOf<Map<*, *>>()
+            isEditable = false
             Tasks.whenAll(
                 db.collection("CustomMeals").document(menuId).get().addOnSuccessListener {
                     if(it.exists()){
@@ -101,12 +113,17 @@ class BreakfastFragment(var currDay: Int) : Fragment() {
                     }
                 }
             ).addOnSuccessListener {
-                db.collection("Journey").whereEqualTo("userID", userId).whereEqualTo("Date", Timestamp.now()).get().addOnSuccessListener {
+                db.collection("Journey").whereEqualTo("userID", userId).whereEqualTo("day", currDay).get().addOnSuccessListener {
                     if(!it.isEmpty){
                         var journeyid = it.documents.first().id
                         db.collection("Journey").document(journeyid).get().addOnSuccessListener {
                             if(it.exists()){
-                                var totalCal = menucal + it.get("totalCalories").toString().toInt()
+                                var totalCal = 0
+                                if(it.get("totalCalories") != null){
+                                    totalCal = menucal + it.get("totalCalories").toString().toInt()
+                                }else{
+                                    totalCal = menucal
+                                }
                                 db.collection("Journey").document(journeyid).update(
                                     "breakfastMenu", hashMapOf(
                                         "calories" to menucal,
@@ -116,7 +133,7 @@ class BreakfastFragment(var currDay: Int) : Fragment() {
                                 ).addOnSuccessListener {
                                     db.collection("Journey").document(journeyid).update("totalCalories", totalCal)
                                     view.findViewById<FloatingActionButton>(R.id.floatingActionButton3).visibility = View.INVISIBLE
-                                    view.findViewById<FloatingActionButton>(R.id.changeBreakfast).visibility = View.INVISIBLE
+                                    view.findViewById<Button>(R.id.changeBreakfast).visibility = View.INVISIBLE
                                 }
 
                             }
@@ -135,7 +152,7 @@ class BreakfastFragment(var currDay: Int) : Fragment() {
                             )
                         ).addOnSuccessListener {
                             view.findViewById<FloatingActionButton>(R.id.floatingActionButton3).visibility = View.INVISIBLE
-                            view.findViewById<FloatingActionButton>(R.id.changeBreakfast).visibility = View.INVISIBLE
+                            view.findViewById<Button>(R.id.changeBreakfast).visibility = View.INVISIBLE
                         }
                     }
                 }
@@ -151,6 +168,7 @@ class BreakfastFragment(var currDay: Int) : Fragment() {
                     if(!it?.isEmpty!!){
                         menuName.text = it.documents.first().getString("CustomMealName")
                         calCount.text = it.documents.first().get("Calories").toString() + " kcal"
+                        menuId = it.documents.first().id
 
                     }
                 }

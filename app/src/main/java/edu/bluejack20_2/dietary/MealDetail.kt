@@ -21,12 +21,14 @@ class MealDetail : AppCompatActivity() {
 
     var db = FirebaseFirestore.getInstance()
     private lateinit var menuId: String
+    private var isEditable: Boolean = true
     private lateinit var mealCalories: TextView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_meal_detail)
         menuId = (getIntent().getExtras()?.get("menuId") as String?).toString()
+        isEditable = ((getIntent().getExtras()?.get("isEditable") as Boolean?)!!)
 
         findViewById<ImageView>(R.id.back).setOnClickListener{
             finish()
@@ -34,8 +36,14 @@ class MealDetail : AppCompatActivity() {
 
         mealCalories = findViewById(R.id.mealCalories)
         val ingredientList = getIngredientList()
-        findViewById<RecyclerView>(R.id.ingredientView).adapter =
-            IngredientAdapter(mealCalories, ingredientList, this)
+        Log.wtf("the meal ingredients is editable", isEditable.toString())
+        if(isEditable){
+            findViewById<RecyclerView>(R.id.ingredientView).adapter =
+                IngredientAdapter(mealCalories, ingredientList, this)
+        }else{
+            findViewById<RecyclerView>(R.id.ingredientView).adapter =
+                NonEditableIngredientAdapter(ingredientList, this)
+        }
         findViewById<RecyclerView>(R.id.ingredientView).layoutManager =
             LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
         findViewById<RecyclerView>(R.id.ingredientView).setHasFixedSize(true)
@@ -68,12 +76,13 @@ class MealDetail : AppCompatActivity() {
                 findViewById<TextView>(R.id.mealCalories).text = it.data?.get("Calories").toString() + " kcal"
                 Log.wtf("this meal calories", it.data?.get("Calories").toString())
                 val ingredients = it.data?.get("CustomMealIngredients")!! as List<Map<*, *>>
-                var calCount = 0F
-                var weight = 0F
-                var name = ""
                 ingredients.forEach {
+                    var calCount = 0F
+                    var weight = 0F
+                    var name = ""
                     calCount = it["Weight"].toString().toFloat()
                     weight = it["Weight"].toString().toFloat()
+                    Log.wtf("weightt", weight.toString())
                     val ingredientId = it["IngredientID"].toString()
                     db.collection("MainIngredients").document(it["IngredientID"].toString()).get().addOnSuccessListener {
                         if(it.exists()){
@@ -81,6 +90,8 @@ class MealDetail : AppCompatActivity() {
                             calCount *= it.data?.get("IngredientsCalories")!!.toString().toFloat()
                             calCount = calCount.roundToInt().toFloat()
                             name = it.data?.get("IngredientsName")!!.toString()
+
+                            Log.wtf("weightt2", weight.toString())
                             list.add(IngredientItem(ingredientId, name, calCount, weight))
                             findViewById<RecyclerView>(R.id.ingredientView).adapter?.notifyDataSetChanged()
                         }

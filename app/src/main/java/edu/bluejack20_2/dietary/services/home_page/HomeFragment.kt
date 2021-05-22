@@ -1,18 +1,13 @@
-package edu.bluejack20_2.dietary
+package edu.bluejack20_2.dietary.services.home_page
 
-import android.content.res.ColorStateList
-import android.graphics.Color
-import android.graphics.drawable.Drawable
-import android.icu.util.TimeUnit
-import android.opengl.Visibility
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentManager
 import androidx.viewpager2.widget.ViewPager2
+import com.google.android.gms.tasks.Tasks
 import com.google.android.material.progressindicator.CircularProgressIndicator
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
@@ -20,21 +15,16 @@ import com.google.firebase.Timestamp
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.squareup.picasso.Picasso
-import kotlinx.android.synthetic.main.fragment_home.*
-import org.w3c.dom.Text
-import java.time.Duration
-import java.time.Duration.between
-import java.time.LocalDate
-import java.time.LocalDate.parse
-import java.time.LocalDateTime
-import java.time.LocalDateTime.parse
+import edu.bluejack20_2.dietary.CirleImageView
+import edu.bluejack20_2.dietary.R
+import edu.bluejack20_2.dietary.services.home_page.adapter.HomeMealAdapter
 import java.util.*
 
 class HomeFragment : Fragment(R.layout.fragment_home) {
 
     var user = FirebaseAuth.getInstance().currentUser
     var db = FirebaseFirestore.getInstance()
-    private lateinit var profilepic:CirleImageView
+    private lateinit var profilepic: CirleImageView
     private lateinit var tabLayout: TabLayout
     private lateinit var viewPager2: ViewPager2
     private var currDay: Int = 0
@@ -46,7 +36,9 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
 
         view.findViewById<TextView>(R.id.salutation).text = "Hello, " + user.displayName + "!"
 
-        profilepic = view.findViewById<CirleImageView>(R.id.user_profilepic)
+        profilepic = view.findViewById<CirleImageView>(
+            R.id.user_profilepic
+        )
 
         db.collection("users").whereEqualTo("username", user.displayName).get().addOnSuccessListener {
             if(!it?.isEmpty!!){
@@ -64,9 +56,10 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
                         30
                     view.findViewById<CircularProgressIndicator>(R.id.planprogresscircle).progress =
                         res.toLong().toInt()
-                    db.collection("Journey").whereEqualTo("userID", userid).whereEqualTo("Date", Timestamp.now()).get().addOnSuccessListener {
+                    db.collection("Journey").whereEqualTo("userID", userid).whereEqualTo("day", res.toLong().toInt()).get().addOnSuccessListener {
                         if(!it?.isEmpty!!){
-                            var calLeft = getMapping["CaloriePerDay"] as Int
+                            var calLeft = getMapping["CaloriePerDay"].toString().toInt()
+                            view.findViewById<TextView>(R.id.todaygoals).text = getString(R.string.today_calories, calLeft.toString().toInt())
                             if(it.documents.first().get("breakfastMenu")!= null){
                                 var breakmap = it.documents.first().get("breakfastMenu") as Map<*, *>
                                 calLeft -= breakmap["calories"].toString().toInt()
@@ -91,6 +84,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
                                 view.findViewById<TextView>(R.id.plan3).text = "to be burned"
                             }
                         }else{
+                            view.findViewById<TextView>(R.id.todaygoals).text = getString(R.string.today_calories, getMapping["CaloriePerDay"].toString().toInt())
                             view.findViewById<TextView>(R.id.plancal).text = getMapping["CaloriePerDay"].toString()
                         }
                     }
@@ -99,6 +93,21 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
                 }
                 if(it.documents.first().getString("photoURL") != null){
                     Picasso.get().load(it.documents.first().getString("photoURL")).into(profilepic)
+                }
+                activity?.let {
+                    viewPager2.adapter =
+                        HomeMealAdapter(
+                            it,
+                            currDay
+                        )
+                    TabLayoutMediator(tabLayout, viewPager2){tab, position->
+                        when(position){
+                            0 -> tab.text = "Breakfast"
+                            1 -> tab.text = "Lunch"
+                            2 -> tab.text = "Dinner"
+                            3 -> tab.text = "Snack"
+                        }
+                    }.attach()
                 }
             }
         }
@@ -110,6 +119,9 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         view.findViewById<ImageView>(R.id.noplanpic).visibility = View.INVISIBLE
 
         view.findViewById<TextView>(R.id.plan1).visibility = View.VISIBLE
+        view.findViewById<TabLayout>(R.id.tabLayout).visibility = View.VISIBLE
+        view.findViewById<TextView>(R.id.mealtext).visibility = View.VISIBLE
+        view.findViewById<TextView>(R.id.todaygoals).visibility = View.VISIBLE
         view.findViewById<TextView>(R.id.plan2).visibility = View.VISIBLE
         view.findViewById<TextView>(R.id.plan3).visibility = View.VISIBLE
         view.findViewById<TextView>(R.id.plan4).visibility = View.VISIBLE
@@ -121,17 +133,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         tabLayout = view.findViewById(R.id.tabLayout)
         viewPager2 = view.findViewById(R.id.viewPager)
 
-        activity?.let {
-            viewPager2.adapter = HomeMealAdapter(it, currDay)
-            TabLayoutMediator(tabLayout, viewPager2){tab, position->
-                when(position){
-                    0 -> tab.text = "Breakfast"
-                    1 -> tab.text = "Lunch"
-                    2 -> tab.text = "Dinner"
-                    3 -> tab.text = "Snack"
-                }
-            }.attach()
-        }
+
     }
 
     fun activateNoPlan(view: View){
@@ -139,6 +141,9 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         view.findViewById<ImageView>(R.id.noplanpic).visibility = View.VISIBLE
 
         view.findViewById<TextView>(R.id.plan1).visibility = View.INVISIBLE
+        view.findViewById<TabLayout>(R.id.tabLayout).visibility = View.INVISIBLE
+        view.findViewById<TextView>(R.id.mealtext).visibility = View.INVISIBLE
+        view.findViewById<TextView>(R.id.todaygoals).visibility = View.INVISIBLE
         view.findViewById<TextView>(R.id.plan2).visibility = View.INVISIBLE
         view.findViewById<TextView>(R.id.plan3).visibility = View.INVISIBLE
         view.findViewById<TextView>(R.id.plan4).visibility = View.INVISIBLE

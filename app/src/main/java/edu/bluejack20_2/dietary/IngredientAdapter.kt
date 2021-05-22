@@ -19,9 +19,9 @@ class IngredientAdapter(private val mealCalories: TextView,private val ingredien
         parent: ViewGroup,
         viewType: Int
     ): IngredientAdapter.IngredientHolder {
-        val ingredientView = LayoutInflater.from(parent.context).inflate(R.layout.ingredients_item, parent, false)
+            val ingredientView = LayoutInflater.from(parent.context).inflate(R.layout.ingredients_item, parent, false)
 
-        return IngredientHolder(ingredientView)
+            return IngredientHolder(ingredientView)
     }
 
     override fun getItemCount(): Int {
@@ -46,7 +46,7 @@ class IngredientAdapter(private val mealCalories: TextView,private val ingredien
                 ingredientList?.get(position)!!.weight  -= 50;
                 ingredientList?.get(position)!!.calory *= ((ingredientList?.get(position)!!.weight)/(ingredientList.get(position).weight + 50))
 
-                holder.ingredientCal.text = ingredientList.get(position).calory.roundToInt().toString() + " kcal"
+                holder.ingredientCal.text = ingredientList.get(position).calory.roundToInt().toString().toInt().toString() + " kcal"
                 holder.ingredientWeight.setText(ingredientList.get(position).weight.roundToInt().toString())
                 countTotalCal()
             }
@@ -57,7 +57,7 @@ class IngredientAdapter(private val mealCalories: TextView,private val ingredien
                 if(holder.ingredientWeight.text.toString().toFloat() > 0){
                     ingredientList?.get(position)!!.calory *= ((holder.ingredientWeight.text.toString().toFloat())/(ingredientList?.get(position)!!.weight))
                     ingredientList.get(position).weight  = holder.ingredientWeight.text.toString().toFloat();
-                    holder.ingredientCal.text = ingredientList?.get(position)!!.calory.roundToInt().toString() + " kcal"
+                    holder.ingredientCal.text = ingredientList?.get(position)!!.calory.roundToInt().toString().toInt().toString() + " kcal"
                     countTotalCal()
                 }
             }
