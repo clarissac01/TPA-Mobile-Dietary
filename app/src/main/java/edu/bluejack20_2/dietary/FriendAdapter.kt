@@ -41,7 +41,7 @@ class FriendAdapter(private val friendList: List<FriendItem>?, private val conte
         holder.friendid.text = friendItem?.docId
         holder.delbtn.setOnClickListener {
             friendUsername = holder.friendname.text.toString()
-            unfriend(it, friendItem?.docId.toString())
+            unfriend(it, holder, friendItem?.docId.toString())
         }
 
         holder.addBtn.setOnClickListener {
@@ -113,7 +113,7 @@ class FriendAdapter(private val friendList: List<FriendItem>?, private val conte
         val friendid = itemView.findViewById<TextView>(R.id.thisfriendid)
     }
 
-    fun unfriend(view: View, friendID: String) {
+    fun unfriend(view: View, holder: FriendHolder, friendID: String) {
         MaterialAlertDialogBuilder(view.context)
             .setTitle("Are you sure?")
             .setPositiveButton("NO") { dialog, which ->
@@ -130,7 +130,8 @@ class FriendAdapter(private val friendList: List<FriendItem>?, private val conte
                         db.collection("users").document(userid)
                             .update("friends", FieldValue.arrayRemove(friendID))
                             .addOnSuccessListener {
-
+                                holder.delbtn.visibility = View.INVISIBLE
+                                holder.addBtn.visibility = View.VISIBLE
                             }
                     }
             }
@@ -153,7 +154,6 @@ class FriendAdapter(private val friendList: List<FriendItem>?, private val conte
     }
 
     fun gotoUserDetail(context: Context, user: FriendItem) {
-        Log.wtf("gotouser detail", user.toString())
         val intent = Intent(
             context,
             UserDetail::class.java

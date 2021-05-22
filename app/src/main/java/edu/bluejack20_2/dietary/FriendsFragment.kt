@@ -18,6 +18,7 @@ import com.google.firebase.firestore.FieldPath
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
+import com.malinskiy.superrecyclerview.SuperRecyclerView
 import java.lang.reflect.Field
 import java.net.URI
 import java.util.*
@@ -32,34 +33,26 @@ class FriendsFragment : Fragment(R.layout.fragment_friends) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val friendlist = getUserFriends()
-        initRecyclerView(friendlist as MutableList<FriendItem>?)
+        getUserFriends()
     }
 
-    fun initRecyclerView(friendlist: MutableList<FriendItem>?){
-        requireActivity().findViewById<RecyclerView>(R.id.friend_view).adapter =
-            FriendAdapter(friendlist, requireContext())
-        requireActivity().findViewById<RecyclerView>(R.id.friend_view).layoutManager =
-            LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
-        requireActivity().findViewById<RecyclerView>(R.id.friend_view).setHasFixedSize(true)
-
+    override fun onResume() {
+        super.onResume()
+        getUserFriends()
     }
 
-
-    private fun getUserFriends(): List<FriendItem>? {
+    private fun getUserFriends() {
         val list = ArrayList<FriendItem>()
         var docId: String
         db.collection("users").whereEqualTo("username", user.displayName)
             .addSnapshotListener { it, _ ->
-//                list.clear()
+                list.clear()
                 if (!it?.isEmpty!!) {
                     var friendlist = it.documents.first().get("friends") as List<*>?
                     if (friendlist?.size == 0) {
-                        Log.wtf("eezz empty", "hohoho")
-                        requireActivity().findViewById<RecyclerView>(R.id.friend_view).adapter =
+                        requireActivity().findViewById<SuperRecyclerView>(R.id.friend_view).adapter =
                             null
                     } else {
-                        Log.wtf("geez", "not empty")
                     friendlist?.forEach {
                         var docId = it.toString()
                         db.collection("users").document(docId)
@@ -105,14 +98,42 @@ class FriendsFragment : Fragment(R.layout.fragment_friends) {
                                         )
                                     list += friend
                                 }
-                                requireActivity().findViewById<RecyclerView>(R.id.friend_view).adapter?.notifyDataSetChanged()
+                                requireActivity().findViewById<SuperRecyclerView>(R.id.friend_view).adapter?.notifyDataSetChanged()
                             }
                     }
+
+
+                        val paginated = mutableListOf<FriendItem>()
+                        paginated.addAll(list.take(7))
+
+                        view?.findViewById<SuperRecyclerView>(R.id.friend_view)!!.adapter = FriendAdapter(list, requireContext())
+                        view?.findViewById<SuperRecyclerView>(R.id.friend_view)!!.setLayoutManager(LinearLayoutManager(context))
+                        view?.findViewById<SuperRecyclerView>(R.id.friend_view)
+                            ?.setupMoreListener({ overallItemsCount, itemsBeforeMore, maxLastVisiblePosition ->
+                                if (maxLastVisiblePosition + 7 >= overallItemsCount - 1) {
+
+                                }
+
+                                val from = maxLastVisiblePosition + 1
+                                paginated.clear()
+
+                                var takenCount = 0
+                                for (i in from until overallItemsCount) {
+                                    if (takenCount >= 7) {
+                                        break
+                                    }
+
+                                    paginated.add(list[i])
+                                    takenCount++
+                                }
+                            }, 7)
+
+
+
                 }
                 }
             }
 
-        return list
     }
 
 

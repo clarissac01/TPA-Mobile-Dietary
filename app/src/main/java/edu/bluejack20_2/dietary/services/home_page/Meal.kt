@@ -2,6 +2,7 @@ package edu.bluejack20_2.dietary.services.home_page
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
@@ -65,10 +66,11 @@ class Meal : AppCompatActivity() {
         //logic get recommended meal
 
         Tasks.whenAll(
-
-            db.collection("users").whereEqualTo("username", FirebaseAuth.getInstance().currentUser).get().addOnSuccessListener {
+            db.collection("users").whereEqualTo("username", FirebaseAuth.getInstance().currentUser.displayName).get().addOnSuccessListener {
                 if(!it.isEmpty){
-                    db.collection("CustomMeals").whereEqualTo("type", type).whereEqualTo("UserID", it.documents.first().id).orderBy("day").get().addOnSuccessListener {
+                    Log.wtf("the type, the userid, the day", type.toString() + " jdlasjdlas " + it.documents.first().id)
+                    var userid = it.documents.first().id
+                    db.collection("CustomMeals").whereEqualTo("type", type).whereEqualTo("UserID", userid).orderBy("day").get().addOnSuccessListener {
                         if(!it?.isEmpty!!){
                             it.documents.forEach{
                                 list.add(
@@ -77,7 +79,15 @@ class Meal : AppCompatActivity() {
                                         it.get("Calories").toString().toFloat(), FALSE
                                     )
                                 )
-
+                                Log.wtf("something is addedd", it.get("CustomMealName").toString())
+                            }
+                            for (i in currentDay+1 until list.size){
+                                list2.add(list.get(i))
+                                findViewById<RecyclerView>(R.id.recommend_meal_view).adapter?.notifyDataSetChanged()
+                            }
+                            for (i in 0 until currentDay){
+                                list2.add(list.get(i))
+                                findViewById<RecyclerView>(R.id.recommend_meal_view).adapter?.notifyDataSetChanged()
                             }
                         }
                     }
@@ -86,14 +96,7 @@ class Meal : AppCompatActivity() {
             }
 
         ).addOnSuccessListener {
-            for (i in currentDay+1 until list.size){
-                list2.add(list.get(i))
-                findViewById<RecyclerView>(R.id.recommend_meal_view).adapter?.notifyDataSetChanged()
-            }
-            for (i in 0 until currentDay){
-                list2.add(list.get(i))
-                findViewById<RecyclerView>(R.id.recommend_meal_view).adapter?.notifyDataSetChanged()
-            }
+
 
         }
 
@@ -111,7 +114,7 @@ class Meal : AppCompatActivity() {
             .addOnSuccessListener {
                 if(!it?.isEmpty!!){
                     var userid = it.documents.first().id
-                    db.collection("CustomMeals").whereEqualTo("UserID", userid).get().addOnSuccessListener {
+                    db.collection("CustomMeals").whereEqualTo("UserID", userid).whereEqualTo("isCustom", true).get().addOnSuccessListener {
                         if(!it?.isEmpty!!){
                             it.documents.forEach{
 

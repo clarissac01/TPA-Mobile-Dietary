@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.Timestamp
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.malinskiy.superrecyclerview.SuperRecyclerView
 import edu.bluejack20_2.dietary.FriendAdapter
 import edu.bluejack20_2.dietary.FriendItem
 import edu.bluejack20_2.dietary.R
@@ -30,11 +31,7 @@ class   AddFriend : AppCompatActivity() {
         setContentView(R.layout.activity_add_friend)
 
         friendlist = getAllUser()!!
-        findViewById<RecyclerView>(R.id.user_view).adapter =
-            FriendAdapter(friendlist, this)
-        findViewById<RecyclerView>(R.id.user_view).layoutManager =
-            LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
-        findViewById<RecyclerView>(R.id.user_view).setHasFixedSize(true)
+
 
         search = findViewById<SearchView>(R.id.search_friend)
         search.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
@@ -43,20 +40,19 @@ class   AddFriend : AppCompatActivity() {
                     var filter = friendlist?.filter {
                         it.username.contains(query.toString())
                     }
-                    Log.wtf("filter", filter.toString())
                     if(filter.isEmpty()){
                         Toast.makeText(applicationContext, "User not found!", Toast.LENGTH_LONG).show()
-                        findViewById<RecyclerView>(R.id.user_view).adapter = null
+                        findViewById<SuperRecyclerView>(R.id.user_view).adapter = null
                     }else{
                         var alist = friendlist?.toMutableList()
                         alist.clear()
                         alist.addAll(filter)
-                        findViewById<RecyclerView>(R.id.user_view).adapter =
+                        findViewById<SuperRecyclerView>(R.id.user_view).adapter =
                             FriendAdapter(
                                 alist,
                                 this@AddFriend
                             )
-                        findViewById<RecyclerView>(R.id.user_view).adapter?.notifyDataSetChanged()
+                        findViewById<SuperRecyclerView>(R.id.user_view).adapter?.notifyDataSetChanged()
 
                     }
                 return false
@@ -65,12 +61,12 @@ class   AddFriend : AppCompatActivity() {
             override fun onQueryTextChange(newText: String?): Boolean {
 //                search.clearFocus()
                 if(newText.equals("")){
-                    findViewById<RecyclerView>(R.id.user_view).adapter =
+                    findViewById<SuperRecyclerView>(R.id.user_view).adapter =
                         FriendAdapter(
                             friendlist,
                             this@AddFriend
                         )
-                    findViewById<RecyclerView>(R.id.user_view).adapter?.notifyDataSetChanged()
+                    findViewById<SuperRecyclerView>(R.id.user_view).adapter?.notifyDataSetChanged()
                 }else{
                     var filter = friendlist?.filter {
                         it.username.contains(newText.toString())
@@ -80,14 +76,14 @@ class   AddFriend : AppCompatActivity() {
                         var alist = friendlist?.toMutableList()
                         alist.clear()
                         alist.addAll(filter)
-                        findViewById<RecyclerView>(R.id.user_view).adapter =
+                        findViewById<SuperRecyclerView>(R.id.user_view).adapter =
                             FriendAdapter(
                                 alist,
                                 this@AddFriend
                             )
-                        findViewById<RecyclerView>(R.id.user_view).adapter?.notifyDataSetChanged()
+                        findViewById<SuperRecyclerView>(R.id.user_view).adapter?.notifyDataSetChanged()
                     }else{
-                        findViewById<RecyclerView>(R.id.user_view).adapter = null
+                        findViewById<SuperRecyclerView>(R.id.user_view).adapter = null
                     }
                 }
                 return false
@@ -119,7 +115,6 @@ class   AddFriend : AppCompatActivity() {
                             if (it.getString("photoURL") != null) {
                                 photoUrl = it.getString("photoURL")
                             }
-                            Log.wtf("ini fotonya", photoUrl)
                             userid = it.id
 
                             val isNotMyFriend = !friendlist.contains(userid)
@@ -162,10 +157,35 @@ class   AddFriend : AppCompatActivity() {
                                     list.add(currentUser)
                                 }
                                 usernames.add(username)
-                                findViewById<RecyclerView>(R.id.user_view).adapter?.notifyDataSetChanged()
+                                findViewById<SuperRecyclerView>(R.id.user_view).adapter?.notifyDataSetChanged()
                             }
                         }
-                        Log.wtf("username2", usernames.toString())
+                        val paginated = mutableListOf<FriendItem>()
+                        paginated.addAll(list.take(8))
+
+                        findViewById<SuperRecyclerView>(R.id.user_view).adapter =
+                            FriendAdapter(list, this)
+                        findViewById<SuperRecyclerView>(R.id.user_view)!!.setLayoutManager(LinearLayoutManager(this))
+                        findViewById<SuperRecyclerView>(R.id.user_view)
+                            ?.setupMoreListener({ overallItemsCount, itemsBeforeMore, maxLastVisiblePosition ->
+                                if (maxLastVisiblePosition + 8 >= overallItemsCount - 1) {
+
+                                }
+
+                                val from = maxLastVisiblePosition + 1
+                                paginated.clear()
+
+                                var takenCount = 0
+                                for (i in from until overallItemsCount) {
+                                    if (takenCount >= 8) {
+                                        break
+                                    }
+
+                                    paginated.add(list[i])
+                                    takenCount++
+                                }
+                            }, 8)
+
                     }
                 }
             }

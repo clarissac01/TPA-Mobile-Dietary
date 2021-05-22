@@ -24,15 +24,11 @@ class FriendCustomMeal(var FriendID: String = "") : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-
-        Log.wtf("this friend iddd", FriendID)
-
         var mealList = getList(view)!!
     }
 
     override fun onResume() {
         super.onResume()
-        Log.wtf("this friend iddd", FriendID)
 
         var mealList = getList(requireView())
     }
@@ -52,16 +48,13 @@ class FriendCustomMeal(var FriendID: String = "") : Fragment() {
                                 }
                             }
                         }
-                        Log.wtf("dalam list", currentuserlist.toString())
                         db.collection("CustomMeals").whereEqualTo("UserID", FriendID).get().addOnSuccessListener {
                             if(!it.isEmpty){
                                 it.documents.forEach{
                                     var menuID = it.id
                                     var mealname = it.getString("CustomMealName")
                                     var calories = it.get("Calories").toString().toFloat()
-                                                    Log.wtf("thisuserdetail, onfail", menuID)
                                     if(currentuserlist.contains(menuID)) {
-                                        Log.wtf("sajkdhajkshda", "duahdad")
                                         list.add(MealItem(menuID, mealname!!, calories, true, true))
                                         view.findViewById<RecyclerView>(R.id.friendmealrecyclerview)?.adapter?.notifyDataSetChanged()
                                     }

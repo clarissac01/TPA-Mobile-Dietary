@@ -104,7 +104,7 @@ class LunchFragment(var currDay: Int) : Fragment() {
             Tasks.whenAll(
                 db.collection("CustomMeals").document(menuId).get().addOnSuccessListener {
                     if(it.exists()){
-                        menucal = it.get("Calories").toString().toInt()
+                        menucal = it.get("Calories").toString().toFloat().toInt()
                         var inglist = it.get("CustomMealIngredients") as List<Map<*, *>>
                         inglist.forEach {
                             customIngredient.add(mapOf(
@@ -122,7 +122,7 @@ class LunchFragment(var currDay: Int) : Fragment() {
                             if(it.exists()){
                                 var totalCal = 0
                                 if(it.get("totalCalories") != null){
-                                    totalCal = menucal + it.get("totalCalories").toString().toInt()
+                                    totalCal = menucal + it.get("totalCalories").toString().toFloat().toInt()
                                 }else{
                                     totalCal = menucal
                                 }
@@ -145,6 +145,7 @@ class LunchFragment(var currDay: Int) : Fragment() {
                             hashMapOf(
                                 "userID" to userId,
                                 "totalCalories" to menucal,
+                                "day" to currDay,
                                 "Date" to Timestamp.now(),
                                 "lunchMenu" to hashMapOf(
                                     "calories" to menucal,

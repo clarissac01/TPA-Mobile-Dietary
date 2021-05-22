@@ -92,7 +92,6 @@ class FriendCustomMealDetail(val mealItem: MealItem? = null) : AppCompatActivity
             if(it.exists()){
                 findViewById<TextView>(R.id.friendmealName).text = it.data?.get("CustomMealName").toString()
                 findViewById<TextView>(R.id.friendmealCalories).text = it.data?.get("Calories").toString() + " kcal"
-                Log.wtf("this meal calories", it.data?.get("Calories").toString())
                 val ingredients = it.data?.get("CustomMealIngredients")!! as List<Map<*, *>>
                 ingredients.forEach {
                     var calCount = 0F

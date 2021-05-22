@@ -142,7 +142,6 @@ class RegisterActivity : AppCompatActivity() {
             if(!isLettersOrDigits(userPassword)){
                 findViewById<TextView>(R.id.passwordNull).text = getString(R.string.password_alphanumeric)
                 findViewById<TextView>(R.id.passwordNull).visibility = View.VISIBLE
-                Log.wtf("not alphanumeric", "2khklas")
                 return
             }
             if(isLettersOrDigits(userPassword) && userPassword.length >= 8 ){
@@ -202,13 +201,11 @@ class RegisterActivity : AppCompatActivity() {
                             startActivity(Intent(this, LoginActivity::class.java))
 
                        }else{
-                           Log.wtf("email is taken message", "this isdakljdlasjd")
                            findViewById<TextView>(R.id.passwordNull).text = getString(R.string.email_taken)
                            findViewById<TextView>(R.id.passwordNull).visibility = View.VISIBLE
                        }
                     }
                 }else{
-                           Log.wtf("username is taken message", "this isdakljdlasjd")
                     findViewById<TextView>(R.id.passwordNull).text = getString(R.string.username_taken)
                     findViewById<TextView>(R.id.passwordNull).visibility = View.VISIBLE
 

@@ -238,7 +238,6 @@ class EditProfile : AppCompatActivity() {
                             return@addOnSuccessListener
                         }
 
-                        Log.wtf("hehe", listOf(userConfirmPassword, email, name).toString())
 //                val credential = GoogleAuthProvider
 //                    .getCredential("user@example.com", "password1234")
                         val data = mutableListOf(

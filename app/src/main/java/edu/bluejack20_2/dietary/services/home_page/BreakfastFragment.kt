@@ -102,7 +102,7 @@ class BreakfastFragment(var currDay: Int) : Fragment() {
             Tasks.whenAll(
                 db.collection("CustomMeals").document(menuId).get().addOnSuccessListener {
                     if(it.exists()){
-                        menucal = it.get("Calories").toString().toInt()
+                        menucal = it.get("Calories").toString().toFloat().toInt()
                         var inglist = it.get("CustomMealIngredients") as List<Map<*, *>>
                         inglist.forEach {
                             customIngredient.add(mapOf(
@@ -143,6 +143,7 @@ class BreakfastFragment(var currDay: Int) : Fragment() {
                             hashMapOf(
                                 "userID" to userId,
                                 "totalCalories" to menucal,
+                                "day" to currDay,
                                 "Date" to Timestamp.now(),
                                 "breakfastMenu" to hashMapOf(
                                     "calories" to menucal,

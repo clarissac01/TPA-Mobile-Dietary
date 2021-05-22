@@ -36,7 +36,6 @@ class MealDetail : AppCompatActivity() {
 
         mealCalories = findViewById(R.id.mealCalories)
         val ingredientList = getIngredientList()
-        Log.wtf("the meal ingredients is editable", isEditable.toString())
         if(isEditable){
             findViewById<RecyclerView>(R.id.ingredientView).adapter =
                 IngredientAdapter(mealCalories, ingredientList, this)
@@ -74,7 +73,6 @@ class MealDetail : AppCompatActivity() {
             if(it.exists()){
                 findViewById<TextView>(R.id.mealName).text = it.data?.get("CustomMealName").toString()
                 findViewById<TextView>(R.id.mealCalories).text = it.data?.get("Calories").toString() + " kcal"
-                Log.wtf("this meal calories", it.data?.get("Calories").toString())
                 val ingredients = it.data?.get("CustomMealIngredients")!! as List<Map<*, *>>
                 ingredients.forEach {
                     var calCount = 0F
