@@ -33,6 +33,10 @@ class FriendsFragment : Fragment(R.layout.fragment_friends) {
         super.onViewCreated(view, savedInstanceState)
 
         val friendlist = getUserFriends()
+        initRecyclerView(friendlist as MutableList<FriendItem>?)
+    }
+
+    fun initRecyclerView(friendlist: MutableList<FriendItem>?){
         requireActivity().findViewById<RecyclerView>(R.id.friend_view).adapter =
             FriendAdapter(friendlist, requireContext())
         requireActivity().findViewById<RecyclerView>(R.id.friend_view).layoutManager =
@@ -41,19 +45,21 @@ class FriendsFragment : Fragment(R.layout.fragment_friends) {
 
     }
 
+
     private fun getUserFriends(): List<FriendItem>? {
         val list = ArrayList<FriendItem>()
         var docId: String
         db.collection("users").whereEqualTo("username", user.displayName)
             .addSnapshotListener { it, _ ->
-                list.clear()
+//                list.clear()
                 if (!it?.isEmpty!!) {
                     var friendlist = it.documents.first().get("friends") as List<*>?
-                    if(friendlist?.size == 0){
+                    if (friendlist?.size == 0) {
                         Log.wtf("eezz empty", "hohoho")
                         requireActivity().findViewById<RecyclerView>(R.id.friend_view).adapter =
                             null
-                    }
+                    } else {
+                        Log.wtf("geez", "not empty")
                     friendlist?.forEach {
                         var docId = it.toString()
                         db.collection("users").document(docId)
@@ -61,21 +67,31 @@ class FriendsFragment : Fragment(R.layout.fragment_friends) {
                                 var username = it?.data?.getValue("username")
                                 var photo = it?.data?.get("photoURL")
 
-                                var res:Int = 0
+                                var res: Int = 0
 
-                                if(it?.data?.get("plan") != null){
+                                if (it?.data?.get("plan") != null) {
                                     var plan = it?.data?.get("plan") as Map<*, *>
                                     val date1 = Date()
                                     val date2 = plan["startDate"] as Timestamp
                                     var diff = date1.time - date2.toDate().time
-                                    res = java.util.concurrent.TimeUnit.DAYS.convert(diff, java.util.concurrent.TimeUnit.MILLISECONDS)
+                                    res = java.util.concurrent.TimeUnit.DAYS.convert(
+                                        diff,
+                                        java.util.concurrent.TimeUnit.MILLISECONDS
+                                    )
                                         .toInt()
 
                                 }
 
                                 if (photo == null) {
                                     var friend =
-                                        FriendItem(username.toString(), false, null, res, docId, true)
+                                        FriendItem(
+                                            username.toString(),
+                                            false,
+                                            null,
+                                            res,
+                                            docId,
+                                            true
+                                        )
                                     list += friend
                                 } else {
                                     var friend =
@@ -92,6 +108,7 @@ class FriendsFragment : Fragment(R.layout.fragment_friends) {
                                 requireActivity().findViewById<RecyclerView>(R.id.friend_view).adapter?.notifyDataSetChanged()
                             }
                     }
+                }
                 }
             }
 

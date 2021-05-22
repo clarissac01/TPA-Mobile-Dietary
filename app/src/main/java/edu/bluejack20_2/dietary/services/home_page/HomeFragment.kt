@@ -151,6 +151,8 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         view.findViewById<TextView>(R.id.plancurrday).visibility = View.INVISIBLE
         view.findViewById<TextView>(R.id.planday).visibility = View.INVISIBLE
         view.findViewById<CircularProgressIndicator>(R.id.planprogresscircle).visibility = View.INVISIBLE
+        viewPager2 = view.findViewById(R.id.viewPager)
+        viewPager2.visibility = View.INVISIBLE
 
     }
 
