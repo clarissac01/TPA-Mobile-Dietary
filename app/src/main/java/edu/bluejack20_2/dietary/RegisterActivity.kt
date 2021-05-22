@@ -137,6 +137,7 @@ class RegisterActivity : AppCompatActivity() {
                     user["username"] = name
                     user["password"] = password
                     user["email"] = email
+                    user["photoURL"] = "https://miro.medium.com/max/720/1*W35QUSvGpcLuxPo3SRTH4w.png"
                     if(bitmap!=null){
                         val stream = ByteArrayOutputStream()
                         bitmap!!.compress(Bitmap.CompressFormat.JPEG, 100, stream)

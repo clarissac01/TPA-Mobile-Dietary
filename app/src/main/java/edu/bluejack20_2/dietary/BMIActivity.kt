@@ -47,9 +47,31 @@ class BMIActivity : AppCompatActivity() {
 
     fun loseWeight() {
         findViewById<Button>(R.id.calculate_btn).setOnClickListener {
-            var weight = findViewById<TextInputEditText>(R.id.weight_text).text.toString().toFloat()
-            var height = findViewById<TextInputEditText>(R.id.height_text).text.toString().toFloat()
-            var age = findViewById<TextInputEditText>(R.id.age_text).text.toString().toInt()
+            var weight: Float
+            var height: Float
+            var age: Int
+            if(findViewById<TextInputEditText>(R.id.weight_text).text.isNullOrBlank()) {
+                Toast.makeText(this, getString(R.string.weight_empty_message), Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+            else {
+                weight = findViewById<TextInputEditText>(R.id.weight_text).text.toString().toFloat()
+            }
+            if (findViewById<TextInputEditText>(R.id.height_text).text.isNullOrBlank()) {
+                Toast.makeText(this, getString(R.string.height_empty_message), Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+            else {
+                height = findViewById<TextInputEditText>(R.id.height_text).text.toString().toFloat()
+            }
+            if (findViewById<TextInputEditText>(R.id.age_text).text.isNullOrBlank()) {
+                Toast.makeText(this, getString(R.string.age_empty_message), Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+            else {
+                age = findViewById<TextInputEditText>(R.id.age_text).text.toString().toInt()
+            }
+
             var bmr = 0.0
             val now = com.google.firebase.Timestamp.now().toDate().toInstant()
             val zoneId = TimeZone.getDefault().toZoneId()
@@ -61,9 +83,13 @@ class BMIActivity : AppCompatActivity() {
                 bmr = (655.1 + (9.563 * weight) + (1.850 * height) - (4.676 + age))
                 Log.wtf("bmr", bmr.toString())
             }
-            else {
+            else if (findViewById<RadioButton>(R.id.radio_male).isChecked == true) {
                 bmr = (66.47 + (13.75 * weight) + (5.003 * height) - (6.755 + age))
                 Log.wtf("bmr", bmr.toString())
+            }
+            else {
+                Toast.makeText(this, getString(R.string.gender_not_checked), Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
             }
 
             if(findViewById<RadioButton>(R.id.radio_sedentary).isChecked == true) {
@@ -77,7 +103,7 @@ class BMIActivity : AppCompatActivity() {
                 db.collection("users").whereEqualTo("username", user.displayName).get().addOnSuccessListener {
                     db.collection("users").document(it.documents.first().id).update("plan", plan)
                     Toast.makeText(this, "Success Add Plan", Toast.LENGTH_SHORT).show()
-                    finish()
+                    startActivity(Intent(this, MainActivity::class.java))
                 }
             }
             else if(findViewById<RadioButton>(R.id.radio_light_active).isChecked == true) {
@@ -91,7 +117,7 @@ class BMIActivity : AppCompatActivity() {
                 db.collection("users").whereEqualTo("username", user.displayName).get().addOnSuccessListener {
                     db.collection("users").document(it.documents.first().id).update("plan", plan)
                     Toast.makeText(this, "Success Add Plan", Toast.LENGTH_SHORT).show()
-                    finish()
+                    startActivity(Intent(this, MainActivity::class.java))
                 }
             }
             else if(findViewById<RadioButton>(R.id.radio_moderate_active).isChecked == true) {
@@ -105,10 +131,10 @@ class BMIActivity : AppCompatActivity() {
                 db.collection("users").whereEqualTo("username", user.displayName).get().addOnSuccessListener {
                     db.collection("users").document(it.documents.first().id).update("plan", plan)
                     Toast.makeText(this, "Success Add Plan", Toast.LENGTH_SHORT).show()
-                    finish()
+                    startActivity(Intent(this, MainActivity::class.java))
                 }
             }
-            else {
+            else if (findViewById<RadioButton>(R.id.radio_very_active).isChecked == true) {
                 Amr.amrValue = (bmr * 1.9 - 500).roundToInt()
                 var plan = hashMapOf<String, Any>(
                     "CaloriePerDay" to Amr.amrValue,
@@ -119,17 +145,43 @@ class BMIActivity : AppCompatActivity() {
                 db.collection("users").whereEqualTo("username", user.displayName).get().addOnSuccessListener {
                     db.collection("users").document(it.documents.first().id).update("plan", plan)
                     Toast.makeText(this, "Success Add Plan", Toast.LENGTH_SHORT).show()
-                    finish()
+                    startActivity(Intent(this, MainActivity::class.java))
                 }
+            }
+            else {
+                Toast.makeText(this, getString(R.string.active_not_checked), Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
             }
         }
     }
 
     fun maintainWeight() {
         findViewById<Button>(R.id.calculate_btn).setOnClickListener {
-            var weight = findViewById<TextInputEditText>(R.id.weight_text).text.toString().toFloat()
-            var height = findViewById<TextInputEditText>(R.id.height_text).text.toString().toFloat()
-            var age = findViewById<TextInputEditText>(R.id.age_text).text.toString().toInt()
+            var weight: Float
+            var height: Float
+            var age: Int
+            if(findViewById<TextInputEditText>(R.id.weight_text).text.isNullOrBlank()) {
+                Toast.makeText(this, getString(R.string.weight_empty_message), Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+            else {
+                weight = findViewById<TextInputEditText>(R.id.weight_text).text.toString().toFloat()
+            }
+            if (findViewById<TextInputEditText>(R.id.height_text).text.isNullOrBlank()) {
+                Toast.makeText(this, getString(R.string.height_empty_message), Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+            else {
+                height = findViewById<TextInputEditText>(R.id.height_text).text.toString().toFloat()
+            }
+            if (findViewById<TextInputEditText>(R.id.age_text).text.isNullOrBlank()) {
+                Toast.makeText(this, getString(R.string.age_empty_message), Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+            else {
+                age = findViewById<TextInputEditText>(R.id.age_text).text.toString().toInt()
+            }
+
             var bmr = 0.0
             val now = com.google.firebase.Timestamp.now().toDate().toInstant()
             val zoneId = TimeZone.getDefault().toZoneId()
@@ -141,10 +193,15 @@ class BMIActivity : AppCompatActivity() {
                 bmr = (655.1 + (9.563 * weight) + (1.850 * height) - (4.676 + age))
                 Log.wtf("bmr", bmr.toString())
             }
-            else {
+            else if (findViewById<RadioButton>(R.id.radio_male).isChecked == true) {
                 bmr = (66.47 + (13.75 * weight) + (5.003 * height) - (6.755 + age))
                 Log.wtf("bmr", bmr.toString())
             }
+            else {
+                Toast.makeText(this, getString(R.string.gender_not_checked), Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
 
             if(findViewById<RadioButton>(R.id.radio_sedentary).isChecked == true) {
                 Amr.amrValue = (bmr * 1.2).roundToInt()
@@ -157,7 +214,7 @@ class BMIActivity : AppCompatActivity() {
                 db.collection("users").whereEqualTo("username", user.displayName).get().addOnSuccessListener {
                     db.collection("users").document(it.documents.first().id).update("plan", plan)
                     Toast.makeText(this, "Success Add Plan", Toast.LENGTH_SHORT).show()
-                    finish()
+                    startActivity(Intent(this, MainActivity::class.java))
                 }
             }
             else if(findViewById<RadioButton>(R.id.radio_light_active).isChecked == true) {
@@ -171,7 +228,7 @@ class BMIActivity : AppCompatActivity() {
                 db.collection("users").whereEqualTo("username", user.displayName).get().addOnSuccessListener {
                     db.collection("users").document(it.documents.first().id).update("plan", plan)
                     Toast.makeText(this, "Success Add Plan", Toast.LENGTH_SHORT).show()
-                    finish()
+                    startActivity(Intent(this, MainActivity::class.java))
                 }
             }
             else if(findViewById<RadioButton>(R.id.radio_moderate_active).isChecked == true) {
@@ -185,10 +242,10 @@ class BMIActivity : AppCompatActivity() {
                 db.collection("users").whereEqualTo("username", user.displayName).get().addOnSuccessListener {
                     db.collection("users").document(it.documents.first().id).update("plan", plan)
                     Toast.makeText(this, "Success Add Plan", Toast.LENGTH_SHORT).show()
-                    finish()
+                    startActivity(Intent(this, MainActivity::class.java))
                 }
             }
-            else {
+            else if (findViewById<RadioButton>(R.id.radio_very_active).isChecked == true) {
                 Amr.amrValue = (bmr * 1.9).roundToInt()
                 var plan = hashMapOf<String, Any>(
                     "CaloriePerDay" to Amr.amrValue,
@@ -199,17 +256,43 @@ class BMIActivity : AppCompatActivity() {
                 db.collection("users").whereEqualTo("username", user.displayName).get().addOnSuccessListener {
                     db.collection("users").document(it.documents.first().id).update("plan", plan)
                     Toast.makeText(this, "Success Add Plan", Toast.LENGTH_SHORT).show()
-                    finish()
+                    startActivity(Intent(this, MainActivity::class.java))
                 }
+            }
+            else {
+                Toast.makeText(this, getString(R.string.active_not_checked), Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
             }
         }
     }
 
     fun gainWeight() {
         findViewById<Button>(R.id.calculate_btn).setOnClickListener {
-            var weight = findViewById<TextInputEditText>(R.id.weight_text).text.toString().toFloat()
-            var height = findViewById<TextInputEditText>(R.id.height_text).text.toString().toFloat()
-            var age = findViewById<TextInputEditText>(R.id.age_text).text.toString().toInt()
+            var weight: Float
+            var height: Float
+            var age: Int
+            if(findViewById<TextInputEditText>(R.id.weight_text).text.isNullOrBlank()) {
+                Toast.makeText(this, getString(R.string.weight_empty_message), Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+            else {
+                weight = findViewById<TextInputEditText>(R.id.weight_text).text.toString().toFloat()
+            }
+            if (findViewById<TextInputEditText>(R.id.height_text).text.isNullOrBlank()) {
+                Toast.makeText(this, getString(R.string.height_empty_message), Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+            else {
+                height = findViewById<TextInputEditText>(R.id.height_text).text.toString().toFloat()
+            }
+            if (findViewById<TextInputEditText>(R.id.age_text).text.isNullOrBlank()) {
+                Toast.makeText(this, getString(R.string.age_empty_message), Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+            else {
+                age = findViewById<TextInputEditText>(R.id.age_text).text.toString().toInt()
+            }
+
             var bmr = 0.0
             val now = com.google.firebase.Timestamp.now().toDate().toInstant()
             val zoneId = TimeZone.getDefault().toZoneId()
@@ -221,9 +304,13 @@ class BMIActivity : AppCompatActivity() {
                 bmr = (655.1 + (9.563 * weight) + (1.850 * height) - (4.676 + age))
                 Log.wtf("bmr", bmr.toString())
             }
-            else {
+            else if (findViewById<RadioButton>(R.id.radio_male).isChecked == true){
                 bmr = (66.47 + (13.75 * weight) + (5.003 * height) - (6.755 + age))
                 Log.wtf("bmr", bmr.toString())
+            }
+            else {
+                Toast.makeText(this, getString(R.string.gender_not_checked), Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
             }
 
             if(findViewById<RadioButton>(R.id.radio_sedentary).isChecked == true) {
@@ -237,7 +324,7 @@ class BMIActivity : AppCompatActivity() {
                 db.collection("users").whereEqualTo("username", user.displayName).get().addOnSuccessListener {
                     db.collection("users").document(it.documents.first().id).update("plan", plan)
                     Toast.makeText(this, "Success Add Plan", Toast.LENGTH_SHORT).show()
-                    finish()
+                    startActivity(Intent(this, MainActivity::class.java))
                 }
             }
             else if(findViewById<RadioButton>(R.id.radio_light_active).isChecked == true) {
@@ -251,7 +338,7 @@ class BMIActivity : AppCompatActivity() {
                 db.collection("users").whereEqualTo("username", user.displayName).get().addOnSuccessListener {
                     db.collection("users").document(it.documents.first().id).update("plan", plan)
                     Toast.makeText(this, "Success Add Plan", Toast.LENGTH_SHORT).show()
-                    finish()
+                    startActivity(Intent(this, MainActivity::class.java))
                 }
             }
             else if(findViewById<RadioButton>(R.id.radio_moderate_active).isChecked == true) {
@@ -265,10 +352,10 @@ class BMIActivity : AppCompatActivity() {
                 db.collection("users").whereEqualTo("username", user.displayName).get().addOnSuccessListener {
                     db.collection("users").document(it.documents.first().id).update("plan", plan)
                     Toast.makeText(this, "Success Add Plan", Toast.LENGTH_SHORT).show()
-                    finish()
+                    startActivity(Intent(this, MainActivity::class.java))
                 }
             }
-            else {
+            else if (findViewById<RadioButton>(R.id.radio_very_active).isChecked == true){
                 Amr.amrValue = (bmr * 1.9 + 400).roundToInt()
                 var plan = hashMapOf<String, Any>(
                     "CaloriePerDay" to Amr.amrValue,
@@ -279,8 +366,12 @@ class BMIActivity : AppCompatActivity() {
                 db.collection("users").whereEqualTo("username", user.displayName).get().addOnSuccessListener {
                     db.collection("users").document(it.documents.first().id).update("plan", plan)
                     Toast.makeText(this, "Success Add Plan", Toast.LENGTH_SHORT).show()
-                    finish()
+                    startActivity(Intent(this, MainActivity::class.java))
                 }
+            }
+            else {
+                Toast.makeText(this, getString(R.string.active_not_checked), Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
             }
         }
     }

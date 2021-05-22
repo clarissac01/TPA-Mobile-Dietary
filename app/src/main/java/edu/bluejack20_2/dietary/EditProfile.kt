@@ -25,6 +25,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 import com.squareup.picasso.MemoryPolicy
+import com.squareup.picasso.NetworkPolicy
 import com.squareup.picasso.Picasso
 import java.io.ByteArrayOutputStream
 import java.security.AccessController.getContext
@@ -92,12 +93,31 @@ class EditProfile : AppCompatActivity() {
                     if (hasFocus) "Email" else user.email
             }
 
-            currentEmail = user.email
+            findViewById<Button>(R.id.save_profile_pic).setOnClickListener {
+                if(bitmap!=null){
+                    val stream = ByteArrayOutputStream()
+                    bitmap!!.compress(Bitmap.CompressFormat.JPEG, 100, stream)
+                    val imageRef = stream.toByteArray()
+                    storageRef.child("user/${user.displayName}").putBytes(imageRef).addOnSuccessListener{
+                        storageRef.child("user/${user.displayName}").downloadUrl.addOnSuccessListener { uri ->
+                            FirebaseFirestore.getInstance().collection("users").whereEqualTo("username", user.displayName).get().addOnSuccessListener {
+                                it.documents.first().reference.update("photoURL", uri.toString())
+                                Log.wtf("uri", uri.toString())
+                                Picasso.get().load(uri.toString()).memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE).networkPolicy(NetworkPolicy.NO_CACHE, NetworkPolicy.NO_STORE).into(findViewById<ImageView>(R.id.profile_pic))
+                            }
+                        }
+                    }
+                }
+                Toast.makeText(this, "Success update profile picture!", Toast.LENGTH_SHORT).show()
+                startActivity(Intent(this, MainActivity::class.java))
+            }
+
             currentUsername = user.displayName
 
             db.collection("users").whereEqualTo("username", currentUsername).get()
                 .addOnSuccessListener {
                     it.documents.forEach {
+                        currentEmail = it.getString("email").toString()
                         currentPassword = it.getString("password").toString()
                     }
                 }
@@ -108,6 +128,13 @@ class EditProfile : AppCompatActivity() {
             updateValidation(it)
         }
     }
+
+//    override fun onResume() {
+//        super.onResume()
+//        FirebaseFirestore.getInstance().collection("users").whereEqualTo("username", user.displayName).get().addOnSuccessListener {
+//            Picasso.get().load(it.toString()).memoryPolicy(MemoryPolicy.NO_CACHE).into(findViewById<ImageView>(R.id.profile_pic))
+//        }
+//    }
 
     companion object {
         private val IMAGE_PICK_CODE = 1000;
@@ -140,19 +167,6 @@ class EditProfile : AppCompatActivity() {
             userPicURI = data?.data!!
             bitmap = MediaStore.Images.Media.getBitmap(this.contentResolver, userPicURI)
             userPic.setImageBitmap(bitmap!!)
-
-            if(bitmap!=null){
-                val stream = ByteArrayOutputStream()
-                bitmap!!.compress(Bitmap.CompressFormat.JPEG, 100, stream)
-                val imageRef = stream.toByteArray()
-                storageRef.child("user/${user.displayName}").putBytes(imageRef).addOnSuccessListener{
-                    storageRef.child("user/${user.displayName}").downloadUrl.addOnSuccessListener { uri ->
-                        FirebaseFirestore.getInstance().collection("users").whereEqualTo("username", user.displayName).get().addOnSuccessListener {
-                            it.documents.first().reference.update("photoURL", uri.toString())
-                        }
-                    }
-                }
-            }
         }
     }
 
@@ -198,9 +212,8 @@ class EditProfile : AppCompatActivity() {
             if (!userEmail.matches(emailPattern.toRegex())) {
                 return Toast.makeText(this, "Invalid Email Address!", Toast.LENGTH_SHORT).show()
             }
-        } else {
-            updateUser(userUsername, userEmail, userPassword, bitmap.toString())
         }
+        updateUser(userUsername, userEmail, userPassword, bitmap.toString())
     }
 
     fun isLettersOrDigits(chars: String): Boolean {
@@ -208,11 +221,11 @@ class EditProfile : AppCompatActivity() {
             .length == chars.length
     }
 
-    fun updateUser(name: String, email: String, password: String, image: String? = null) {
-        SafetyNet.getClient(this).verifyWithRecaptcha("6LfJCNYaAAAAAF7Dte27iGN9jt0iOeTUo3BJrh8x")
-            .addOnSuccessListener { response ->
-                val userResponseToken = response.tokenResult
-                val oldUname = user.displayName
+                fun updateUser(name: String, email: String, password: String, image: String? = null) {
+                    SafetyNet.getClient(this).verifyWithRecaptcha("6LfJCNYaAAAAAF7Dte27iGN9jt0iOeTUo3BJrh8x")
+                        .addOnSuccessListener { response ->
+                            val userResponseToken = response.tokenResult
+                            val oldUname = user.displayName
                 FirebaseFirestore.getInstance()
                     .collection("users")
                     .whereEqualTo("username", oldUname)
@@ -225,22 +238,12 @@ class EditProfile : AppCompatActivity() {
                         val doc = q.documents.first()
 
                         val oldPassword = doc.getString("password")
-                        Log.wtf("id", doc.id)
-                        Log.wtf("hhhh", (oldPassword == null).toString())
-                        Log.wtf("hadoh", doc.getString("username"))
-                        Log.wtf("uname", oldUname)
-                        Log.wtf("old", oldPassword)
-                        Log.wtf("pass", password)
 
                         if (oldPassword != null && oldPassword != password) {
                             Toast.makeText(this, "Old Password doesn't match!", Toast.LENGTH_SHORT)
                                 .show()
                             return@addOnSuccessListener
                         }
-
-                        Log.wtf("hehe", listOf(userConfirmPassword, email, name).toString())
-//                val credential = GoogleAuthProvider
-//                    .getCredential("user@example.com", "password1234")
                         val data = mutableListOf(
                             user.updateEmail(email).addOnFailureListener {
                                 Log.wtf("hehe", it.toString())
@@ -262,7 +265,11 @@ class EditProfile : AppCompatActivity() {
                                 Log.wtf("hehe", it.toString())
                             }
                         )
-                        if (doc.getString("password") != null) {
+                        if (doc.getString("password") != userConfirmPassword) {
+                            Log.wtf("hahaha", "masuk yok")
+                            Log.wtf("user confirm pass", userConfirmPassword)
+                            Log.wtf("user password", userPassword)
+                            Log.wtf("user email", user.email)
                             user.reauthenticate(EmailAuthProvider.getCredential(user.email, userPassword))
 
                             data.add(
@@ -286,6 +293,7 @@ class EditProfile : AppCompatActivity() {
                                     .show()
                             }
                     }
+                startActivity(Intent(this, MainActivity::class.java))
             }
             .addOnFailureListener { e ->
                 if (e is ApiException) {

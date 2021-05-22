@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.AdapterListUpdateCallback
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -46,6 +47,9 @@ class JourneyFragment : Fragment(R.layout.fragment_journey) {
 
         requireActivity().findViewById<Button>(R.id.journey_more_btn).setOnClickListener {
             lim = lim + 5
+            if(lim >= journeyList.size) {
+                Toast.makeText(context, getString(R.string.limit_view_more), Toast.LENGTH_SHORT).show()
+            }
             getData {
                 adapter.notifyDataSetChanged()
             }
