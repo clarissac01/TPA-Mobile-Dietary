@@ -1,9 +1,7 @@
-package edu.bluejack20_2.dietary
+package edu.bluejack20_2.dietary.services.home_page.adapter
 
 import android.animation.ObjectAnimator
 import android.content.Context
-import android.util.Log
-import android.util.SparseBooleanArray
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,17 +12,20 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.github.aakira.expandablelayout.ExpandableLayoutListenerAdapter
 import com.github.aakira.expandablelayout.ExpandableLinearLayout
 import com.github.aakira.expandablelayout.Utils
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import edu.bluejack20_2.dietary.IngredientItem
+import edu.bluejack20_2.dietary.MealItem
+import edu.bluejack20_2.dietary.NonEditableIngredientAdapter
+import edu.bluejack20_2.dietary.R
 import kotlin.math.roundToInt
 
 
-class RecommendMealsAdapter(parentActivity: AppCompatActivity, private val mealType: String, private val mealList: MutableList<MealItem>?, private val context: Context)
-    : RecyclerView.Adapter<RecommendMealsAdapter.RecommendMealsHolder>(){
+class ChooseCustomMealAdapter(parentActivity: AppCompatActivity, private val mealType: String, private val mealList: MutableList<MealItem>?, private val context: Context)
+    : RecyclerView.Adapter<ChooseCustomMealAdapter.ChooseCustomMealHolder>(){
 
     var db = FirebaseFirestore.getInstance()
     var user = FirebaseAuth.getInstance().currentUser
@@ -34,63 +35,28 @@ class RecommendMealsAdapter(parentActivity: AppCompatActivity, private val mealT
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
-    ): RecommendMealsAdapter.RecommendMealsHolder {
-        val recommendMealView = LayoutInflater.from(parent.context).inflate(R.layout.meal_item, parent, false)
+    ): ChooseCustomMealHolder {
+        val recommendMealView = LayoutInflater.from(parent.context).inflate(R.layout.meal2_item, parent, false)
 
-        return RecommendMealsHolder(recommendMealView, false)
+        return ChooseCustomMealHolder(
+            recommendMealView,
+            false
+        )
     }
 
     override fun getItemCount(): Int {
         return mealList?.size!!
     }
 
-    class RecommendMealsHolder(itemView: View, isExpandable: Boolean): RecyclerView.ViewHolder(itemView){
-        var mealName: TextView = itemView.findViewById(R.id.chooseMealName)
-        var mealCalories: TextView = itemView.findViewById(R.id.chooseMealCalories)
-        var showMoreText: TextView = itemView.findViewById(R.id.detailBtn)
-        var showMoreBtn: ImageView = itemView.findViewById(R.id.detailArrow)
-        val chooseMealBtn: Button = itemView.findViewById(R.id.choosethisMeal)
+    class ChooseCustomMealHolder(itemView: View, isExpandable: Boolean): RecyclerView.ViewHolder(itemView){
+        var mealName: TextView = itemView.findViewById(R.id.chooseMealName2)
+        var showMoreText: TextView = itemView.findViewById(R.id.detailBtn2)
+        var showMoreBtn: ImageView = itemView.findViewById(R.id.detailArrow2)
+        val chooseMealBtn: Button = itemView.findViewById(R.id.choosethisMeal2)
 
-        var expandableLayout: ExpandableLinearLayout = itemView.findViewById(R.id.expandable_layout)
-        var expandableView: RecyclerView = itemView.findViewById(R.id.expandable_view)
-    }
+        var expandableLayout: ExpandableLinearLayout = itemView.findViewById(R.id.expandable_layout2)
+        var expandableView: RecyclerView = itemView.findViewById(R.id.expandable_view2)
 
-
-    override fun onBindViewHolder(holder: RecommendMealsHolder, position: Int) {
-
-
-        val mealItem = mealList?.get(position)
-
-        holder.mealName.text = mealItem?.mealName!!
-        holder.mealCalories.text = mealItem.mealCalories.toString() + " kcal"
-
-        holder.chooseMealBtn.setOnClickListener {
-            changeMeal(it, mealItem)
-        }
-
-        holder.showMoreText.setOnClickListener{
-            var mealId = mealList?.get(position)!!.mealId
-            val ingredientsList = getIngredients(mealId, holder.expandableView)
-            db.collection("CustomMeals").document(mealId).get().addOnSuccessListener{
-                if(it?.exists()!!){
-                    if(!mealList.get(position).isExpand){
-                        holder.expandableView.adapter =
-                            NonEditableIngredientAdapter(ingredientsList, context)
-                        holder.expandableView.layoutManager =
-                            LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
-
-                        holder.expandableLayout.initLayout()
-                        mealList.get(position).isExpand = true
-                        holder.expandableLayout.expand()
-                    }else{
-                        mealList.get(position).isExpand = false
-                        holder.expandableLayout.collapse()
-                        holder.expandableLayout.setInRecyclerView(false)
-                        holder.expandableView.adapter = null
-                    }
-                }
-            }
-        }
     }
 
     private fun changeRotate(showMoreBtn: ImageView, from: Float, to: Float): ObjectAnimator {
@@ -120,7 +86,14 @@ class RecommendMealsAdapter(parentActivity: AppCompatActivity, private val mealT
                             calCount *= it.data?.get("IngredientsCalories")!!.toString().toFloat()
                             calCount = calCount.roundToInt().toFloat()
                             name = it.data?.get("IngredientsName")!!.toString()
-                            list.add(IngredientItem(ingredientId, name, calCount, weight))
+                            list.add(
+                                IngredientItem(
+                                    ingredientId,
+                                    name,
+                                    calCount,
+                                    weight
+                                )
+                            )
                             rv.adapter?.notifyDataSetChanged()
                         }
                     }
@@ -175,6 +148,45 @@ class RecommendMealsAdapter(parentActivity: AppCompatActivity, private val mealT
                     }
             }
             .show()
+    }
+
+
+    override fun onBindViewHolder(holder: ChooseCustomMealHolder, position: Int) {
+        val mealItem = mealList?.get(position)
+
+        holder.mealName.text = mealItem?.mealName!!
+
+        holder.chooseMealBtn.setOnClickListener {
+            changeMeal(it, mealItem)
+        }
+
+        holder.showMoreText.setOnClickListener{
+            var mealId = mealList?.get(position)!!.mealId
+            val ingredientsList = getIngredients(mealId, holder.expandableView)
+            db.collection("CustomMeals").document(mealId).get().addOnSuccessListener{
+                if(it?.exists()!!){
+                    if(!mealList.get(position).isExpand){
+                        holder.expandableView.adapter =
+                            NonEditableIngredientAdapter(
+                                ingredientsList,
+                                context
+                            )
+                        holder.expandableView.layoutManager =
+                            LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+
+                        holder.expandableLayout.initLayout()
+                        mealList.get(position).isExpand = true
+                        holder.expandableLayout.expand()
+                    }else{
+                        mealList.get(position).isExpand = false
+                        holder.expandableLayout.collapse()
+                        holder.expandableLayout.setInRecyclerView(false)
+                        holder.expandableView.adapter = null
+                        holder.expandableLayout.initLayout()
+                    }
+                }
+            }
+        }
     }
 
 }

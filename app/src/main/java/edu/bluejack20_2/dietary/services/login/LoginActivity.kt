@@ -1,15 +1,14 @@
-package edu.bluejack20_2.dietary
+package edu.bluejack20_2.dietary.services.login
 
 import android.content.Intent
-import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.Button
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.FragmentActivity
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
@@ -20,8 +19,9 @@ import com.google.android.material.textfield.TextInputEditText
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.UserProfileChangeRequest
 import com.google.firebase.firestore.FirebaseFirestore
-import java.io.ByteArrayOutputStream
-import kotlin.math.log
+import edu.bluejack20_2.dietary.MainActivity
+import edu.bluejack20_2.dietary.R
+import edu.bluejack20_2.dietary.services.register.RegisterActivity
 
 class LoginActivity : AppCompatActivity() {
     var db = FirebaseFirestore.getInstance()
@@ -64,10 +64,15 @@ class LoginActivity : AppCompatActivity() {
         userUsername = findViewById<TextInputEditText>(R.id.usernameText).text.toString().trim()
         userPassword = findViewById<TextInputEditText>(R.id.passwordText).text.toString()
         if (userUsername == "") {
-            return Toast.makeText(this, "You must input Username!", Toast.LENGTH_SHORT).show()
+            findViewById<TextView>(R.id.nametextnull).visibility = View.VISIBLE
+        }else{
+            findViewById<TextView>(R.id.nametextnull).visibility = View.INVISIBLE
         }
         if (userPassword == "") {
-            return Toast.makeText(this, "You must input Password!", Toast.LENGTH_SHORT).show()
+            findViewById<TextView>(R.id.passwordTextnull).visibility = View.VISIBLE
+            return
+        }else{
+            findViewById<TextView>(R.id.passwordTextnull).visibility = View.INVISIBLE
         }
 
         db.collection("users")
@@ -76,7 +81,6 @@ class LoginActivity : AppCompatActivity() {
                     if (it.isEmpty) {
                         Toast.makeText(this, "Wrong credentials", Toast.LENGTH_SHORT).show()
                     } else {
-                        Log.wtf("wtf", "Success Login")
                         Toast.makeText(this, "Success Login!", Toast.LENGTH_SHORT).show()
 
                         var email:String? = ""
@@ -94,23 +98,35 @@ class LoginActivity : AppCompatActivity() {
                                 password = i.getString(i.getString("password")!!)
                             }
                         }
+
                         FirebaseAuth.getInstance().signInWithEmailAndPassword(email, userPassword).addOnSuccessListener {
-                                Log.wtf("wtf", "Masuk")
-                            FirebaseAuth.getInstance().currentUser.updateProfile(UserProfileChangeRequest.Builder().setDisplayName(userUsername).setPhotoUri(photourl).build()).addOnSuccessListener {
-                                startActivity(Intent(this, MainActivity::class.java))
-                                Log.wtf("wtf", "Masuk")
-                            }.addOnFailureListener {
-                                Log.wtf("error", it.toString())
-                            }
-                        }.addOnFailureListener{
-                            FirebaseAuth.getInstance().createUserWithEmailAndPassword(email, userPassword).addOnSuccessListener {
+                            Log.wtf("errorrree", it.toString())
+                            if(it != null){
                                 FirebaseAuth.getInstance().currentUser.updateProfile(UserProfileChangeRequest.Builder().setDisplayName(userUsername).setPhotoUri(photourl).build()).addOnSuccessListener {
                                     startActivity(Intent(this, MainActivity::class.java))
-                                    Log.wtf("wtf", "Masuk")
                                 }.addOnFailureListener {
-                                    Log.wtf("error", it.toString())
+                                    Log.wtf("error this", it.toString())
+                                }
+                            }else{
+                                FirebaseAuth.getInstance().createUserWithEmailAndPassword(email, userPassword).addOnSuccessListener {
+                                    Log.wtf("errorrree2", it.toString())
+                                    FirebaseAuth.getInstance().currentUser.updateProfile(UserProfileChangeRequest.Builder().setDisplayName(userUsername).setPhotoUri(photourl).build()).addOnSuccessListener {
+                                        startActivity(Intent(this, MainActivity::class.java))
+                                    }.addOnFailureListener {
+                                        Log.wtf("error", it.toString())
+                                    }
                                 }
                             }
+                        }.addOnFailureListener{
+                            Log.wtf("13 errornya", it.toString())
+//                            FirebaseAuth.getInstance().createUserWithEmailAndPassword(email, userPassword).addOnSuccessListener {
+//                                FirebaseAuth.getInstance().currentUser.updateProfile(UserProfileChangeRequest.Builder().setDisplayName(userUsername).setPhotoUri(photourl).build()).addOnSuccessListener {
+//                                    startActivity(Intent(this, MainActivity::class.java))
+//                                }.addOnFailureListener {
+//                                    Log.wtf("12", it.toString())
+//                                }
+//                            }.addOnFailureListener {
+//                            }
                         }
                     }
                 }
@@ -119,7 +135,9 @@ class LoginActivity : AppCompatActivity() {
 
     private fun signIn() {
         val signInIntent: Intent = googleSingInClient.getSignInIntent()
-        startActivityForResult(signInIntent, RC_SIGN_IN)
+        startActivityForResult(signInIntent,
+            RC_SIGN_IN
+        )
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -167,11 +185,22 @@ class LoginActivity : AppCompatActivity() {
                             }
 
                         FirebaseAuth.getInstance().signInWithEmailAndPassword(email, email).addOnSuccessListener {
-                            FirebaseAuth.getInstance().currentUser.updateProfile(UserProfileChangeRequest.Builder().setDisplayName(name).setPhotoUri(photo).build()).addOnSuccessListener {
-                                startActivity(Intent(this, MainActivity::class.java))
-                                Log.wtf("wtf", "Masuk")
-                            }.addOnFailureListener {
-                                Log.wtf("error", it.toString())
+                            if(it != null){
+                                FirebaseAuth.getInstance().currentUser.updateProfile(UserProfileChangeRequest.Builder().setDisplayName(name).setPhotoUri(photo).build()).addOnSuccessListener {
+                                    startActivity(Intent(this, MainActivity::class.java))
+                                    Log.wtf("wtf", "Masuk")
+                                }.addOnFailureListener {
+                                    Log.wtf("error", it.toString())
+                                }
+                            }else{
+                                FirebaseAuth.getInstance().createUserWithEmailAndPassword(email, email).addOnSuccessListener {
+                                    FirebaseAuth.getInstance().currentUser.updateProfile(UserProfileChangeRequest.Builder().setDisplayName(name).setPhotoUri(photo).build()).addOnSuccessListener {
+                                        startActivity(Intent(this, MainActivity::class.java))
+                                        Log.wtf("wtf", "Masuk")
+                                    }.addOnFailureListener {
+                                        Log.wtf("error", it.toString())
+                                    }
+                                }
                             }
                         }.addOnFailureListener{
                             FirebaseAuth.getInstance().createUserWithEmailAndPassword(email, email).addOnSuccessListener {
@@ -183,7 +212,7 @@ class LoginActivity : AppCompatActivity() {
                                 }
                             }
                         }
-                        }
+                    }
             }
         } catch (e: ApiException) {
             Log.wtf("error", e.toString())

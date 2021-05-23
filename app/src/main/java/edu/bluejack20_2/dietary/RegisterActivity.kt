@@ -18,6 +18,7 @@ import com.google.android.material.textfield.TextInputEditText
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
+import edu.bluejack20_2.dietary.services.login.LoginActivity
 import java.io.ByteArrayOutputStream
 
 

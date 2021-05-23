@@ -49,6 +49,11 @@ class FriendsFragment : Fragment(R.layout.fragment_friends) {
                 list.clear()
                 if (!it?.isEmpty!!) {
                     var friendlist = it.documents.first().get("friends") as List<*>?
+                    if(friendlist?.size == 0){
+                        Log.wtf("eezz empty", "hohoho")
+                        requireActivity().findViewById<RecyclerView>(R.id.friend_view).adapter =
+                            null
+                    }
                     friendlist?.forEach {
                         var docId = it.toString()
                         db.collection("users").document(docId)
@@ -84,7 +89,7 @@ class FriendsFragment : Fragment(R.layout.fragment_friends) {
                                         )
                                     list += friend
                                 }
-                                requireActivity().findViewById<RecyclerView>(R.id.friend_view).adapter?.notifyDataSetChanged()
+                                view?.findViewById<RecyclerView>(R.id.friend_view)?.adapter?.notifyDataSetChanged()
                             }
                     }
                 }

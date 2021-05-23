@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="?colorSecondary"
-    tools:context=".RegisterActivity">
+    tools:context=".services.register.RegisterActivity">
 
 
     <TextView
@@ -31,31 +31,31 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="5dp"
-        android:layout_marginBottom="50dp"
+        android:layout_marginTop="50dp"
         android:fontFamily="@font/rubik"
         android:text="Upload your image"
         android:textColor="?colorPrimaryVariant"
         android:textSize="18sp"
         android:textStyle="normal"
-        app:layout_constraintBottom_toTopOf="@+id/usernameField"
         app:layout_constraintEnd_toStartOf="@+id/img_pick_btn"
-        app:layout_constraintHorizontal_bias="0.442"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintHorizontal_bias="0.455"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/mealName" />
 
     <edu.bluejack20_2.dietary.CirleImageView
         android:id="@+id/img_pick_btn"
         style="@android:style/Widget.Holo.Light.ImageButton"
         android:layout_width="100dp"
         android:layout_height="100dp"
-        android:layout_marginBottom="16dp"
+        android:layout_marginTop="16dp"
         android:background="@drawable/roundcorner"
         android:onClick="changeImage"
         android:scaleType="centerCrop"
         android:src="@drawable/user"
-        app:layout_constraintBottom_toTopOf="@+id/usernameField"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.839"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/mealName" />
 
     <ImageButton
         android:id="@+id/img_pick_btn2"
@@ -74,20 +74,22 @@
         app:srcCompat="@drawable/add" />
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/emailField"
-        android:layout_width="310dp"
+        android:id="@+id/nameField"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
+        android:layout_marginStart="50dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="50dp"
         android:backgroundTint="#FFFFFF"
-        android:hint="Email"
+        android:hint="Name"
         app:boxStrokeColor="@color/basilgreen"
         app:hintTextColor="@color/basilgreen"
-        app:layout_constraintBottom_toTopOf="@+id/passwordField"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/img_pick_btn">
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/emailText"
+            android:id="@+id/nameText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:backgroundTint="?colorSecondary"
@@ -99,16 +101,18 @@
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/usernameField"
-        android:layout_width="310dp"
+        android:layout_width="0dp"
         android:layout_height="54dp"
-        android:layout_marginBottom="16dp"
+        android:layout_marginStart="50dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="50dp"
         android:backgroundTint="#FFFFFF"
         android:hint="Username"
         app:boxStrokeColor="@color/basilgreen"
         app:hintTextColor="@color/basilgreen"
-        app:layout_constraintBottom_toTopOf="@+id/emailField"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/nameField">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/usernameText"
@@ -122,25 +126,49 @@
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/emailField"
+        android:layout_width="310dp"
+        android:layout_height="54dp"
+        android:layout_marginTop="24dp"
+        android:backgroundTint="#FFFFFF"
+        android:hint="Email"
+        app:boxStrokeColor="@color/basilgreen"
+        app:hintTextColor="@color/basilgreen"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/usernameField">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/emailText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/beige"
+            android:fontFamily="@font/rubik"
+            android:textColor="@color/black"
+            android:textColorHint="?colorPrimaryVariant" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/passwordField"
         android:layout_width="310dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="32dp"
+        android:layout_marginTop="24dp"
         android:backgroundTint="#FFFFFF"
         android:hint="Password"
         android:inputType="textPassword"
         app:boxStrokeColor="@color/basilgreen"
         app:hintTextColor="@color/basilgreen"
-        app:layout_constraintBottom_toTopOf="@+id/firstBtn"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/emailField"
         app:passwordToggleEnabled="true">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/passwordText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:backgroundTint="?colorSecondary"
+            android:backgroundTint="@color/beige"
             android:fontFamily="@font/rubik"
             android:password="true"
             android:textColor="@color/black"
@@ -153,19 +181,19 @@
         style="?attr/materialButtonOutlinedStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="104dp"
-        android:backgroundTint="?colorPrimaryVariant"
+        android:layout_marginTop="32dp"
 
+        android:backgroundTint="?colorPrimaryVariant"
         android:fontFamily="@font/rubik"
         android:text="SUBMIT"
         android:textColor="?colorSecondary"
         android:textSize="24sp"
         android:textStyle="bold"
         app:iconPadding="20dp"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/passwordField" />
 
     <ImageButton
         android:id="@+id/exitBtn"
@@ -178,5 +206,63 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/ic_baseline_close_24" />
+
+    <TextView
+        android:id="@+id/nameNull"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/rubik"
+        android:lineSpacingExtra="12sp"
+        android:text="@string/name_null"
+        android:textColor="@color/red_active"
+        android:textSize="12sp"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toTopOf="@+id/usernameField"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/nameField" />
+
+    <TextView
+        android:id="@+id/usernameNull"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/rubik"
+        android:text="@string/username_null"
+        android:textColor="@color/red_active"
+        android:textSize="12sp"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toTopOf="@+id/emailField"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/usernameField" />
+
+    <TextView
+        android:id="@+id/emailNull"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/rubik"
+        android:text="@string/email_null"
+        android:textColor="@color/red_active"
+        android:textSize="12sp"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toTopOf="@+id/passwordField"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/emailField" />
+
+    <TextView
+        android:id="@+id/passwordNull"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="6dp"
+        android:fontFamily="@font/rubik"
+        android:text="@string/password_null"
+        android:textColor="@color/red_active"
+        android:textSize="12sp"
+        android:visibility="invisible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/passwordField" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

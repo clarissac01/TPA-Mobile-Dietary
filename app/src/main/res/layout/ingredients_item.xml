@@ -11,13 +11,13 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#FFFCED"
+        android:background="@color/white"
         android:paddingStart="15dp"
         android:paddingTop="15dp">
 
         <TextView
             android:id="@+id/ingredientName"
-            android:layout_width="wrap_content"
+            android:layout_width="100dp"
             android:layout_height="wrap_content"
             android:fontFamily="@font/rubik"
             android:text="Nasi Putih"
@@ -41,13 +41,14 @@
             style="@style/Widget.App.Button.OutlinedButton.Icon"
             android:layout_width="20dp"
             android:layout_height="20dp"
-            android:layout_marginTop="8dp"
             android:layout_marginEnd="40dp"
+            android:layout_marginBottom="8dp"
             android:onClick="addWeight"
             app:icon="@drawable/add"
             app:iconGravity="textStart"
             app:iconSize="15dp"
             app:iconTint="@android:color/secondary_text_light_nodisable"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.MyApp.Button.Circle"
@@ -60,12 +61,13 @@
             android:layout_width="20dp"
             android:layout_height="20dp"
             android:layout_marginStart="100dp"
-            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
             android:onClick="substractWeight"
             app:icon="@drawable/ic_baseline_horizontal_rule_24"
             app:iconGravity="textStart"
             app:iconSize="15dp"
             app:iconTint="@android:color/secondary_text_light_nodisable"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.MyApp.Button.Circle"
@@ -87,18 +89,18 @@
             android:textSize="14sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/textView"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:text="100" />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/textView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="60dp"
-            android:layout_marginTop="10dp"
+            android:layout_marginBottom="8dp"
             android:fontFamily="@font/rubik"
             android:text="(in g)"
             android:textColor="@color/cardview_dark_background"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/addwBtn"
             app:layout_constraintStart_toEndOf="@+id/substractBtn"
             app:layout_constraintTop_toTopOf="parent" />

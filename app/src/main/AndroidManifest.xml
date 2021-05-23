@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="edu.bluejack20_2.dietary">
 
     <uses-permission android:name="android.permission.WAKE_LOCK" />
@@ -22,7 +23,7 @@
         <activity android:name=".CustomMealDetail"/>
         <activity
             android:name=".FriendCustomMealDetail"/>
-        <activity android:name=".Meal" />
+        <activity android:name=".services.home_page.Meal" />
         <activity android:name=".MealDetail" />
         <activity android:name=".AddCustomMealActivity" />
         <activity android:name=".DietPlanActivity" />
@@ -30,11 +31,11 @@
         <activity android:name=".SettingActivity" />
         <activity android:name=".MainIngredients" />
         <activity android:name=".EditProfile" />
-        <activity android:name=".LoginActivity" />
+        <activity android:name=".services.login.LoginActivity" />
         <activity android:name=".UserDetail" />
         <activity android:name=".UserFriend" />
-        <activity android:name=".AddFriend" />
-        <activity android:name=".RegisterActivity" />
+        <activity android:name=".services.friendpage.add_friend.AddFriend" />
+        <activity android:name=".services.register.RegisterActivity" />
         <activity
             android:name=".MainActivity"
             android:label="@string/app_name"
@@ -46,9 +47,21 @@
             </intent-filter>
         </activity>
 
+        <service
+            android:name=".fcm.MyFirebaseMessagingService"
+            android:exported="false"
+            tools:ignore="MissingClass">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
+
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
+
+        <receiver android:name=".fcm.NotificationBroadcastReceiver"
+            tools:ignore="MissingClass" />
 
         <receiver android:name=".services.NotificationService" />
     </application>

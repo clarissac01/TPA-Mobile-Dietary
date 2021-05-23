@@ -20,6 +20,7 @@ import com.google.android.gms.tasks.OnSuccessListener
 import com.google.android.gms.tasks.Tasks
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
+import com.google.android.material.textview.MaterialTextView
 import com.google.firebase.auth.*
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
@@ -49,6 +50,7 @@ class EditProfile : AppCompatActivity() {
     private var currentEmail: String = ""
     private var currentUsername: String = ""
     private var currentPassword: String = ""
+    var name: String = ""
 
     private lateinit var user: FirebaseUser
 
@@ -119,7 +121,9 @@ class EditProfile : AppCompatActivity() {
                     it.documents.forEach {
                         currentEmail = it.getString("email").toString()
                         currentPassword = it.getString("password").toString()
+                        name = it.getString("name").toString()
                     }
+                    findViewById<MaterialTextView>(R.id.question_name).text = name
                 }
 
         }

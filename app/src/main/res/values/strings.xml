@@ -19,7 +19,10 @@
     <string name="dark_mode_label">Dark Mode</string>
     <string name="setting_text">Settings</string>
     <string name="pick_time">Pick Time</string>
-    <string name="set_time">Set Time</string>
+    <string name="set_breakfast_time">Set Breakfast Time</string>
+    <string name="set_lunch_time">Set Lunch Time</string>
+    <string name="set_dinner_time">Set Dinner Time</string>
+    <string name="set_snack_time">Set Snack Time</string>
     <string name="view_more">View More</string>
     <string name="add_text">Add</string>
     <string name="save_profile_pic">Save Profile Pic</string>
@@ -43,12 +46,24 @@
     <string name="radio_light_active">Light Activity</string>
     <string name="radio_moderate_active">Moderate Activity</string>
     <string name="radio_very_active">Very Active</string>
+    <string name="default_notification_channel_id">Default</string>
+    <string name="question_edit_profile">What would you like to edit today, </string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_activity_user_friend">UserFriend</string>
     <string name="title_activity_meal_detail_page">MealDetailPage</string>
     <string name="title_activity_friend_custom_meal_detail">FriendCustomMealDetail</string>
+    <string name="username_null">Username must not be null!</string>
+    <string name="password_null">Password must not be null!</string>
+    <string name="password_alphanumeric">Password must be alphanumeric!</string>
+    <string name="password_length">Password must be more than 7 characters!</string>
+    <string name="name_null">Name must not be null!</string>
+    <string name="email_null">Email must not be null!</string>
+    <string name="email_invalid">Email is invalid!</string>
+    <string name="username_taken">This username is taken!</string>
+    <string name="email_taken">This email is taken!</string>
+    <string name="today_calories">Today Goals: %d kcal!</string>
     <!--
     This string is used for square devices and overridden by hello_world in
     values-round/strings.xml for round devices.

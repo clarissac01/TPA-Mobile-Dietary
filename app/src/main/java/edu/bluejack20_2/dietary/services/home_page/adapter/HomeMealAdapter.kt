@@ -1,15 +1,16 @@
-package edu.bluejack20_2.dietary
+package edu.bluejack20_2.dietary.services.home_page.adapter
 
-import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
-import androidx.fragment.app.FragmentManager
-import androidx.fragment.app.FragmentPagerAdapter
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import edu.bluejack20_2.dietary.services.home_page.BreakfastFragment
+import edu.bluejack20_2.dietary.services.home_page.DinnerFragment
+import edu.bluejack20_2.dietary.services.home_page.LunchFragment
+import edu.bluejack20_2.dietary.services.home_page.SnackFragment
 
-class HomeMealAdapter(fragmentActivity: FragmentActivity) :
+class HomeMealAdapter(fragmentActivity: FragmentActivity, var currentDay: Int) :
     FragmentStateAdapter(fragmentActivity) {
 
     var db = FirebaseFirestore.getInstance()
@@ -27,16 +28,24 @@ class HomeMealAdapter(fragmentActivity: FragmentActivity) :
 
         when(position){
             0 -> {
-                return BreakfastFragment()
+                return BreakfastFragment(
+                    currentDay
+                )
             }
             1 -> {
-                return LunchFragment()
+                return LunchFragment(
+                    currentDay
+                )
             }
             2 -> {
-                return DinnerFragment()
+                return DinnerFragment(
+                    currentDay
+                )
             }
             else -> {
-                return SnackFragment()
+                return SnackFragment(
+                    currentDay
+                )
             }
         }
     }

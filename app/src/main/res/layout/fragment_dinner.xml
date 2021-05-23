@@ -6,7 +6,7 @@
     android:layout_width="340dp"
     android:layout_height="200dp"
     android:background="#E6E6FB"
-    tools:context=".DinnerFragment" >
+    tools:context=".services.home_page.DinnerFragment" >
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/floatingActionButton4"

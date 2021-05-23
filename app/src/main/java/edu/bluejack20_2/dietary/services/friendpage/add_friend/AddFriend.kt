@@ -1,11 +1,9 @@
-package edu.bluejack20_2.dietary
+package edu.bluejack20_2.dietary.services.friendpage.add_friend
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import android.widget.ArrayAdapter
-import android.widget.ListView
 import android.widget.SearchView
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -13,6 +11,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.Timestamp
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import edu.bluejack20_2.dietary.FriendAdapter
+import edu.bluejack20_2.dietary.FriendItem
+import edu.bluejack20_2.dietary.R
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -29,7 +30,8 @@ class   AddFriend : AppCompatActivity() {
         setContentView(R.layout.activity_add_friend)
 
         friendlist = getAllUser()!!
-        findViewById<RecyclerView>(R.id.user_view).adapter = FriendAdapter(friendlist, this)
+        findViewById<RecyclerView>(R.id.user_view).adapter =
+            FriendAdapter(friendlist, this)
         findViewById<RecyclerView>(R.id.user_view).layoutManager =
             LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
         findViewById<RecyclerView>(R.id.user_view).setHasFixedSize(true)
@@ -44,11 +46,16 @@ class   AddFriend : AppCompatActivity() {
                     Log.wtf("filter", filter.toString())
                     if(filter.isEmpty()){
                         Toast.makeText(applicationContext, "User not found!", Toast.LENGTH_LONG).show()
+                        findViewById<RecyclerView>(R.id.user_view).adapter = null
                     }else{
                         var alist = friendlist?.toMutableList()
                         alist.clear()
                         alist.addAll(filter)
-                        findViewById<RecyclerView>(R.id.user_view).adapter = FriendAdapter(alist, this@AddFriend)
+                        findViewById<RecyclerView>(R.id.user_view).adapter =
+                            FriendAdapter(
+                                alist,
+                                this@AddFriend
+                            )
                         findViewById<RecyclerView>(R.id.user_view).adapter?.notifyDataSetChanged()
 
                     }
@@ -56,9 +63,13 @@ class   AddFriend : AppCompatActivity() {
             }
 
             override fun onQueryTextChange(newText: String?): Boolean {
-                search.clearFocus()
+//                search.clearFocus()
                 if(newText.equals("")){
-                    findViewById<RecyclerView>(R.id.user_view).adapter = FriendAdapter(friendlist, this@AddFriend)
+                    findViewById<RecyclerView>(R.id.user_view).adapter =
+                        FriendAdapter(
+                            friendlist,
+                            this@AddFriend
+                        )
                     findViewById<RecyclerView>(R.id.user_view).adapter?.notifyDataSetChanged()
                 }else{
                     var filter = friendlist?.filter {
@@ -69,8 +80,14 @@ class   AddFriend : AppCompatActivity() {
                         var alist = friendlist?.toMutableList()
                         alist.clear()
                         alist.addAll(filter)
-                        findViewById<RecyclerView>(R.id.user_view).adapter = FriendAdapter(alist, this@AddFriend)
+                        findViewById<RecyclerView>(R.id.user_view).adapter =
+                            FriendAdapter(
+                                alist,
+                                this@AddFriend
+                            )
                         findViewById<RecyclerView>(R.id.user_view).adapter?.notifyDataSetChanged()
+                    }else{
+                        findViewById<RecyclerView>(R.id.user_view).adapter = null
                     }
                 }
                 return false
@@ -122,10 +139,26 @@ class   AddFriend : AppCompatActivity() {
 
                             if (isNotMyFriend && isNotMe) {
                                 if (photoUrl == null) {
-                                    var currentUser = FriendItem(username, false, null, res, userid, false)
+                                    var currentUser =
+                                        FriendItem(
+                                            username,
+                                            false,
+                                            null,
+                                            res,
+                                            userid,
+                                            false
+                                        )
                                     list.add(currentUser)
                                 } else {
-                                    var currentUser = FriendItem(username, true, photoUrl, res, userid, false)
+                                    var currentUser =
+                                        FriendItem(
+                                            username,
+                                            true,
+                                            photoUrl,
+                                            res,
+                                            userid,
+                                            false
+                                        )
                                     list.add(currentUser)
                                 }
                                 usernames.add(username)

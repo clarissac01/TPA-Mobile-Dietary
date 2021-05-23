@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="?colorSecondary"
-    tools:context=".RegisterActivity">
+    tools:context=".services.register.RegisterActivity">
 
     <TextView
         android:id="@+id/edit_profile_text"
@@ -25,6 +25,41 @@
         app:layout_constraintHorizontal_bias="0.065"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/question_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="29dp"
+        android:layout_marginTop="15dp"
+        android:fontFamily="@font/rubik"
+        android:lineSpacingExtra="10sp"
+        android:text="@string/question_edit_profile"
+        android:textAlignment="viewStart"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+        android:textColor="@color/basilgreen"
+        android:textSize="15sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/edit_profile_text" />
+
+    <TextView
+        android:id="@+id/question_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="15dp"
+        android:fontFamily="@font/rubik"
+        android:lineSpacingExtra="10sp"
+        android:text="sgabriella"
+        android:maxLength="20"
+        android:textAlignment="viewStart"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+        android:textColor="@color/basilgreen"
+        android:textSize="15sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toEndOf="@+id/question_text"
+        app:layout_constraintTop_toBottomOf="@+id/edit_profile_text" />
 
     <TextView
         android:id="@+id/textView2"

@@ -6,7 +6,7 @@
     android:layout_width="340dp"
     android:layout_height="200dp"
     android:background="#F8D0D6"
-    tools:context=".LunchFragment">
+    tools:context=".services.home_page.LunchFragment">
 
     <!-- TODO: Update blank fragment layout -->
 

@@ -7,6 +7,17 @@
     android:background="?colorSecondary"
     tools:context=".SettingActivity">
 
+    <Button
+        android:id="@+id/setting_close_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="30dp"
+        android:backgroundTint="?colorSecondary"
+        app:icon="@drawable/ic_baseline_close_24"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/materialTextView7"
         android:layout_width="wrap_content"
@@ -24,6 +35,8 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="100dp"
         android:text="@string/dark_mode_label"
+        app:thumbTint="?colorOnPrimary"
+        app:trackTint="?colorPrimary"
         android:textSize="25dp"
         app:switchPadding="90dp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -41,25 +54,49 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/switch_dark_mode" />
 
-    <TimePicker
-        android:id="@+id/timePicker2"
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/set_breakfast_time_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="30dp"
-        android:timePickerMode="spinner"
+        android:backgroundTint="?colorPrimaryVariant"
+        android:text="@string/set_breakfast_time"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/materialTextView9" />
 
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/set_time_btn"
+        android:id="@+id/set_lunch_time_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="20dp"
         android:backgroundTint="?colorPrimaryVariant"
-        android:text="@string/set_time"
+        android:text="@string/set_lunch_time"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/timePicker2" />
+        app:layout_constraintTop_toBottomOf="@+id/set_breakfast_time_btn" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/set_dinner_time_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:backgroundTint="?colorPrimaryVariant"
+        android:text="@string/set_dinner_time"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/set_lunch_time_btn" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/set_snack_time_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:backgroundTint="?colorPrimaryVariant"
+        android:text="@string/set_snack_time"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/set_dinner_time_btn" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
