@@ -15,6 +15,7 @@ import com.gauravk.bubblenavigation.BubbleNavigationConstraintView
 import android.view.View
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.firebase.auth.FirebaseAuth
+import edu.bluejack20_2.dietary.services.AlarmReceiver
 import edu.bluejack20_2.dietary.services.NotificationService
 import edu.bluejack20_2.dietary.services.friendpage.add_friend.AddFriend
 import edu.bluejack20_2.dietary.services.home_page.HomeFragment
@@ -114,6 +115,35 @@ class MainActivity : AppCompatActivity() {
         )
 
         Log.i("MainActivity", "Notification Set!")
+
+        val alarmManager2 =
+            getSystemService(Context.ALARM_SERVICE) as? AlarmManager
+        val pendingIntent =
+            PendingIntent.getService(this, 0, intent,
+                PendingIntent.FLAG_NO_CREATE)
+        if (pendingIntent != null && alarmManager2 != null) {
+            alarmManager.cancel(pendingIntent)
+        }
+
+        val alarmMgr = getSystemService(Context.ALARM_SERVICE) as AlarmManager
+        val alarmIntent = Intent(this, AlarmReceiver::class.java).let { intent ->
+            PendingIntent.getBroadcast(this, 0, intent, 0)
+        }
+
+// Set the alarm to start at 8:30 a.m.
+        val call: Calendar = Calendar.getInstance().apply {
+            timeInMillis = System.currentTimeMillis()
+            set(Calendar.HOUR_OF_DAY, 23)
+            set(Calendar.MINUTE, 58)
+        }
+
+        alarmMgr?.setInexactRepeating(
+            AlarmManager.RTC_WAKEUP,
+            call.timeInMillis,
+            AlarmManager.INTERVAL_DAY,
+            alarmIntent
+        )
+
     }
 
 
