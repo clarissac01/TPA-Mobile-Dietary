@@ -17,7 +17,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 import edu.bluejack20_2.dietary.MealDetail
 import edu.bluejack20_2.dietary.R
 
-class LunchFragment(var currDay: Int) : Fragment() {
+class LunchFragment(var currDay: Int = 0) : Fragment() {
 
     var db = FirebaseFirestore.getInstance()
     var user = FirebaseAuth.getInstance().currentUser

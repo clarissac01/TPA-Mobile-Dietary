@@ -13,8 +13,10 @@
         android:id="@+id/insert_custom_meal"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="20dp"
         android:gravity="center"
-        android:text="Add"
+        android:backgroundTint="?colorSecondaryVariant"
+        android:text="@string/add_text"
         app:icon="@drawable/add"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/search_ingredients" />
@@ -32,7 +34,8 @@
         android:id="@+id/ingredient_more_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Button"
+        android:text="@string/view_more"
+        android:backgroundTint="?colorPrimaryVariant"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />

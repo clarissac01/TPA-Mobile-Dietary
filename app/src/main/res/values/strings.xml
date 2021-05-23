@@ -19,7 +19,36 @@
     <string name="dark_mode_label">Dark Mode</string>
     <string name="setting_text">Settings</string>
     <string name="pick_time">Pick Time</string>
-    <string name="set_time">Set Time</string>
+    <string name="set_breakfast_time">Set Breakfast Time</string>
+    <string name="set_lunch_time">Set Lunch Time</string>
+    <string name="set_dinner_time">Set Dinner Time</string>
+    <string name="set_snack_time">Set Snack Time</string>
+    <string name="view_more">View More</string>
+    <string name="add_text">Add</string>
+    <string name="save_profile_pic">Save Profile Pic</string>
+    <string name="update_text">Update</string>
+    <string name="new_password_hint">New Password</string>
+    <string name="old_password_hint">Old Password</string>
+    <string name="email_hint">Email</string>
+    <string name="username_hint">Username</string>
+    <string name="upload_your_image">Upload Your Image</string>
+    <string name="edit_profile">Edit Profile</string>
+    <string name="limit_view_more">You have reach the end of the list</string>
+    <string name="weight_empty_message">Weight cannot be empty</string>
+    <string name="height_empty_message">Height cannot be empty</string>
+    <string name="age_empty_message">Age cannot be empty</string>
+    <string name="gender_not_checked">Gender must be checked</string>
+    <string name="active_not_checked">Activity level must be checked</string>
+    <string name="radio_male">Male</string>
+    <string name="radio_female">Female</string>
+    <string name="how_active">How Active Are You?</string>
+    <string name="radio_sedentary">Sedentary</string>
+    <string name="radio_light_active">Light Activity</string>
+    <string name="radio_moderate_active">Moderate Activity</string>
+    <string name="radio_very_active">Very Active</string>
+    <string name="default_notification_channel_id">Default</string>
+    <string name="question_edit_profile">What would you like to edit today, </string>
+
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_activity_user_friend">UserFriend</string>

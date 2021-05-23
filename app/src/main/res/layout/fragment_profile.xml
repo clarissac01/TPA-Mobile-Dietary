@@ -18,7 +18,7 @@
         android:src="@drawable/user"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/username_text" />
+        app:layout_constraintTop_toBottomOf="@+id/welcome_text" />
 
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/welcome_text"
@@ -32,15 +32,26 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <com.google.android.material.textview.MaterialTextView
-        android:id="@+id/username_text"
+        android:id="@+id/name_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="5dp"
-        android:text="Username"
+        android:layout_marginStart="20dp"
+        android:text="Name"
         android:textSize="25dp"
         app:layout_constraintBottom_toBottomOf="@+id/welcome_text"
         app:layout_constraintStart_toEndOf="@+id/welcome_text"
         app:layout_constraintTop_toTopOf="@+id/welcome_text" />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/username_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:text="Username"
+        android:textSize="15dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/email_text" />
 
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/email_text"
@@ -57,28 +68,28 @@
         android:id="@+id/edit_profile_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="80dp"
+        android:layout_marginTop="40dp"
         android:layout_marginEnd="50dp"
         android:width="150dp"
-        android:onClick="gotoEditProfile"
         android:backgroundTint="?colorPrimaryVariant"
+        android:onClick="gotoEditProfile"
         android:text="Edit Profile"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/email_text" />
+        app:layout_constraintTop_toBottomOf="@+id/username_text" />
 
     <Button
         android:id="@+id/settings_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="50dp"
-        android:layout_marginTop="80dp"
+        android:layout_marginTop="40dp"
         android:layout_marginEnd="5dp"
         android:width="150dp"
         android:backgroundTint="?colorPrimaryVariant"
         android:text="Settings"
         app:layout_constraintEnd_toStartOf="@+id/edit_profile_button"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/email_text" />
+        app:layout_constraintTop_toBottomOf="@+id/username_text" />
 
     <Button
         android:id="@+id/logout_button"

@@ -18,6 +18,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 class MainIngredients : AppCompatActivity() {
     val ingredient = mutableMapOf<String, Int>()
     var mainIngredientsList = mutableListOf<MainIngredientsData>()
+    var mainIngredientsSearch = mutableListOf<MainIngredientsData>()
     lateinit var search: SearchView
     val filtered = mutableMapOf<String, Int>()
     var lim:Long = 5
@@ -34,7 +35,6 @@ class MainIngredients : AppCompatActivity() {
                         document.data?.getValue("IngredientsCalories").toString().toInt(),
                         document.data?.getValue("IngredientsWeight").toString().toInt()
                     )
-
                     tempList.add(data)
                 }
                 mainIngredientsList.clear()
@@ -54,6 +54,25 @@ class MainIngredients : AppCompatActivity() {
         val db = FirebaseFirestore.getInstance()
         search = findViewById<SearchView>(R.id.search_ingredients)
 
+        FirebaseFirestore.getInstance().collection("MainIngredients").get()
+            .addOnSuccessListener {
+                val tempList = mutableListOf<MainIngredientsData>()
+                for (document in it.documents) {
+                    val data = MainIngredientsData(
+                        document.id,
+                        document.data?.getValue("IngredientsName").toString(),
+                        document.data?.getValue("IngredientsCalories").toString().toInt(),
+                        document.data?.getValue("IngredientsWeight").toString().toInt()
+                    )
+
+                    tempList.add(data)
+                }
+                mainIngredientsSearch.clear()
+                mainIngredientsSearch.addAll(tempList.toList())
+                Log.i("MainIngredients", tempList.toString())
+                Log.i("MainIngredients", mainIngredientsList.toString())
+            }
+
         getData {
             Log.wtf("size", mainIngredientsList.size.toString())
             adapter = MainIngredientsAdapter(mainIngredientsList, ingredient)
@@ -65,11 +84,15 @@ class MainIngredients : AppCompatActivity() {
         search.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
                 search.clearFocus()
-                var filter = mainIngredientsList?.filter {
-                    it.ingredientsName.contains(query.toString())
+                var filter = mainIngredientsSearch?.filter {
+                    it.ingredientsName.contains(query.toString(), true)
                 }
                 Log.wtf("ayolah", filter.toString())
                 if (filter.isEmpty()) {
+                    filtered.clear()
+                    findViewById<RecyclerView>(R.id.rvMainIngredients).adapter =
+                        MainIngredientsAdapter(filter, ingredient)
+                    findViewById<RecyclerView>(R.id.rvMainIngredients).adapter?.notifyDataSetChanged()
                     Toast.makeText(applicationContext, "Ingredients Not Found!", Toast.LENGTH_SHORT)
                         .show()
                 } else {
@@ -88,11 +111,11 @@ class MainIngredients : AppCompatActivity() {
                 search.clearFocus()
                 if (newText != null && newText.equals("")) {
                     findViewById<RecyclerView>(R.id.rvMainIngredients).adapter =
-                        MainIngredientsAdapter(mainIngredientsList, ingredient)
+                        MainIngredientsAdapter(mainIngredientsSearch, ingredient)
                     findViewById<RecyclerView>(R.id.rvMainIngredients).adapter?.notifyDataSetChanged()
                 } else {
-                    var filter = mainIngredientsList?.filter {
-                        it.ingredientsName.contains(newText.toString())
+                    var filter = mainIngredientsSearch?.filter {
+                        it.ingredientsName.contains(newText.toString(), true)
                     }
                     if (!filter.isEmpty()) {
                         filtered.clear()
@@ -104,6 +127,14 @@ class MainIngredients : AppCompatActivity() {
                         findViewById<RecyclerView>(R.id.rvMainIngredients).adapter =
                             MainIngredientsAdapter(filter, ingredient)
                         findViewById<RecyclerView>(R.id.rvMainIngredients).adapter?.notifyDataSetChanged()
+                    }
+                    else {
+                        filtered.clear()
+                        findViewById<RecyclerView>(R.id.rvMainIngredients).adapter =
+                            MainIngredientsAdapter(filter, ingredient)
+                        findViewById<RecyclerView>(R.id.rvMainIngredients).adapter?.notifyDataSetChanged()
+                        Toast.makeText(applicationContext, "Ingredients Not Found!", Toast.LENGTH_SHORT)
+                            .show()
                     }
                 }
                 return false
@@ -150,7 +181,7 @@ class MainIngredients : AppCompatActivity() {
                     )
                     db.collection("CustomMeals").add(data).addOnSuccessListener {
                         Toast.makeText(this, "Success Add Custom Meal", Toast.LENGTH_SHORT).show()
-                        finish()
+                        startActivity(Intent(this, MainActivity::class.java))
                     }
                 }
 
@@ -158,6 +189,9 @@ class MainIngredients : AppCompatActivity() {
 
         findViewById<Button>(R.id.ingredient_more_btn).setOnClickListener {
             lim = lim + 5
+            if(lim-5 >= mainIngredientsSearch.size) {
+                Toast.makeText(this, getString(R.string.limit_view_more), Toast.LENGTH_SHORT).show()
+            }
             getData {
                 adapter.notifyDataSetChanged()
             }

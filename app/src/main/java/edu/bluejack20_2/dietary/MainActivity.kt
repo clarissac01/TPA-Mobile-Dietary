@@ -13,16 +13,24 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.gauravk.bubblenavigation.BubbleNavigationConstraintView
 import android.view.View
+import android.widget.Toast
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.firestore.FirebaseFirestore
 import edu.bluejack20_2.dietary.services.AlarmReceiver
 import edu.bluejack20_2.dietary.services.NotificationService
 import edu.bluejack20_2.dietary.services.friendpage.add_friend.AddFriend
 import edu.bluejack20_2.dietary.services.home_page.HomeFragment
 import edu.bluejack20_2.dietary.services.login.LoginActivity
 import java.util.*
+import kotlin.math.abs
 
 class MainActivity : AppCompatActivity() {
+
+    private lateinit var auth: FirebaseAuth
+    private lateinit var user: FirebaseUser
+    var db = FirebaseFirestore.getInstance()
 
     override fun onStart() {
 //        FirebaseAuth.getInstance().signOut()
@@ -47,6 +55,15 @@ class MainActivity : AppCompatActivity() {
         }
 
 
+//        FirebaseMessaging.getInstance().subscribeToTopic("discount-offers")
+//            .addOnCompleteListener { task ->
+//                Toast.makeText(this, "Hello! Time to log your meal!", Toast.LENGTH_SHORT).show()
+//                if (!task.isSuccessful) {
+//                    Toast.makeText(this, "Failed!", Toast.LENGTH_SHORT).show()
+//                }
+//            }
+
+
         val homeFragment =
             HomeFragment()
         val profileFragment = ProfileFragment()
@@ -55,9 +72,10 @@ class MainActivity : AppCompatActivity() {
         val journeyFragment = JourneyFragment()
         findViewById<BubbleNavigationConstraintView>(R.id.bottom_navigation_view_linear).bringToFront()
 
-        setCurrentFragment(homeFragment)
+        val nav = findViewById<BubbleNavigationConstraintView>(R.id.bottom_navigation_view_linear)
 
-        findViewById<BubbleNavigationConstraintView>(R.id.bottom_navigation_view_linear).setNavigationChangeListener {view, position ->
+        setCurrentFragment(homeFragment)
+        nav.setNavigationChangeListener {view, position ->
             when(view.id) {
                 R.id.l_item_home -> setCurrentFragment(homeFragment)
                 R.id.l_item_custom_meal -> setCurrentFragment(customMealFragment)
@@ -67,52 +85,113 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-//        findViewById<Button>(R.id.main_ingredients_button).setOnClickListener {
-//            gotoMainIngredients(it)
-//        }
+//        Log.wtf("current", nav.currentActiveItemPosition.toString())
+//        nav.setCurrentActiveItem(0)
 
-        createNotificationChannel()
+//        createNotificationChannel()
         setNotification()
     }
 
-    private fun createNotificationChannel() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val name: CharSequence = "DietaryChannel"
-            val description = "Channel for Dietary Reminder"
-            val importance = NotificationManager.IMPORTANCE_DEFAULT
-            val channel = NotificationChannel("GabyChannelID", name, importance)
-            channel.description = description
-            val notificationManager = getSystemService(NotificationManager::class.java);
-            notificationManager.createNotificationChannel(channel)
-        }
-    }
+//    private fun createNotificationChannel() {
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+//
+//        }
+//    }
 
     private fun setNotification() {
         val intent = Intent(this, NotificationService::class.java)
-        val breakfastAlarm = PendingIntent.getBroadcast(this, 1, intent, 0)
-        val lunchAlarm = PendingIntent.getBroadcast(this, 2, intent, 0)
-
+        val breakfastAlarm = PendingIntent.getBroadcast(this, abs(Random().nextInt()), intent, 0)
+        val lunchAlarm = PendingIntent.getBroadcast(this, abs(Random().nextInt()), intent, 0)
+        val dinnerAlarm = PendingIntent.getBroadcast(this, abs(Random().nextInt()), intent, 0)
+        val snackAlarm = PendingIntent.getBroadcast(this, abs(Random().nextInt()), intent, 0)
+        var userID: String
         val alarmManager = getSystemService(Context.ALARM_SERVICE) as AlarmManager
         val hour = intent.extras?.getString("hour")
         val minute = intent.extras?.getString("minute")
+        auth = FirebaseAuth.getInstance()
+        user = auth.currentUser
 
         Log.wtf("hour", hour)
         Log.wtf("minute", minute)
+        
+        Log.wtf("username", user.displayName)
+        if(auth.currentUser != null) {
+            db.collection("users").whereEqualTo("username", user.displayName).get()
+                .addOnFailureListener { f -> Log.wtf("hehe", f.toString()) }
+                .addOnSuccessListener {
+                if(it.documents.isEmpty()) {
+                    return@addOnSuccessListener
+                }
+                else {
+                    userID = it.documents.first().id
+                    db.collection("users").document(userID).get().addOnSuccessListener {
+                        var breakfastHour = it.getLong("breakfastHour").toString().toInt() - 7
+                        var breakfastMinute = it.getLong("breakfastMinute").toString().toInt()
+                        var lunchHour = it.getLong("lunchHour").toString().toInt() - 7
+                        var lunchMinute = it.getLong("lunchMinute").toString().toInt()
+                        var dinnerHour = it.getLong("dinnerHour").toString().toInt() - 7
+                        var dinnerMinute = it.getLong("dinnerMinute").toString().toInt()
+                        var snackHour = it.getLong("snackHour").toString().toInt() - 7
+                        var snackMinute = it.getLong("snackMinute").toString().toInt()
 
-        val calendar: Calendar = Calendar.getInstance().apply {
-            timeInMillis = System.currentTimeMillis()
-            if(hour != null && minute != null) {
-                set(Calendar.HOUR_OF_DAY, hour.toString().toInt())
-                set(Calendar.MINUTE, minute.toString().toInt())
+                        val calendarBreakfast: Calendar = Calendar.getInstance().apply {
+                            timeInMillis = System.currentTimeMillis()
+                            if(breakfastHour != null && breakfastMinute != null) {
+                                set(Calendar.HOUR_OF_DAY, breakfastHour)
+                                set(Calendar.MINUTE, breakfastMinute)
+                            }
+                        }
+                        val calendarLunch: Calendar = Calendar.getInstance().apply {
+                            timeInMillis = System.currentTimeMillis()
+                            if(lunchHour != null && lunchMinute != null) {
+                                set(Calendar.HOUR_OF_DAY, lunchHour)
+                                set(Calendar.MINUTE, lunchMinute)
+                            }
+                        }
+                        val calendarDinner: Calendar = Calendar.getInstance().apply {
+                            timeInMillis = System.currentTimeMillis()
+                            if(dinnerHour != null && dinnerMinute != null) {
+                                set(Calendar.HOUR_OF_DAY, dinnerHour)
+                                set(Calendar.MINUTE, dinnerMinute)
+                            }
+                        }
+                        val calendarSnack: Calendar = Calendar.getInstance().apply {
+                            timeInMillis = System.currentTimeMillis()
+                            if(snackHour != null && snackMinute != null) {
+                                set(Calendar.HOUR_OF_DAY, snackHour)
+                                set(Calendar.MINUTE, snackMinute)
+                            }
+                        }
+
+                        alarmManager?.setRepeating(
+                            AlarmManager.RTC_WAKEUP,
+                            calendarBreakfast.timeInMillis,
+                            AlarmManager.INTERVAL_DAY,
+                            breakfastAlarm
+                        )
+                        alarmManager?.setRepeating(
+                            AlarmManager.RTC_WAKEUP,
+                            calendarLunch.timeInMillis,
+                            AlarmManager.INTERVAL_DAY,
+                            lunchAlarm
+                        )
+                        alarmManager?.setRepeating(
+                            AlarmManager.RTC_WAKEUP,
+                            calendarDinner.timeInMillis,
+                            AlarmManager.INTERVAL_DAY,
+                            dinnerAlarm
+                        )
+                        alarmManager?.setRepeating(
+                            AlarmManager.RTC_WAKEUP,
+                            calendarSnack.timeInMillis,
+                            AlarmManager.INTERVAL_DAY,
+                            snackAlarm
+                        )
+                    }
+                }
             }
         }
 
-        alarmManager?.setRepeating(
-            AlarmManager.RTC_WAKEUP,
-            calendar.timeInMillis,
-            AlarmManager.INTERVAL_DAY,
-            breakfastAlarm
-        )
 
         Log.i("MainActivity", "Notification Set!")
 

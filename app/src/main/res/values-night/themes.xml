@@ -5,10 +5,12 @@
         <item name="colorPrimary">@color/darklightgreen</item>
         <item name="colorPrimaryVariant">@color/lighterblack</item>
         <item name="colorOnPrimary">@color/darklightgreen</item>
+        <item name="colorPrimaryDark">@color/darklightgreen</item>
         <!-- Secondary brand color. -->
         <item name="colorSecondary">@color/almostblack</item>
         <item name="colorSecondaryVariant">@color/lighterblack</item>
         <item name="colorOnSecondary">@color/lightblack</item>
+        <item name="counterOverflowTextColor">@color/lighterblack</item>
         <!-- Status bar color. -->
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->

@@ -98,7 +98,7 @@ class FriendsFragment : Fragment(R.layout.fragment_friends) {
                                         )
                                     list += friend
                                 }
-                                requireActivity().findViewById<SuperRecyclerView>(R.id.friend_view).adapter?.notifyDataSetChanged()
+                                view?.findViewById<RecyclerView>(R.id.friend_view)?.adapter?.notifyDataSetChanged()
                             }
                     }
 

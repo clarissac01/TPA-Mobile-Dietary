@@ -1,8 +1,8 @@
 plugins {
     id 'com.android.application'
     id 'kotlin-android'
-    id 'com.google.gms.google-services'
     id 'org.jetbrains.kotlin.android.extensions'
+    id 'com.google.gms.google-services'
 }
 
 android {
@@ -74,6 +74,11 @@ dependencies {
     implementation 'com.malinskiy:superrecyclerview:1.1.4'
     implementation 'androidx.gridlayout:gridlayout:1.0.0'
     implementation 'androidx.wear:wear:1.1.0'
+    implementation 'com.google.firebase:firebase-messaging:22.0.0'
+    implementation 'com.google.firebase:firebase-core:19.0.0'
+    implementation 'com.google.firebase:firebase-iid:21.1.0'
+    implementation 'com.google.firebase:firebase-messaging:22.0.0'
+    implementation 'android.arch.work:work-runtime:1.0.1'
 
     testImplementation 'junit:junit:4.+'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
@@ -81,4 +86,5 @@ dependencies {
     implementation 'com.google.android.gms:play-services-auth:19.0.0'
     compile 'com.github.aakira:expandable-layout:1.6.0@aar'
     compileOnly 'com.google.android.wearable:wearable:2.8.1'
+
 }

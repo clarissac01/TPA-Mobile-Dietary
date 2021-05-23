@@ -1,5 +1,6 @@
 package edu.bluejack20_2.dietary
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -48,10 +49,14 @@ class MainIngredientsUpdateActivity : AppCompatActivity() {
                 override fun onQueryTextSubmit(query: String?): Boolean {
                     search.clearFocus()
                     var filter = mainIngredientsList?.filter {
-                        it.ingredientsName.contains(query.toString())
+                        it.ingredientsName.contains(query.toString(), true)
                     }
                     Log.wtf("ayolah", filter.toString())
                     if(filter.isEmpty()) {
+                        filtered.clear()
+                        findViewById<RecyclerView>(R.id.rvMainIngredients).adapter =
+                            MainIngredientsAdapter(filter, ingredient)
+                        findViewById<RecyclerView>(R.id.rvMainIngredients).adapter?.notifyDataSetChanged()
                         Toast.makeText(applicationContext, "Ingredients Not Found!", Toast.LENGTH_SHORT).show()
                     }
                     else {
@@ -73,7 +78,7 @@ class MainIngredientsUpdateActivity : AppCompatActivity() {
                     }
                     else {
                         var filter = mainIngredientsList?.filter {
-                            it.ingredientsName.contains(newText.toString())
+                            it.ingredientsName.contains(newText.toString(), true)
                         }
                         if(!filter.isEmpty()) {
                             filtered.clear()
@@ -84,6 +89,14 @@ class MainIngredientsUpdateActivity : AppCompatActivity() {
                             Log.wtf("ayolah2", filtered.toString())
                             findViewById<RecyclerView>(R.id.rvMainIngredients).adapter = MainIngredientsAdapter(filter, ingredient)
                             findViewById<RecyclerView>(R.id.rvMainIngredients).adapter?.notifyDataSetChanged()
+                        }
+                        else {
+                            filtered.clear()
+                            findViewById<RecyclerView>(R.id.rvMainIngredients).adapter =
+                                MainIngredientsAdapter(filter, ingredient)
+                            findViewById<RecyclerView>(R.id.rvMainIngredients).adapter?.notifyDataSetChanged()
+                            Toast.makeText(applicationContext, "Ingredients Not Found!", Toast.LENGTH_SHORT)
+                                .show()
                         }
                     }
                     return false
@@ -144,8 +157,8 @@ class MainIngredientsUpdateActivity : AppCompatActivity() {
                     "CustomMealIngredients" to customIngredient
                 )
                 db.collection("CustomMeals").document(customMealId!!).update(data).addOnSuccessListener {
-                    Toast.makeText(this, "Success Add Custom Meal", Toast.LENGTH_SHORT).show()
-                    finish()
+                    Toast.makeText(this, "Success Update Custom Meal", Toast.LENGTH_SHORT).show()
+                    startActivity(Intent(this, MainActivity::class.java))
                 }
             }
 

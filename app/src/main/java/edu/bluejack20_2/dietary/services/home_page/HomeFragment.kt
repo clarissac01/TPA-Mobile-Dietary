@@ -84,7 +84,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
                                 view.findViewById<TextView>(R.id.plan3).text = "to be burned"
                             }
                         }else{
-                            view.findViewById<TextView>(R.id.todaygoals).text = getString(R.string.today_calories, getMapping["CaloriePerDay"].toString().toInt())
+                            view.findViewById<TextView>(R.id.todaygoals).text = view.context.getString(R.string.today_calories, getMapping["CaloriePerDay"].toString().toInt())
                             view.findViewById<TextView>(R.id.plancal).text = getMapping["CaloriePerDay"].toString()
                         }
                     }

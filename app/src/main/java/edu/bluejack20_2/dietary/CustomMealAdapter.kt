@@ -66,16 +66,23 @@ class CustomMealAdapter(
                 val customMealName = findViewById<MaterialTextView>(R.id.custom_meal_name)
                 val customMealId = customMealItem[position].customMealId
 
-                FirebaseFirestore.getInstance().collection("CustomMeals").document(customMealId).update("CustomMealName", newCustomMeal).addOnSuccessListener {
-                    findViewById<EditText>(R.id.custom_meal_edit).visibility = View.INVISIBLE
-                    findViewById<MaterialButton>(R.id.update_submit_btn).visibility = View.INVISIBLE
-                    findViewById<MaterialButton>(R.id.cancel_btn).visibility = View.INVISIBLE
-                    customMealName.visibility = View.VISIBLE
-                    findViewById<MaterialTextView>(R.id.custom_meal_cal).visibility = View.VISIBLE
-                    findViewById<MaterialButton>(R.id.update_custom_meal_btn).visibility = View.VISIBLE
-                    findViewById<MaterialButton>(R.id.remove_custom_meal_btn).visibility = View.VISIBLE
-                    Toast.makeText(holder.itemView.context, "Update Custom Meal Success!", Toast.LENGTH_SHORT).show()
+                if(newCustomMeal == "") {
+                    Toast.makeText(context, "Custom meal name can't be empty", Toast.LENGTH_SHORT).show()
+                    return@setOnClickListener
                 }
+                else {
+                    FirebaseFirestore.getInstance().collection("CustomMeals").document(customMealId).update("CustomMealName", newCustomMeal).addOnSuccessListener {
+                        findViewById<EditText>(R.id.custom_meal_edit).visibility = View.INVISIBLE
+                        findViewById<MaterialButton>(R.id.update_submit_btn).visibility = View.INVISIBLE
+                        findViewById<MaterialButton>(R.id.cancel_btn).visibility = View.INVISIBLE
+                        customMealName.visibility = View.VISIBLE
+                        findViewById<MaterialTextView>(R.id.custom_meal_cal).visibility = View.VISIBLE
+                        findViewById<MaterialButton>(R.id.update_custom_meal_btn).visibility = View.VISIBLE
+                        findViewById<MaterialButton>(R.id.remove_custom_meal_btn).visibility = View.VISIBLE
+                        Toast.makeText(holder.itemView.context, "Update Custom Meal Success!", Toast.LENGTH_SHORT).show()
+                    }
+                }
+
 
                 FirebaseFirestore.getInstance().collection("CustomMeals").document(customMealId).get().addOnSuccessListener {
                     customMealName.text = it.getString("CustomMealName").toString()
