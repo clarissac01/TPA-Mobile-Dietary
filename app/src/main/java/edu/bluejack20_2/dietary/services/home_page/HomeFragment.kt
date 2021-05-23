@@ -38,6 +38,8 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
             R.id.user_profilepic
         )
 
+
+
         db.collection("users").whereEqualTo("username", user.displayName).get().addOnSuccessListener {
             if(!it?.isEmpty!!){
                 var userid = it.documents.first().id
@@ -130,7 +132,6 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
 
         tabLayout = view.findViewById(R.id.tabLayout)
         viewPager2 = view.findViewById(R.id.viewPager)
-
 
     }
 

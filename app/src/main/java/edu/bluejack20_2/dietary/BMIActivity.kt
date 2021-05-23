@@ -9,6 +9,7 @@ import android.widget.Button
 import android.widget.RadioButton
 import android.widget.Toast
 import androidx.annotation.RequiresApi
+import com.google.android.gms.tasks.Tasks
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import com.google.firebase.auth.FirebaseAuth
@@ -75,9 +76,29 @@ class BMIActivity : AppCompatActivity() {
                     "endDate" to endDate
                 )
                 db.collection("users").whereEqualTo("username", user.displayName).get().addOnSuccessListener {
+                    var userid = it.documents.first().id
                     db.collection("users").document(it.documents.first().id).update("plan", plan)
-                    Toast.makeText(this, "Success Add Plan", Toast.LENGTH_SHORT).show()
-                    finish()
+
+                    db.collection("CustomMeals").orderBy("day").get().addOnSuccessListener {
+                        if(!it.isEmpty){
+                            it.documents.forEach {
+                                if(it.get("UserID") == null){
+                                    db.collection("CustomMeals").add(it.data!!).addOnSuccessListener {
+                                        Tasks.whenAll(
+                                            db.collection("CustomMeals").document(it.id).update("UserID", userid)
+                                        ).addOnSuccessListener {
+                                        }
+                                    }
+                                }
+                            }
+                            Toast.makeText(this, "Success Add Plan", Toast.LENGTH_SHORT).show()
+                            finish()
+                        }
+                    }
+
+
+
+
                 }
             }
             else if(findViewById<RadioButton>(R.id.radio_light_active).isChecked == true) {
@@ -89,9 +110,24 @@ class BMIActivity : AppCompatActivity() {
                     "endDate" to endDate
                 )
                 db.collection("users").whereEqualTo("username", user.displayName).get().addOnSuccessListener {
+                    var userid = it.documents.first().id
                     db.collection("users").document(it.documents.first().id).update("plan", plan)
-                    Toast.makeText(this, "Success Add Plan", Toast.LENGTH_SHORT).show()
-                    finish()
+                    db.collection("CustomMeals").orderBy("day").get().addOnSuccessListener {
+                        if(!it.isEmpty){
+                            it.documents.forEach {
+                                if(it.get("UserID") == null){
+                                    db.collection("CustomMeals").add(it.data!!).addOnSuccessListener {
+                                        Tasks.whenAll(
+                                            db.collection("CustomMeals").document(it.id).update("UserID", userid)
+                                        ).addOnSuccessListener {
+                                        }
+                                    }
+                                }
+                            }
+                            Toast.makeText(this, "Success Add Plan", Toast.LENGTH_SHORT).show()
+                            finish()
+                        }
+                    }
                 }
             }
             else if(findViewById<RadioButton>(R.id.radio_moderate_active).isChecked == true) {
@@ -103,9 +139,24 @@ class BMIActivity : AppCompatActivity() {
                     "endDate" to endDate
                 )
                 db.collection("users").whereEqualTo("username", user.displayName).get().addOnSuccessListener {
+                    var userid = it.documents.first().id
                     db.collection("users").document(it.documents.first().id).update("plan", plan)
-                    Toast.makeText(this, "Success Add Plan", Toast.LENGTH_SHORT).show()
-                    finish()
+                    db.collection("CustomMeals").orderBy("day").get().addOnSuccessListener {
+                        if(!it.isEmpty){
+                            it.documents.forEach {
+                                if(it.get("UserID") == null){
+                                    db.collection("CustomMeals").add(it.data!!).addOnSuccessListener {
+                                        Tasks.whenAll(
+                                            db.collection("CustomMeals").document(it.id).update("UserID", userid)
+                                        ).addOnSuccessListener {
+                                        }
+                                    }
+                                }
+                            }
+                            Toast.makeText(this, "Success Add Plan", Toast.LENGTH_SHORT).show()
+                            finish()
+                        }
+                    }
                 }
             }
             else {
@@ -117,9 +168,24 @@ class BMIActivity : AppCompatActivity() {
                     "endDate" to endDate
                 )
                 db.collection("users").whereEqualTo("username", user.displayName).get().addOnSuccessListener {
+                    var userid = it.documents.first().id
                     db.collection("users").document(it.documents.first().id).update("plan", plan)
-                    Toast.makeText(this, "Success Add Plan", Toast.LENGTH_SHORT).show()
-                    finish()
+                    db.collection("CustomMeals").orderBy("day").get().addOnSuccessListener {
+                        if(!it.isEmpty){
+                            it.documents.forEach {
+                                if(it.get("UserID") == null){
+                                    db.collection("CustomMeals").add(it.data!!).addOnSuccessListener {
+                                        Tasks.whenAll(
+                                            db.collection("CustomMeals").document(it.id).update("UserID", userid)
+                                        ).addOnSuccessListener {
+                                        }
+                                    }
+                                }
+                            }
+                            Toast.makeText(this, "Success Add Plan", Toast.LENGTH_SHORT).show()
+                            finish()
+                        }
+                    }
                 }
             }
         }
@@ -155,9 +221,24 @@ class BMIActivity : AppCompatActivity() {
                     "endDate" to endDate
                 )
                 db.collection("users").whereEqualTo("username", user.displayName).get().addOnSuccessListener {
+                    var userid = it.documents.first().id
                     db.collection("users").document(it.documents.first().id).update("plan", plan)
-                    Toast.makeText(this, "Success Add Plan", Toast.LENGTH_SHORT).show()
-                    finish()
+                    db.collection("CustomMeals").orderBy("day").get().addOnSuccessListener {
+                        if(!it.isEmpty){
+                            it.documents.forEach {
+                                if(it.get("UserID") == null){
+                                    db.collection("CustomMeals").add(it.data!!).addOnSuccessListener {
+                                        Tasks.whenAll(
+                                            db.collection("CustomMeals").document(it.id).update("UserID", userid)
+                                        ).addOnSuccessListener {
+                                        }
+                                    }
+                                }
+                            }
+                            Toast.makeText(this, "Success Add Plan", Toast.LENGTH_SHORT).show()
+                            finish()
+                        }
+                    }
                 }
             }
             else if(findViewById<RadioButton>(R.id.radio_light_active).isChecked == true) {
@@ -169,9 +250,24 @@ class BMIActivity : AppCompatActivity() {
                     "endDate" to endDate
                 )
                 db.collection("users").whereEqualTo("username", user.displayName).get().addOnSuccessListener {
+                    var userid = it.documents.first().id
                     db.collection("users").document(it.documents.first().id).update("plan", plan)
-                    Toast.makeText(this, "Success Add Plan", Toast.LENGTH_SHORT).show()
-                    finish()
+                    db.collection("CustomMeals").orderBy("day").get().addOnSuccessListener {
+                        if(!it.isEmpty){
+                            it.documents.forEach {
+                                if(it.get("UserID") == null){
+                                    db.collection("CustomMeals").add(it.data!!).addOnSuccessListener {
+                                        Tasks.whenAll(
+                                            db.collection("CustomMeals").document(it.id).update("UserID", userid)
+                                        ).addOnSuccessListener {
+                                        }
+                                    }
+                                }
+                            }
+                            Toast.makeText(this, "Success Add Plan", Toast.LENGTH_SHORT).show()
+                            finish()
+                        }
+                    }
                 }
             }
             else if(findViewById<RadioButton>(R.id.radio_moderate_active).isChecked == true) {
@@ -183,9 +279,24 @@ class BMIActivity : AppCompatActivity() {
                     "endDate" to endDate
                 )
                 db.collection("users").whereEqualTo("username", user.displayName).get().addOnSuccessListener {
+                    var userid = it.documents.first().id
                     db.collection("users").document(it.documents.first().id).update("plan", plan)
-                    Toast.makeText(this, "Success Add Plan", Toast.LENGTH_SHORT).show()
-                    finish()
+                    db.collection("CustomMeals").orderBy("day").get().addOnSuccessListener {
+                        if(!it.isEmpty){
+                            it.documents.forEach {
+                                if(it.get("UserID") == null){
+                                    db.collection("CustomMeals").add(it.data!!).addOnSuccessListener {
+                                        Tasks.whenAll(
+                                            db.collection("CustomMeals").document(it.id).update("UserID", userid)
+                                        ).addOnSuccessListener {
+                                        }
+                                    }
+                                }
+                            }
+                            Toast.makeText(this, "Success Add Plan", Toast.LENGTH_SHORT).show()
+                            finish()
+                        }
+                    }
                 }
             }
             else {
@@ -197,9 +308,24 @@ class BMIActivity : AppCompatActivity() {
                     "endDate" to endDate
                 )
                 db.collection("users").whereEqualTo("username", user.displayName).get().addOnSuccessListener {
+                    var userid = it.documents.first().id
                     db.collection("users").document(it.documents.first().id).update("plan", plan)
-                    Toast.makeText(this, "Success Add Plan", Toast.LENGTH_SHORT).show()
-                    finish()
+                    db.collection("CustomMeals").orderBy("day").get().addOnSuccessListener {
+                        if(!it.isEmpty){
+                            it.documents.forEach {
+                                if(it.get("UserID") == null){
+                                    db.collection("CustomMeals").add(it.data!!).addOnSuccessListener {
+                                        Tasks.whenAll(
+                                            db.collection("CustomMeals").document(it.id).update("UserID", userid)
+                                        ).addOnSuccessListener {
+                                        }
+                                    }
+                                }
+                            }
+                            Toast.makeText(this, "Success Add Plan", Toast.LENGTH_SHORT).show()
+                            finish()
+                        }
+                    }
                 }
             }
         }
@@ -235,9 +361,24 @@ class BMIActivity : AppCompatActivity() {
                     "endDate" to endDate
                 )
                 db.collection("users").whereEqualTo("username", user.displayName).get().addOnSuccessListener {
+                    var userid = it.documents.first().id
                     db.collection("users").document(it.documents.first().id).update("plan", plan)
-                    Toast.makeText(this, "Success Add Plan", Toast.LENGTH_SHORT).show()
-                    finish()
+                    db.collection("CustomMeals").orderBy("day").get().addOnSuccessListener {
+                        if(!it.isEmpty){
+                            it.documents.forEach {
+                                if(it.get("UserID") == null){
+                                    db.collection("CustomMeals").add(it.data!!).addOnSuccessListener {
+                                        Tasks.whenAll(
+                                            db.collection("CustomMeals").document(it.id).update("UserID", userid)
+                                        ).addOnSuccessListener {
+                                        }
+                                    }
+                                }
+                            }
+                            Toast.makeText(this, "Success Add Plan", Toast.LENGTH_SHORT).show()
+                            finish()
+                        }
+                    }
                 }
             }
             else if(findViewById<RadioButton>(R.id.radio_light_active).isChecked == true) {
@@ -249,9 +390,24 @@ class BMIActivity : AppCompatActivity() {
                     "endDate" to endDate
                 )
                 db.collection("users").whereEqualTo("username", user.displayName).get().addOnSuccessListener {
+                    var userid = it.documents.first().id
                     db.collection("users").document(it.documents.first().id).update("plan", plan)
-                    Toast.makeText(this, "Success Add Plan", Toast.LENGTH_SHORT).show()
-                    finish()
+                    db.collection("CustomMeals").orderBy("day").get().addOnSuccessListener {
+                        if(!it.isEmpty){
+                            it.documents.forEach {
+                                if(it.get("UserID") == null){
+                                    db.collection("CustomMeals").add(it.data!!).addOnSuccessListener {
+                                        Tasks.whenAll(
+                                            db.collection("CustomMeals").document(it.id).update("UserID", userid)
+                                        ).addOnSuccessListener {
+                                        }
+                                    }
+                                }
+                            }
+                            Toast.makeText(this, "Success Add Plan", Toast.LENGTH_SHORT).show()
+                            finish()
+                        }
+                    }
                 }
             }
             else if(findViewById<RadioButton>(R.id.radio_moderate_active).isChecked == true) {
@@ -263,9 +419,24 @@ class BMIActivity : AppCompatActivity() {
                     "endDate" to endDate
                 )
                 db.collection("users").whereEqualTo("username", user.displayName).get().addOnSuccessListener {
+                    var userid = it.documents.first().id
                     db.collection("users").document(it.documents.first().id).update("plan", plan)
-                    Toast.makeText(this, "Success Add Plan", Toast.LENGTH_SHORT).show()
-                    finish()
+                    db.collection("CustomMeals").orderBy("day").get().addOnSuccessListener {
+                        if(!it.isEmpty){
+                            it.documents.forEach {
+                                if(it.get("UserID") == null){
+                                    db.collection("CustomMeals").add(it.data!!).addOnSuccessListener {
+                                        Tasks.whenAll(
+                                            db.collection("CustomMeals").document(it.id).update("UserID", userid)
+                                        ).addOnSuccessListener {
+                                        }
+                                    }
+                                }
+                            }
+                            Toast.makeText(this, "Success Add Plan", Toast.LENGTH_SHORT).show()
+                            finish()
+                        }
+                    }
                 }
             }
             else {
@@ -277,9 +448,24 @@ class BMIActivity : AppCompatActivity() {
                     "endDate" to endDate
                 )
                 db.collection("users").whereEqualTo("username", user.displayName).get().addOnSuccessListener {
+                    var userid = it.documents.first().id
                     db.collection("users").document(it.documents.first().id).update("plan", plan)
-                    Toast.makeText(this, "Success Add Plan", Toast.LENGTH_SHORT).show()
-                    finish()
+                    db.collection("CustomMeals").orderBy("day").get().addOnSuccessListener {
+                        if(!it.isEmpty){
+                            it.documents.forEach {
+                                if(it.get("UserID") == null){
+                                    db.collection("CustomMeals").add(it.data!!).addOnSuccessListener {
+                                        Tasks.whenAll(
+                                            db.collection("CustomMeals").document(it.id).update("UserID", userid)
+                                        ).addOnSuccessListener {
+                                        }
+                                    }
+                                }
+                            }
+                            Toast.makeText(this, "Success Add Plan", Toast.LENGTH_SHORT).show()
+                            finish()
+                        }
+                    }
                 }
             }
         }
