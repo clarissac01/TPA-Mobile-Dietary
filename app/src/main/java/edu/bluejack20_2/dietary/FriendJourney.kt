@@ -24,9 +24,6 @@ class FriendJourney(var FriendID: String) : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-
-        Log.wtf("this friend iddd", FriendID)
-
         var journeyList = getList(view)!!
     }
 
@@ -38,8 +35,6 @@ class FriendJourney(var FriendID: String) : Fragment() {
                     list.add(JourneyItem(it.id, it.getTimestamp("Date")!!, FriendID, it.get("totalCalories").toString().toInt()))
                     view.findViewById<RecyclerView>(R.id.friendjourneyrecyclerview)?.adapter?.notifyDataSetChanged()
                 }
-                Log.wtf("wihi id", list.toString())
-                Log.wtf("the size", list.size.toString())
                 if(list.size > 0){
                     view.findViewById<RecyclerView>(R.id.friendjourneyrecyclerview).adapter = FriendJourneyAdapter(list, view.context)
                     view.findViewById<RecyclerView>(R.id.friendjourneyrecyclerview).layoutManager =
@@ -53,7 +48,6 @@ class FriendJourney(var FriendID: String) : Fragment() {
 
             }
         }.addOnFailureListener {
-            Log.wtf("faill", it.toString())
         }
 
         return list

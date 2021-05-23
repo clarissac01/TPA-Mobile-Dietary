@@ -50,16 +50,14 @@ class UserFriend : AppCompatActivity() {
         var userfriendlist: List<*>? = null
         var user2friendlist: List<*>?
 
-        Log.wtf("userfriendid", userfriend.docId)
         //get current user friend id
         db.collection("users").whereEqualTo("username", user.displayName).get().addOnSuccessListener { it ->
             var userfriendlist: List<String>? = null
             if(!it?.isEmpty!!) {
                 userfriendlist = it.documents.first().get("friends") as List<String>
-                Log.wtf("userfriendlist", userfriendlist.toString())
             }
                 //get friend's friend
-                db.collection("users").whereEqualTo("username", userfriend.username).get().addOnSuccessListener {
+                db.collection("users").whereEqualTo("username", userfriend.username).addSnapshotListener() { it, _ ->
                     if(!it?.isEmpty!!){
                         if(it.documents.first().get("friends") != null){
                             var friendlier = it.documents.first().get("friends") as List<String>?
@@ -89,7 +87,6 @@ class UserFriend : AppCompatActivity() {
                                         }
 
                                         if (it != null) {
-                                            Log.wtf("document data", "${it.data}")
                                             if (it.getString("photoURL") != null) {
                                                 var friend = FriendItem(it.getString("username")!!, true, it.getString("photoURL"), res, i.toString(), isUserFriend)
                                                 list.add(friend)
@@ -104,6 +101,7 @@ class UserFriend : AppCompatActivity() {
                                     }
                             }
 
+                        }else{
                         }
 
                     }

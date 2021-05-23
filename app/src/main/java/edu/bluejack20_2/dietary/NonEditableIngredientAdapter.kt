@@ -35,7 +35,6 @@ class NonEditableIngredientAdapter(private val ingredientList: MutableList<Ingre
     }
 
     override fun onBindViewHolder(holder: NonEditableIngredientHolder, position: Int) {
-        Log.wtf("the list", ingredientList.toString())
         val ingredientItem = ingredientList?.get(position)
         holder.non_ingredientName.text = ingredientItem?.ingredientName!!
         holder.non_ingredientWeight.setText(ingredientItem.weight.roundToInt().toString() + " g")

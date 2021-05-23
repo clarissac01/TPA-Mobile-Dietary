@@ -32,13 +32,13 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        Log.wtf("duar", user?.toString())
-
         view.findViewById<TextView>(R.id.salutation).text = "Hello, " + user.displayName + "!"
 
         profilepic = view.findViewById<CirleImageView>(
             R.id.user_profilepic
         )
+
+
 
         db.collection("users").whereEqualTo("username", user.displayName).get().addOnSuccessListener {
             if(!it?.isEmpty!!){
@@ -56,7 +56,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
                         30
                     view.findViewById<CircularProgressIndicator>(R.id.planprogresscircle).progress =
                         res.toLong().toInt()
-                    db.collection("Journey").whereEqualTo("userID", userid).whereEqualTo("day", res.toLong().toInt()).get().addOnSuccessListener {
+                    db.collection("Journey").whereEqualTo("userID", userid).whereEqualTo("day", res.toLong().toInt()).addSnapshotListener() {it, _ ->
                         if(!it?.isEmpty!!){
                             var calLeft = getMapping["CaloriePerDay"].toString().toInt()
                             view.findViewById<TextView>(R.id.todaygoals).text = getString(R.string.today_calories, calLeft.toString().toInt())
@@ -133,7 +133,6 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         tabLayout = view.findViewById(R.id.tabLayout)
         viewPager2 = view.findViewById(R.id.viewPager)
 
-
     }
 
     fun activateNoPlan(view: View){
@@ -151,7 +150,10 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         view.findViewById<TextView>(R.id.plancurrday).visibility = View.INVISIBLE
         view.findViewById<TextView>(R.id.planday).visibility = View.INVISIBLE
         view.findViewById<CircularProgressIndicator>(R.id.planprogresscircle).visibility = View.INVISIBLE
-
+        viewPager2 = view.findViewById(R.id.viewPager)
+        viewPager2.visibility = View.INVISIBLE
+        tabLayout = view.findViewById(R.id.tabLayout)
+        tabLayout.visibility = View.INVISIBLE
     }
 
 }

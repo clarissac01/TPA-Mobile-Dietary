@@ -60,15 +60,17 @@ class UserDetail() : AppCompatActivity() {
         }
 
         db.collection("users").document(userDocId).addSnapshotListener { it, _ ->
-            friends = it?.get("friends") as List<Any>?
-            var friendcount = findViewById<Button>(R.id.friend_count)
-            var countfriend = "0\nFRIENDS"
-            if(friends?.size != null){
-                Log.wtf("count friend", friends.toString() + " " + it?.getString("username"))
-                countfriend = friends?.size.toString()+"\nFRIENDS"
+            if(it?.exists()!!){
+                friends = it?.get("friends") as List<Any>?
+                var friendcount = findViewById<Button>(R.id.friend_count)
+                var countfriend = "0\nFRIENDS"
+                if(friends?.size != null){
+                    countfriend = friends?.size.toString()+"\nFRIENDS"
+                }
+                friendcount.text = countfriend
+                findViewById<TextView>(R.id.userdetailname).text = it.get("name").toString()
+
             }
-            friendcount.text = countfriend
-            Log.wtf("count friend", friends.toString() + " " + it?.getString("username"))
         }
 
         findViewById<TextView>(R.id.friend_count).setOnClickListener{
@@ -155,7 +157,6 @@ class UserDetail() : AppCompatActivity() {
             this,
             UserFriend::class.java
         )
-        Log.wtf("see this user friend detail", userFriend.username)
         intent.putExtra("user", userFriend)
         this.startActivity(
             intent

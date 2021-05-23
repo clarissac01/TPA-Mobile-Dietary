@@ -18,6 +18,7 @@ import com.google.firebase.firestore.FieldPath
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
+import com.malinskiy.superrecyclerview.SuperRecyclerView
 import java.lang.reflect.Field
 import java.net.URI
 import java.util.*
@@ -32,16 +33,15 @@ class FriendsFragment : Fragment(R.layout.fragment_friends) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val friendlist = getUserFriends()
-        requireActivity().findViewById<RecyclerView>(R.id.friend_view).adapter =
-            FriendAdapter(friendlist, requireContext())
-        requireActivity().findViewById<RecyclerView>(R.id.friend_view).layoutManager =
-            LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
-        requireActivity().findViewById<RecyclerView>(R.id.friend_view).setHasFixedSize(true)
-
+        getUserFriends()
     }
 
-    private fun getUserFriends(): List<FriendItem>? {
+    override fun onResume() {
+        super.onResume()
+        getUserFriends()
+    }
+
+    private fun getUserFriends() {
         val list = ArrayList<FriendItem>()
         var docId: String
         db.collection("users").whereEqualTo("username", user.displayName)
@@ -49,11 +49,10 @@ class FriendsFragment : Fragment(R.layout.fragment_friends) {
                 list.clear()
                 if (!it?.isEmpty!!) {
                     var friendlist = it.documents.first().get("friends") as List<*>?
-                    if(friendlist?.size == 0){
-                        Log.wtf("eezz empty", "hohoho")
-                        requireActivity().findViewById<RecyclerView>(R.id.friend_view).adapter =
+                    if (friendlist?.size == 0) {
+                        requireActivity().findViewById<SuperRecyclerView>(R.id.friend_view).adapter =
                             null
-                    }
+                    } else {
                     friendlist?.forEach {
                         var docId = it.toString()
                         db.collection("users").document(docId)
@@ -61,21 +60,31 @@ class FriendsFragment : Fragment(R.layout.fragment_friends) {
                                 var username = it?.data?.getValue("username")
                                 var photo = it?.data?.get("photoURL")
 
-                                var res:Int = 0
+                                var res: Int = 0
 
-                                if(it?.data?.get("plan") != null){
+                                if (it?.data?.get("plan") != null) {
                                     var plan = it?.data?.get("plan") as Map<*, *>
                                     val date1 = Date()
                                     val date2 = plan["startDate"] as Timestamp
                                     var diff = date1.time - date2.toDate().time
-                                    res = java.util.concurrent.TimeUnit.DAYS.convert(diff, java.util.concurrent.TimeUnit.MILLISECONDS)
+                                    res = java.util.concurrent.TimeUnit.DAYS.convert(
+                                        diff,
+                                        java.util.concurrent.TimeUnit.MILLISECONDS
+                                    )
                                         .toInt()
 
                                 }
 
                                 if (photo == null) {
                                     var friend =
-                                        FriendItem(username.toString(), false, null, res, docId, true)
+                                        FriendItem(
+                                            username.toString(),
+                                            false,
+                                            null,
+                                            res,
+                                            docId,
+                                            true
+                                        )
                                     list += friend
                                 } else {
                                     var friend =
@@ -92,10 +101,39 @@ class FriendsFragment : Fragment(R.layout.fragment_friends) {
                                 view?.findViewById<RecyclerView>(R.id.friend_view)?.adapter?.notifyDataSetChanged()
                             }
                     }
+
+
+                        val paginated = mutableListOf<FriendItem>()
+                        paginated.addAll(list.take(7))
+
+                        view?.findViewById<SuperRecyclerView>(R.id.friend_view)!!.adapter = FriendAdapter(list, requireContext())
+                        view?.findViewById<SuperRecyclerView>(R.id.friend_view)!!.setLayoutManager(LinearLayoutManager(context))
+                        view?.findViewById<SuperRecyclerView>(R.id.friend_view)
+                            ?.setupMoreListener({ overallItemsCount, itemsBeforeMore, maxLastVisiblePosition ->
+                                if (maxLastVisiblePosition + 7 >= overallItemsCount - 1) {
+
+                                }
+
+                                val from = maxLastVisiblePosition + 1
+                                paginated.clear()
+
+                                var takenCount = 0
+                                for (i in from until overallItemsCount) {
+                                    if (takenCount >= 7) {
+                                        break
+                                    }
+
+                                    paginated.add(list[i])
+                                    takenCount++
+                                }
+                            }, 7)
+
+
+
+                }
                 }
             }
 
-        return list
     }
 
 

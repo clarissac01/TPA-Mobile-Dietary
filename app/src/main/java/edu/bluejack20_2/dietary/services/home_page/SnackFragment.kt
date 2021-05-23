@@ -75,7 +75,6 @@ class SnackFragment(var currDay: Int = 0) : Fragment() {
                             view.findViewById<Button>(R.id.changeSnack).visibility = View.VISIBLE
                             view.findViewById<FloatingActionButton>(R.id.floatingActionButton5).visibility = View.VISIBLE
                             isEditable = true
-                            Log.wtf("snack is editable", "true")
                         }
                     }else{
                         view.findViewById<Button>(R.id.changeSnack).visibility = View.VISIBLE
@@ -106,7 +105,7 @@ class SnackFragment(var currDay: Int = 0) : Fragment() {
             Tasks.whenAll(
                 db.collection("CustomMeals").document(menuId).get().addOnSuccessListener {
                     if(it.exists()){
-                        menucal = it.get("Calories").toString().toInt()
+                        menucal = it.get("Calories").toString().toFloat().toInt()
                         var inglist = it.get("CustomMealIngredients") as List<Map<*, *>>
                         inglist.forEach {
                             customIngredient.add(mapOf(
@@ -147,6 +146,7 @@ class SnackFragment(var currDay: Int = 0) : Fragment() {
                             hashMapOf(
                                 "userID" to userId,
                                 "totalCalories" to menucal,
+                                "day" to currDay,
                                 "Date" to Timestamp.now(),
                                 "snackMenu" to hashMapOf(
                                     "calories" to menucal,

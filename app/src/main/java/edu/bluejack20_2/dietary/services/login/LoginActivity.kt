@@ -100,7 +100,6 @@ class LoginActivity : AppCompatActivity() {
                         }
 
                         FirebaseAuth.getInstance().signInWithEmailAndPassword(email, userPassword).addOnSuccessListener {
-                            Log.wtf("errorrree", it.toString())
                             if(it != null){
                                 FirebaseAuth.getInstance().currentUser.updateProfile(UserProfileChangeRequest.Builder().setDisplayName(userUsername).setPhotoUri(photourl).build()).addOnSuccessListener {
                                     startActivity(Intent(this, MainActivity::class.java))
@@ -119,14 +118,14 @@ class LoginActivity : AppCompatActivity() {
                             }
                         }.addOnFailureListener{
                             Log.wtf("13 errornya", it.toString())
-//                            FirebaseAuth.getInstance().createUserWithEmailAndPassword(email, userPassword).addOnSuccessListener {
-//                                FirebaseAuth.getInstance().currentUser.updateProfile(UserProfileChangeRequest.Builder().setDisplayName(userUsername).setPhotoUri(photourl).build()).addOnSuccessListener {
-//                                    startActivity(Intent(this, MainActivity::class.java))
-//                                }.addOnFailureListener {
-//                                    Log.wtf("12", it.toString())
-//                                }
-//                            }.addOnFailureListener {
-//                            }
+                            FirebaseAuth.getInstance().createUserWithEmailAndPassword(email, userPassword).addOnSuccessListener {
+                                FirebaseAuth.getInstance().currentUser.updateProfile(UserProfileChangeRequest.Builder().setDisplayName(userUsername).setPhotoUri(photourl).build()).addOnSuccessListener {
+                                    startActivity(Intent(this, MainActivity::class.java))
+                                }.addOnFailureListener {
+                                    Log.wtf("12", it.toString())
+                                }
+                            }.addOnFailureListener {
+                            }
                         }
                     }
                 }

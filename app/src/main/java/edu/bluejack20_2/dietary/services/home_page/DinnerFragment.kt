@@ -56,7 +56,6 @@ class DinnerFragment(var currDay: Int = 0) : Fragment() {
             intent.putExtra("menuId", menuId)
             intent.putExtra("currentDay", currDay)
             intent.putExtra("isEditable", isEditable)
-            Log.wtf("gotoMealDetail", isEditable.toString())
             context?.startActivity(
                 intent
             )
@@ -77,14 +76,12 @@ class DinnerFragment(var currDay: Int = 0) : Fragment() {
                             view.findViewById<Button>(R.id.changeDinner).visibility = View.VISIBLE
                             view.findViewById<FloatingActionButton>(R.id.floatingActionButton4).visibility = View.VISIBLE
                             isEditable = true
-                            Log.wtf("make isEditable true", isEditable.toString())
 
                         }
                     }else{
                         view.findViewById<Button>(R.id.changeDinner).visibility = View.VISIBLE
                         view.findViewById<FloatingActionButton>(R.id.floatingActionButton4).visibility = View.VISIBLE
                         isEditable = true
-                        Log.wtf("make isEditable true", isEditable.toString())
                     }
                 }
 
@@ -110,12 +107,7 @@ class DinnerFragment(var currDay: Int = 0) : Fragment() {
             Tasks.whenAll(
                 db.collection("CustomMeals").document(menuId).get().addOnSuccessListener {
                     if(it.exists()){
-                        var totalCal = 0
-                        if(it.get("totalCalories") != null){
-                            totalCal = menucal + it.get("totalCalories").toString().toInt()
-                        }else{
-                            totalCal = menucal
-                        }
+                        menucal = it.get("Calories").toString().toFloat().toInt()
                         var inglist = it.get("CustomMealIngredients") as List<Map<*, *>>
                         inglist.forEach {
                             customIngredient.add(mapOf(
@@ -131,7 +123,12 @@ class DinnerFragment(var currDay: Int = 0) : Fragment() {
                         var journeyid = it.documents.first().id
                         db.collection("Journey").document(journeyid).get().addOnSuccessListener {
                             if(it.exists()){
-                                var totalCal = menucal + it.get("totalCalories").toString().toInt()
+                                var totalCal = 0
+                                if(it.get("totalCalories") != null){
+                                    totalCal = menucal + it.get("totalCalories").toString().toInt()
+                                }else{
+                                    totalCal = menucal
+                                }
                                 db.collection("Journey").document(journeyid).update(
                                     "dinnerMenu", hashMapOf(
                                         "calories" to menucal,
@@ -143,7 +140,6 @@ class DinnerFragment(var currDay: Int = 0) : Fragment() {
                                     view.findViewById<FloatingActionButton>(R.id.floatingActionButton4).visibility = View.INVISIBLE
                                     view.findViewById<Button>(R.id.changeDinner).visibility = View.INVISIBLE
                                 }
-
                             }
                         }
                     }else{
@@ -151,6 +147,7 @@ class DinnerFragment(var currDay: Int = 0) : Fragment() {
                             hashMapOf(
                                 "userID" to userId,
                                 "totalCalories" to menucal,
+                                "day" to currDay,
                                 "Date" to Timestamp.now(),
                                 "dinnerMenu" to hashMapOf(
                                     "calories" to menucal,

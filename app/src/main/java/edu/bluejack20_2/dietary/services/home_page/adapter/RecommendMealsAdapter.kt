@@ -114,10 +114,10 @@ class RecommendMealsAdapter(val currday: Int, parentActivity: AppCompatActivity,
         db.collection("CustomMeals").document(mealId).get().addOnSuccessListener{
             if(it?.exists()!!){
                 var mealings = it.data?.get("CustomMealIngredients") as List<Map<*, *>>
-                var calCount = 0F
-                var weight = 0F
-                var name = ""
                 mealings.forEach {
+                    var calCount = 0F
+                    var weight = 0F
+                    var name = ""
                     calCount = it["Weight"].toString().toFloat()
                     weight = it["Weight"].toString().toFloat()
                     val ingredientId = it["IngredientID"].toString()
