@@ -133,8 +133,8 @@ class MainActivity : AppCompatActivity() {
 // Set the alarm to start at 8:30 a.m.
         val call: Calendar = Calendar.getInstance().apply {
             timeInMillis = System.currentTimeMillis()
-            set(Calendar.HOUR_OF_DAY, 23)
-            set(Calendar.MINUTE, 58)
+            set(Calendar.HOUR_OF_DAY, 13)
+            set(Calendar.MINUTE, 6  )
         }
 
         alarmMgr?.setInexactRepeating(

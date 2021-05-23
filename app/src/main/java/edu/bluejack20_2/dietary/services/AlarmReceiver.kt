@@ -20,8 +20,8 @@ class AlarmReceiver : BroadcastReceiver() {
     var user = FirebaseAuth.getInstance().currentUser
 
     override fun onReceive(context: Context, intent: Intent) {
-        if (intent.action == "android.intent.action.BOOT_COMPLETED") {
             // Set the alarm here.
+            Log.wtf("masuk sini dong", "oke siap otw")
             db.collection("users").whereEqualTo("username", user.displayName).get()
                 .addOnSuccessListener {
                     if (!it.isEmpty) {
@@ -562,6 +562,5 @@ class AlarmReceiver : BroadcastReceiver() {
                         }
                     }
                 }
-        }
     }
 }
