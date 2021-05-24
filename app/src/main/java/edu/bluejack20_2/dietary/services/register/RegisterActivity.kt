@@ -84,7 +84,7 @@ class RegisterActivity : AppCompatActivity() {
                     pickImageFromGallery()
                 }
                 else{
-                    Toast.makeText(this, "Permission denied", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this, getString(R.string.permission_denied), Toast.LENGTH_SHORT).show()
                 }
             }
         }
@@ -109,7 +109,7 @@ class RegisterActivity : AppCompatActivity() {
         userPassword = password.text.toString()
         userUsername = username.text.toString()
         val emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+"
-        val passPattern = "[a-zA-Z0-9]"
+        val passPattern = "^(?=.*[0-9])(?=.*[a-zA-Z])([a-zA-Z0-9]+)$"
         if(userName == ""){
             findViewById<TextView>(R.id.nameNull).visibility = View.VISIBLE
         }else{
@@ -139,17 +139,17 @@ class RegisterActivity : AppCompatActivity() {
                 findViewById<TextView>(R.id.passwordNull).visibility = View.VISIBLE
                 return
             }
-            if(!isLettersOrDigits(userPassword)){
+            if(!userPassword.matches(passPattern.toRegex())){
                 findViewById<TextView>(R.id.passwordNull).text = getString(R.string.password_alphanumeric)
                 findViewById<TextView>(R.id.passwordNull).visibility = View.VISIBLE
                 return
             }
-            if(isLettersOrDigits(userPassword) && userPassword.length >= 8 ){
+            if(userPassword.matches(passPattern.toRegex()) && userPassword.length >= 8 ){
                 findViewById<TextView>(R.id.passwordNull).visibility = View.INVISIBLE
             }
         }
         if(userEmail.matches(emailPattern.toRegex())){
-            if(isLettersOrDigits(userPassword) && userPassword.length >= 8 ){
+            if(userPassword.matches(passPattern.toRegex()) && userPassword.length >= 8 ){
                 writeNewUser(userName, userUsername, userEmail, userPassword, bitmap.toString())
                 findViewById<TextView>(R.id.passwordNull).visibility = View.INVISIBLE
             }
@@ -160,10 +160,16 @@ class RegisterActivity : AppCompatActivity() {
         }
     }
 
-    fun isLettersOrDigits(chars: String): Boolean {
-        return chars.filter { it in 'A'..'Z' || it in 'a'..'z' || it in '0'..'9' }
+    fun isLetters(chars: String): Boolean {
+        return chars.filter { it in 'A'..'Z' || it in 'a'..'z' }
                 .length == chars.length
     }
+
+    fun isDigits(chars: String): Boolean {
+        return chars.filter { it in '0'..'9' }
+            .length == chars.length
+    }
+
 
     fun writeNewUser(name:String, username: String, email: String, password: String, image: String?=null) {
 
@@ -188,14 +194,34 @@ class RegisterActivity : AppCompatActivity() {
                                         user["photoURL"] = it.toString()
                                         db.collection("users")
                                                 .add(user)
-                                                .addOnSuccessListener { documentReference -> Log.d("ok", "DocumentSnapshot added with ID: " + documentReference.id) }
+                                                .addOnSuccessListener {
+                                                        documentReference -> Log.d("ok", "DocumentSnapshot added with ID: " + documentReference.id)
+                                                    db.collection("users").document(documentReference.id).update("breakfastHour", 6)
+                                                    db.collection("users").document(documentReference.id).update("lunchHour", 12)
+                                                    db.collection("users").document(documentReference.id).update("dinnerHour", 7)
+                                                    db.collection("users").document(documentReference.id).update("snackHour", 3)
+                                                    db.collection("users").document(documentReference.id).update("breakfastMinute", 1)
+                                                    db.collection("users").document(documentReference.id).update("lunchMinute", 1)
+                                                    db.collection("users").document(documentReference.id).update("dinnerMinute", 1)
+                                                    db.collection("users").document(documentReference.id).update("snackMinute", 1)
+                                                }
                                                 .addOnFailureListener { e -> Log.w("ok", "Error adding document", e) }
                                     }
                                 }
                             }else{
                                 db.collection("users")
                                         .add(user)
-                                        .addOnSuccessListener { documentReference -> Log.d("ok", "DocumentSnapshot added with ID: " + documentReference.id) }
+                                        .addOnSuccessListener {
+                                                documentReference -> Log.d("ok", "DocumentSnapshot added with ID: " + documentReference.id)
+                                                db.collection("users").document(documentReference.id).update("breakfastHour", 6)
+                                                db.collection("users").document(documentReference.id).update("lunchHour", 12)
+                                                db.collection("users").document(documentReference.id).update("dinnerHour", 7)
+                                                db.collection("users").document(documentReference.id).update("snackHour", 3)
+                                                db.collection("users").document(documentReference.id).update("breakfastMinute", 1)
+                                                db.collection("users").document(documentReference.id).update("lunchMinute", 1)
+                                                db.collection("users").document(documentReference.id).update("dinnerMinute", 1)
+                                                db.collection("users").document(documentReference.id).update("snackMinute", 1)
+                                        }
                                         .addOnFailureListener { e -> Log.w("ok", "Error adding document", e) }
                             }
                             startActivity(Intent(this, LoginActivity::class.java))

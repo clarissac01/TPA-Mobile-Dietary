@@ -195,28 +195,19 @@ class MainActivity : AppCompatActivity() {
 
         Log.i("MainActivity", "Notification Set!")
 
-        val alarmManager2 =
-            getSystemService(Context.ALARM_SERVICE) as? AlarmManager
-        val pendingIntent =
-            PendingIntent.getService(this, 0, intent,
-                PendingIntent.FLAG_NO_CREATE)
-        if (pendingIntent != null && alarmManager2 != null) {
-            alarmManager.cancel(pendingIntent)
-        }
-
         val alarmMgr = getSystemService(Context.ALARM_SERVICE) as AlarmManager
         val alarmIntent = Intent(this, AlarmReceiver::class.java).let { intent ->
-            PendingIntent.getBroadcast(this, 0, intent, 0)
+            PendingIntent.getBroadcast(this, abs(Random().nextInt()), intent, 0)
         }
 
 // Set the alarm to start at 8:30 a.m.
         val call: Calendar = Calendar.getInstance().apply {
             timeInMillis = System.currentTimeMillis()
-            set(Calendar.HOUR_OF_DAY, 13)
-            set(Calendar.MINUTE, 6  )
+            set(Calendar.HOUR_OF_DAY, 23)
+            set(Calendar.MINUTE, 58 )
         }
 
-        alarmMgr?.setInexactRepeating(
+        alarmMgr?.setRepeating(
             AlarmManager.RTC_WAKEUP,
             call.timeInMillis,
             AlarmManager.INTERVAL_DAY,

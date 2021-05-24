@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/cvCustomMeal"
     android:layout_width="match_parent"
-    android:layout_height="250dp"
+    android:layout_height="wrap_content"
     android:layout_marginLeft="5dp"
     android:layout_marginTop="20dp"
     android:layout_marginRight="5dp"
@@ -12,7 +12,7 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content">
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/journey_date"
@@ -21,7 +21,7 @@
             android:background="@color/green"
             android:gravity="center_vertical"
             android:paddingLeft="20dp"
-            android:text="Journey Date"
+            android:text="@string/journey_date"
             android:textSize="22dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -42,20 +42,20 @@
             android:id="@+id/materialTextView4"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="40dp"
-            android:layout_marginTop="16dp"
-            android:text="Breakfast Meal"
+            android:layout_marginStart="32dp"
+            android:text="@string/breakfast_meal"
             android:textSize="20dp"
+            app:layout_constraintBottom_toBottomOf="@+id/breakfast_meal"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/journey_date" />
+            app:layout_constraintTop_toTopOf="@+id/breakfast_meal" />
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/breakfast_meal"
-            android:layout_width="wrap_content"
+            android:layout_width="150dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="230dp"
             android:layout_marginTop="16dp"
-            android:text="Breakfast Meal"
+            android:text="@string/breakfast_meal"
             android:textSize="20dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/journey_date" />
@@ -64,20 +64,21 @@
             android:id="@+id/materialTextView3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="40dp"
-            android:layout_marginTop="16dp"
-            android:text="Lunch Meal"
+            android:layout_marginStart="32dp"
+            android:text="@string/lunch_meal"
             android:textSize="20dp"
+            app:layout_constraintBottom_toBottomOf="@+id/lunch_meal"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/materialTextView4" />
+            app:layout_constraintTop_toTopOf="@+id/lunch_meal"
+            app:layout_constraintVertical_bias="0.0" />
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/lunch_meal"
-            android:layout_width="wrap_content"
+            android:layout_width="150dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="230dp"
             android:layout_marginTop="16dp"
-            android:text="Lunch Meal"
+            android:text="@string/lunch_meal"
             android:textSize="20dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/breakfast_meal" />
@@ -86,20 +87,20 @@
             android:id="@+id/materialTextView6"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="40dp"
-            android:layout_marginTop="16dp"
-            android:text="Dinner Meal"
+            android:layout_marginStart="32dp"
+            android:text="@string/dinner_meal"
             android:textSize="20dp"
+            app:layout_constraintBottom_toBottomOf="@+id/dinner_meal"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/materialTextView3" />
+            app:layout_constraintTop_toTopOf="@+id/dinner_meal" />
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/dinner_meal"
-            android:layout_width="wrap_content"
+            android:layout_width="150dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="230dp"
             android:layout_marginTop="16dp"
-            android:text="Dinner Meal"
+            android:text="@string/dinner_meal"
             android:textSize="20dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/lunch_meal" />
@@ -108,21 +109,23 @@
             android:id="@+id/materialTextView5"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="40dp"
-            android:layout_marginTop="16dp"
-            android:text="Snack"
+            android:layout_marginStart="32dp"
+            android:text="@string/snack_meal"
             android:textSize="20dp"
+            app:layout_constraintBottom_toBottomOf="@+id/snack"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/materialTextView6" />
+            app:layout_constraintTop_toTopOf="@+id/snack" />
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/snack"
-            android:layout_width="wrap_content"
+            android:layout_width="150dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="230dp"
             android:layout_marginTop="16dp"
-            android:text="Snack"
+            android:layout_marginBottom="16dp"
+            android:text="@string/snack_meal"
             android:textSize="20dp"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/dinner_meal" />
 

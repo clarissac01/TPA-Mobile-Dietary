@@ -24,7 +24,7 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="40dp"
         android:gravity="center"
-        android:text="Update Custom Meal"
+        android:text="@string/update_custom_meal"
         app:icon="@drawable/ic_baseline_save_24"
         app:layout_constraintBottom_toBottomOf="@+id/rvMainIngredients"
         app:layout_constraintEnd_toEndOf="parent"

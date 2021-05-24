@@ -38,10 +38,11 @@ class   AddFriend : AppCompatActivity() {
             override fun onQueryTextSubmit(query: String?): Boolean {
                 search.clearFocus()
                     var filter = friendlist?.filter {
-                        it.username.contains(query.toString())
+//                        it.username.contains(query.toString())
+                        it.username.contains(query.toString(), true)
                     }
                     if(filter.isEmpty()){
-                        Toast.makeText(applicationContext, "User not found!", Toast.LENGTH_LONG).show()
+                        Toast.makeText(applicationContext, getString(R.string.user_not_found), Toast.LENGTH_LONG).show()
                         findViewById<SuperRecyclerView>(R.id.user_view).adapter = null
                     }else{
                         var alist = friendlist?.toMutableList()
@@ -69,7 +70,8 @@ class   AddFriend : AppCompatActivity() {
                     findViewById<SuperRecyclerView>(R.id.user_view).adapter?.notifyDataSetChanged()
                 }else{
                     var filter = friendlist?.filter {
-                        it.username.contains(newText.toString())
+//                        it.username.contains(newText.toString())
+                        it.username.contains(newText.toString(), true)
                     }
                     Log.wtf("filter", filter.toString())
                     if(!filter.isEmpty()){

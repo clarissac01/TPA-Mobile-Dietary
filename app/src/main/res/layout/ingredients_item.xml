@@ -53,7 +53,7 @@
             app:layout_constraintTop_toTopOf="parent"
             app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.MyApp.Button.Circle"
             app:strokeColor="@android:color/secondary_text_light_nodisable"
-            app:strokeWidth="1.5dp" />
+             />
 
         <Button
             android:id="@+id/substractBtn"
@@ -72,7 +72,7 @@
             app:layout_constraintTop_toTopOf="parent"
             app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.MyApp.Button.Circle"
             app:strokeColor="@android:color/secondary_text_dark_nodisable"
-            app:strokeWidth="1.5dp" />
+            />
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/ingredientWeight"
@@ -93,12 +93,12 @@
 
         <TextView
             android:id="@+id/textView"
-            android:layout_width="wrap_content"
+            android:layout_width="40dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="60dp"
             android:layout_marginBottom="8dp"
             android:fontFamily="@font/rubik"
-            android:text="(in g)"
+            android:text="@string/in_G"
             android:textColor="@color/cardview_dark_background"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/addwBtn"

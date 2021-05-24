@@ -110,7 +110,7 @@ class EditProfile : AppCompatActivity() {
                         }
                     }
                 }
-                Toast.makeText(this, "Success update profile picture!", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, getText(R.string.success_update_pp), Toast.LENGTH_SHORT).show()
                 startActivity(Intent(this, MainActivity::class.java))
             }
 
@@ -199,7 +199,7 @@ class EditProfile : AppCompatActivity() {
         }
         if (userPassword != "" && userConfirmPassword != "") {
             if (!userConfirmPassword.matches(passPattern.toRegex())) {
-                return Toast.makeText(this, "Password must be alphanumeric!", Toast.LENGTH_SHORT)
+                return Toast.makeText(this, getText(R.string.password_alphanumeric), Toast.LENGTH_SHORT)
                     .show()
             }
             if (isLettersOrDigits(userConfirmPassword) && userConfirmPassword.length >= 8) {
@@ -207,14 +207,14 @@ class EditProfile : AppCompatActivity() {
             } else {
                 return Toast.makeText(
                     this,
-                    "Password must be more than 7 characters!",
+                    getText(R.string.password_length),
                     Toast.LENGTH_SHORT
                 ).show()
             }
         }
         if (userEmail != "") {
             if (!userEmail.matches(emailPattern.toRegex())) {
-                return Toast.makeText(this, "Invalid Email Address!", Toast.LENGTH_SHORT).show()
+                return Toast.makeText(this, getText(R.string.email_invalid), Toast.LENGTH_SHORT).show()
             }
         }
         updateUser(userUsername, userEmail, userPassword, bitmap.toString())
@@ -244,7 +244,7 @@ class EditProfile : AppCompatActivity() {
                         val oldPassword = doc.getString("password")
 
                         if (oldPassword != null && oldPassword != password) {
-                            Toast.makeText(this, "Old Password doesn't match!", Toast.LENGTH_SHORT)
+                            Toast.makeText(this, getText(R.string.old_pass_not_match), Toast.LENGTH_SHORT)
                                 .show()
                             return@addOnSuccessListener
                         }
@@ -291,7 +291,7 @@ class EditProfile : AppCompatActivity() {
                             .addOnSuccessListener {
                                 Toast.makeText(
                                     EditProfile@ this,
-                                    "Update Success",
+                                    getText(R.string.update_sucess),
                                     Toast.LENGTH_SHORT
                                 )
                                     .show()

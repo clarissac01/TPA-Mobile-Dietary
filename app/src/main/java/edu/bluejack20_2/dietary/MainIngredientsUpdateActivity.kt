@@ -57,7 +57,7 @@ class MainIngredientsUpdateActivity : AppCompatActivity() {
                         findViewById<RecyclerView>(R.id.rvMainIngredients).adapter =
                             MainIngredientsAdapter(filter, ingredient)
                         findViewById<RecyclerView>(R.id.rvMainIngredients).adapter?.notifyDataSetChanged()
-                        Toast.makeText(applicationContext, "Ingredients Not Found!", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(applicationContext, getString(R.string.ingredients_not_found), Toast.LENGTH_SHORT).show()
                     }
                     else {
                         filtered.clear()
@@ -95,7 +95,7 @@ class MainIngredientsUpdateActivity : AppCompatActivity() {
                             findViewById<RecyclerView>(R.id.rvMainIngredients).adapter =
                                 MainIngredientsAdapter(filter, ingredient)
                             findViewById<RecyclerView>(R.id.rvMainIngredients).adapter?.notifyDataSetChanged()
-                            Toast.makeText(applicationContext, "Ingredients Not Found!", Toast.LENGTH_SHORT)
+                            Toast.makeText(applicationContext, getString(R.string.ingredients_not_found), Toast.LENGTH_SHORT)
                                 .show()
                         }
                     }
@@ -157,7 +157,7 @@ class MainIngredientsUpdateActivity : AppCompatActivity() {
                     "CustomMealIngredients" to customIngredient
                 )
                 db.collection("CustomMeals").document(customMealId!!).update(data).addOnSuccessListener {
-                    Toast.makeText(this, "Success Update Custom Meal", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this, getString(R.string.success_update_custom_meal), Toast.LENGTH_SHORT).show()
                     startActivity(Intent(this, MainActivity::class.java))
                 }
             }

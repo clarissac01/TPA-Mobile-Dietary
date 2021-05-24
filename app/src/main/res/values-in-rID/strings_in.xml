@@ -1,0 +1,223 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Dietary</string>
+    <string name="action_settings">Pengaturan</string>
+    <!-- Strings used for fragments for navigation -->
+    <string name="first_fragment_label">First Fragment</string>
+    <string name="second_fragment_label">Second Fragment</string>
+    <string name="next">Selanjutnya</string>
+    <string name="previous">Sebelumnya</string>
+    <string name="logout">Keluar</string>
+
+
+    <string name="hello_first_fragment">Hello first fragment</string>
+    <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
+    <string name="home">Beranda</string>
+    <string name="profile">Profil</string>
+    <string name="meal">Makanan</string>
+    <string name="friends">Teman</string>
+    <string name="journey">Perjalanan</string>
+    <string name="calories">%s kal.</string>
+    <string name="weight">%s gr</string>
+    <string name="dark_mode_label">Mode Gelap</string>
+    <string name="setting_text">Pengaturan</string>
+    <string name="pick_time">Pilih Waktu</string>
+    <string name="set_breakfast_time">Pilih Waktu Sarapan</string>
+    <string name="set_lunch_time">Pilih Waktu Makan Siang</string>
+    <string name="set_dinner_time">Pilih Waktu Makan Malam</string>
+    <string name="set_snack_time">Pilih Waktu Cemilan</string>
+    <string name="view_more">Lihat Lebih Banyak</string>
+    <string name="add_text">Tambah</string>
+    <string name="save_profile_pic">Simpan Gambar Profil</string>
+    <string name="update_text">Memperbarui</string>
+    <string name="new_password_hint">Kata Sandi Baru</string>
+    <string name="old_password_hint">Kata Sandi Lama</string>
+    <string name="email_hint">Email</string>
+    <string name="username_hint">Nama Pengguna</string>
+    <string name="upload_your_image">Unggah Gambarmu</string>
+    <string name="edit_profile">Sunting Profil</string>
+    <string name="limit_view_more">Kamu telah sampai diakhir daftar!</string>
+    <string name="weight_empty_message">Berat tidak boleh kosong</string>
+    <string name="height_empty_message">Tinggi tidak boleh kosong</string>
+    <string name="age_empty_message">Umur tidak boleh kosong</string>
+    <string name="gender_not_checked">Gender tidak boleh kosong</string>
+    <string name="active_not_checked">Level Keaktifan harus dicentang</string>
+    <string name="user_no_custommeal">Pengguna ini tidak mempunyai makanan personal!</string>
+    <string name="user_no_journey">Pengguna ini tidak mempunyai catatan perjalanan!</string>
+
+
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="username_null">Nama Pengguna tidak boleh kosong!</string>
+    <string name="password_null">Kata sandi tidak boleh kosong!</string>
+    <string name="password_alphanumeric">Kata sandi harus berupa alfanumerik!</string>
+    <string name="password_length">Panjang kata sandi harus lebih dari 7 karakter!</string>
+    <string name="name_null">Nama tidak boleh kosong!</string>
+    <string name="email_null">Email tidak boleh kosong!</string>
+    <string name="email_invalid">Email tidak valid!</string>
+    <string name="username_taken">Nama Pengguna ini sudah diambil!</string>
+    <string name="email_taken">Email ini sudah diambil!</string>
+    <string name="today_calories">Tujuan Hari Ini: %d kkal!</string>
+
+    <!-- activity_add_custom_meal -->
+    <string name="add_custom_meal">Tambah Makanan Personal</string>
+    <string name="custom_meal_name">Nama Makanan Personal</string>
+    <string name="main_ingredients">Bahan Utama</string>
+
+    <!-- activity_add_friend -->
+    <string name="add_friend">Tambah Teman</string>
+
+    <!-- activity_b_m_i -->
+    <string name="weight_in_kg">Berat (Kg)</string>
+    <string name="height_in_cm">Tinggi (cm)</string>
+    <string name="age_in_years">Umur (Tahun)</string>
+    <string name="radio_male">Pria</string>
+    <string name="radio_female">Wanita</string>
+    <string name="how_active">Seberapa Aktifkah Anda?</string>
+    <string name="radio_sedentary">Tidak Aktif</string>
+    <string name="radio_light_active">Kurang Aktif</string>
+    <string name="radio_moderate_active">Cukup Aktif</string>
+    <string name="radio_very_active">Sangat Aktif</string>
+    <string name="default_notification_channel_id">Awal</string>
+    <string name="question_edit_profile">Apa yang ingin kamu ubah hari ini, </string>
+    <string name="calculate">Hitung</string>
+
+    <!-- activity_custom_meal_detail -->
+    <string name="custom_meal">Makanan Personal</string>
+
+    <!-- activity_diet_plan -->
+    <string name="lose_weight">Turunkan Berat Badan</string>
+    <string name="maintain_weight">Pertahankan Berat Badan</string>
+    <string name="gain_weight">Tambahkan Berat Badan</string>
+
+    <!-- activity_friend_custom_meal_detail -->
+    <string name="add_meal">Tambah Makanan</string>
+
+    <!-- activity_login -->
+    <string name="login">MASUK</string>
+    <string name="password_hint">Kata sandi</string>
+    <string name="dont_have_account">Tidak punya akun?</string>
+    <string name="sign_up">Buat Akun</string>
+    <string name="login_with_google">Masuk dengan Google</string>
+
+    <!-- activity_main_ingredients_update.xml -->
+    <string name="update_custom_meal">Memperbarui Makanan Personal</string>
+
+    <!-- activity_meal -->
+    <string name="change_meal">Ubah Makanan</string>
+    <string name="recommended_meal">Rekomendasi Makanan</string>
+    <string name="your_custom_meals">Makanan Personalmu</string>
+    <string name="no_custom_meal">Kamu tidak punya makanan personal</string>
+
+    <!-- activity_meal_detail -->
+    <string name="save">Simpan</string>
+
+    <!-- activity_register -->
+    <string name="register">DAFTAR</string>
+    <string name="name_hint">Nama</string>
+    <string name="submit">Kirimkan</string>
+
+    <!-- activity_user_detail -->
+    <string name="friend_count">%s\nTEMAN</string>
+
+    <!-- custom_meal -->
+    <string name="delete_text">HAPUS</string>
+
+    <!-- fragment_breakfast -->
+    <string name="change_text">Ubah</string>
+
+    <!-- fragment_home -->
+    <string name="salutation">Halo, %s!</string>
+    <string name="no_plan_message">Kamu belum mempunyai rencana diet\n\nMulai Sekarang!</string>
+    <string name="way_to_go">Semangat..</string>
+    <string name="days_count">30 Hari</string>
+    <string name="kkal_left">kkal sisa</string>
+    <string name="to_be_burned">kal. untuk dibakar</string>
+    <string name="heres_today_meal">Berikut makanan hari ini!</string>
+
+    <!-- fragment_profile -->
+    <string name="welcome">Selamat Datang, </string>
+    <string name="change_plan">UBAH RENCANA DIET</string>
+
+    <!-- friend_additem -->
+    <string name="dayplan_count">Hari\n%d</string>
+
+    <!-- friend_item -->
+    <string name="unfriend">BERHENTI BERTEMAN</string>
+
+    <!-- friend_journey_item -->
+    <string name="breakfast_detail">\tDetail Sarapan</string>
+    <string name="lunch_detail">\tDetail Makan Siang</string>
+    <string name="dinner_detail">\tDetail Makan Malam</string>
+    <string name="snack_detail">\tDetail Cemilan</string>
+
+    <!-- ingredients_item -->
+    <string name="in_G">(dalam gr)</string>
+
+    <!-- journey -->
+    <string name="journey_date">Tanggal Perjalanan</string>
+    <string name="breakfast_meal">Menu Sarapan</string>
+    <string name="lunch_meal">Menu Makan Siang</string>
+    <string name="dinner_meal">Menu Makan Malam</string>
+    <string name="snack_meal">Cemilan</string>
+
+    <!-- meal_item -->
+    <string name="choose_Text">Pilih</string>
+    <string name="details">Detail</string>
+
+    <!-- BMIActivity -->
+    <string name="success_add_plan">Berhasil Menambahkan Rencana Diet!</string>
+
+    <!-- CustomMealAdapter -->
+    <string name="custom_meal_deleted">Berhasil Menghapus Makanan Personal!</string>
+    <string name="custom_meal_not_empty">Nama Makanan Personal tidak boleh kosong!</string>
+    <string name="success_update_custom_meal">Berhasil Memperbarui Makanan Personal!</string>
+
+    <!-- EditProfile -->
+    <string name="success_update_pp">Berhasil mengganti foto profil!</string>
+    <string name="old_pass_not_match">Kata sandi lama tidak cocok!</string>
+    <string name="update_sucess">Berhasil Memperbarui!</string>
+
+    <!-- FriendAdapter -->
+    <string name="are_you_sure">Apakah kamu yakin?</string>
+    <string name="yes">YA</string>
+    <string name="no">TIDAK</string>
+
+    <!-- MainIngredients -->
+    <string name="ingredients_not_found">Bahan tidak ditemukan!</string>
+    <string name="success_add_custom_meal">Berhasil Menambahkan Makanan Personal!</string>
+
+    <!-- MealDetail -->
+    <string name="meal_update_success">Berhasil Memperbarui Makanan!</string>
+
+    <!-- AddFriend -->
+    <string name="user_not_found">Pengguna Tidak Ditemukan!</string>
+
+    <!-- ChooseCustomMealAdapter -->
+    <string name="change_type_meal">Ubah menu %s?</string>
+    <string name="success_update_meal_type">Berhasil mengubah menu %s!</string>
+
+    <!-- LoginActivity -->
+    <string name="wrong_credentials">Kredensial salah!</string>
+    <string name="success_login">Berhasil Masuk!</string>
+    <string name="failed_to_login">Gagal Masuk!</string>
+
+    <!-- RegisterActivity -->
+    <string name="permission_denied">Izin Ditolak!</string>
+
+    <!-- HomeFragment -->
+    <string name="breakfast_text">Sarapan</string>
+    <string name="lunch_text">Makan Siang</string>
+    <string name="dinner_text">Makan Malam</string>
+    <string name="snack_text">Cemilan</string>
+
+    <!-- Notification Service -->
+    <string name="time_to_log_meal">Halo, Saatnya Mencatat Makananmu! :D</string>
+
+    <!--
+    This string is used for square devices and overridden by hello_world in
+    values-round/strings.xml for round devices.
+    -->
+    <string name="hello_world">Hello Square World!</string>
+
+</resources>

@@ -13,11 +13,13 @@ import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import com.google.firebase.Timestamp
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 import com.squareup.picasso.Picasso
 import edu.bluejack20_2.dietary.CirleImageView
 import edu.bluejack20_2.dietary.R
 import edu.bluejack20_2.dietary.services.home_page.adapter.HomeMealAdapter
+import java.lang.reflect.Field
 import java.util.*
 
 class HomeFragment : Fragment(R.layout.fragment_home) {
@@ -32,7 +34,6 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        view.findViewById<TextView>(R.id.salutation).text = "Hello, " + user.displayName + "!"
 
         profilepic = view.findViewById<CirleImageView>(
             R.id.user_profilepic
@@ -42,9 +43,10 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
 
         db.collection("users").whereEqualTo("username", user.displayName).get().addOnSuccessListener {
             if(!it?.isEmpty!!){
+                view.findViewById<TextView>(R.id.salutation).text = getString(R.string.salutation, it.documents.first().get("name").toString())
                 var userid = it.documents.first().id
+
                 if(it.documents.first().get("plan") != null){
-                    activatePlan(view)
                     val getMapping = it.documents.first().get("plan") as Map<*, *>
                     val date1 = Date()
                     val date2 = getMapping["startDate"] as Timestamp
@@ -56,6 +58,35 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
                         30
                     view.findViewById<CircularProgressIndicator>(R.id.planprogresscircle).progress =
                         res.toLong().toInt()
+                    if(res>0){
+                        activatePlan(view)
+                    }
+                    else{
+                        activateNoPlan(view)
+                        db.collection("users").document(userid).update(mapOf(
+                            "plan" to FieldValue.delete()
+                        )).addOnSuccessListener {
+                            db.collection("Journey").whereEqualTo("userID", userid).get().addOnSuccessListener {
+                                if(!it.isEmpty){
+                                    var journeyid = it.documents.first().id
+                                    db.collection("Journey").document(journeyid).update(mapOf(
+                                        "day" to FieldValue.delete()
+                                    )).addOnSuccessListener {
+                                        db.collection("CustomMeals").whereEqualTo("UserID", userid).get().addOnSuccessListener {
+                                            if(!it.isEmpty){
+                                                it.documents.forEach {
+                                                    if(it.get("day")!= null){
+                                                        var mealid = it.id
+                                                        db.collection("CustomMeals").document(mealid).delete()
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
                     db.collection("Journey").whereEqualTo("userID", userid).whereEqualTo("day", res.toLong().toInt()).addSnapshotListener() {it, _ ->
                         if(!it?.isEmpty!!){
                             var calLeft = getMapping["CaloriePerDay"].toString().toInt()
@@ -81,7 +112,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
                             }else{
                                 calLeft *= -1
                                 view.findViewById<TextView>(R.id.plancal).text = calLeft.toString()
-                                view.findViewById<TextView>(R.id.plan3).text = "to be burned"
+                                view.findViewById<TextView>(R.id.plan3).text = getString(R.string.to_be_burned)
                             }
                         }else{
                             view.findViewById<TextView>(R.id.todaygoals).text = view.context.getString(R.string.today_calories, getMapping["CaloriePerDay"].toString().toInt())
@@ -102,10 +133,10 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
                         )
                     TabLayoutMediator(tabLayout, viewPager2){tab, position->
                         when(position){
-                            0 -> tab.text = "Breakfast"
-                            1 -> tab.text = "Lunch"
-                            2 -> tab.text = "Dinner"
-                            3 -> tab.text = "Snack"
+                            0 -> tab.text = getString(R.string.breakfast_text)
+                            1 -> tab.text = getString(R.string.lunch_text)
+                            2 -> tab.text = getString(R.string.dinner_text)
+                            3 -> tab.text = getString(R.string.snack_text)
                         }
                     }.attach()
                 }
@@ -132,6 +163,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
 
         tabLayout = view.findViewById(R.id.tabLayout)
         viewPager2 = view.findViewById(R.id.viewPager)
+
 
     }
 

@@ -61,7 +61,7 @@ class MealDetail : AppCompatActivity() {
                     "CustomMealIngredients" to list,
                     "Calories" to totalCal))
                 .addOnSuccessListener {
-                    Toast.makeText(this, "Meal Update Success", Toast.LENGTH_LONG)
+                    Toast.makeText(this, getString(R.string.meal_update_success), Toast.LENGTH_LONG)
             }
         }
 
@@ -72,7 +72,7 @@ class MealDetail : AppCompatActivity() {
         db.collection("CustomMeals").document(menuId).get().addOnSuccessListener {
             if(it.exists()){
                 findViewById<TextView>(R.id.mealName).text = it.data?.get("CustomMealName").toString()
-                findViewById<TextView>(R.id.mealCalories).text = it.data?.get("Calories").toString() + " kcal"
+                findViewById<TextView>(R.id.mealCalories).text = getString(R.string.calories, it.data?.get("Calories").toString())
                 val ingredients = it.data?.get("CustomMealIngredients")!! as List<Map<*, *>>
                 ingredients.forEach {
                     var calCount = 0F

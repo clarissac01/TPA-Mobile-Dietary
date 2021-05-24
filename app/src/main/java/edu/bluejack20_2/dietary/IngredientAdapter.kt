@@ -31,14 +31,14 @@ class IngredientAdapter(private val mealCalories: TextView,private val ingredien
     override fun onBindViewHolder(holder: IngredientAdapter.IngredientHolder, position: Int) {
         val ingredientItem = ingredientList?.get(position)
         holder.ingredientName.text = ingredientItem?.ingredientName!!
-        holder.ingredientCal.text = ingredientItem.calory.roundToInt().toString() + " kcal"
+        holder.ingredientCal.text = holder.itemView.context.getString(R.string.calories, ingredientItem.calory.roundToInt().toString())
         holder.ingredientWeight.setText(ingredientItem.weight.roundToInt().toString())
         holder.addBtn.setOnClickListener {
             ingredientList?.get(position)!!.weight  += 50;
             ingredientList?.get(position)!!.calory *= ((ingredientList?.get(position)!!.weight)/(ingredientList.get(position).weight - 50))
-            holder.ingredientCal.text = ingredientList?.get(position)!!.calory.roundToInt().toString() + " kcal"
+            holder.ingredientCal.text = holder.itemView.context.getString(R.string.calories, ingredientList?.get(position)!!.calory.roundToInt().toString())
             holder.ingredientWeight.setText(ingredientList.get(position).weight.roundToInt().toString())
-            countTotalCal()
+            countTotalCal(holder)
         }
 
         holder.substractBtn.setOnClickListener {
@@ -46,9 +46,9 @@ class IngredientAdapter(private val mealCalories: TextView,private val ingredien
                 ingredientList?.get(position)!!.weight  -= 50;
                 ingredientList?.get(position)!!.calory *= ((ingredientList?.get(position)!!.weight)/(ingredientList.get(position).weight + 50))
 
-                holder.ingredientCal.text = ingredientList.get(position).calory.roundToInt().toString().toInt().toString() + " kcal"
+                holder.ingredientCal.text = holder.itemView.context.getString(R.string.calories, ingredientList.get(position).calory.roundToInt().toString().toInt().toString())
                 holder.ingredientWeight.setText(ingredientList.get(position).weight.roundToInt().toString())
-                countTotalCal()
+                countTotalCal(holder)
             }
         }
 
@@ -57,8 +57,8 @@ class IngredientAdapter(private val mealCalories: TextView,private val ingredien
                 if(holder.ingredientWeight.text.toString().toFloat() > 0){
                     ingredientList?.get(position)!!.calory *= ((holder.ingredientWeight.text.toString().toFloat())/(ingredientList?.get(position)!!.weight))
                     ingredientList.get(position).weight  = holder.ingredientWeight.text.toString().toFloat();
-                    holder.ingredientCal.text = ingredientList?.get(position)!!.calory.roundToInt().toString().toInt().toString() + " kcal"
-                    countTotalCal()
+                    holder.ingredientCal.text = holder.itemView.context.getString(R.string.calories, ingredientList?.get(position)!!.calory.roundToInt().toString().toInt().toString())
+                    countTotalCal(holder)
                 }
             }
 
@@ -79,12 +79,12 @@ class IngredientAdapter(private val mealCalories: TextView,private val ingredien
         val substractBtn: Button = itemView.findViewById(R.id.substractBtn)
     }
 
-    fun countTotalCal(){
+    fun countTotalCal(holder: IngredientHolder){
         var totalCal : Float = 0F
         ingredientList?.forEach {
             totalCal += it.calory
         }
-        mealCalories.text = totalCal.roundToInt().toString() + " kcal"
+        mealCalories.text = holder.itemView.context.getString(R.string.calories, totalCal.roundToInt().toString())
     }
 
 }

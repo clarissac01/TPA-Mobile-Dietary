@@ -41,7 +41,7 @@
         android:layout_marginStart="20dp"
         android:layout_marginTop="16dp"
         android:fontFamily="@font/rubik"
-        android:text="Friends"
+        android:text="@string/friends"
         android:textColor="@color/basilgreen"
         android:textSize="24sp"
         app:layout_constraintStart_toStartOf="parent"

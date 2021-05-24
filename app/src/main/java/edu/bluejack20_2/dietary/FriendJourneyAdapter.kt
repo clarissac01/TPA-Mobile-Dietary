@@ -72,7 +72,7 @@ class FriendJourneyAdapter(private val journeyList: MutableList<JourneyItem>?, p
         val pattern = "yyyy-MM-dd"
         val simpleDateFormat = SimpleDateFormat(pattern)
         val date = simpleDateFormat.format(journeyItem?.date?.toDate())
-        holder.journeyCalories.text = journeyItem?.calories.toString() + " kcal"
+        holder.journeyCalories.text = holder.itemView.context.getString(R.string.calories, journeyItem?.calories.toString())
         holder.journeyDate.text = date
 
 

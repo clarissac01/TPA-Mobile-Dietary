@@ -79,9 +79,9 @@ class LoginActivity : AppCompatActivity() {
                 .whereEqualTo("username", userUsername).whereEqualTo("password", userPassword).get()
                 .addOnSuccessListener {
                     if (it.isEmpty) {
-                        Toast.makeText(this, "Wrong credentials", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(this, getString(R.string.wrong_credentials), Toast.LENGTH_SHORT).show()
                     } else {
-                        Toast.makeText(this, "Success Login!", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(this, getString(R.string.success_login), Toast.LENGTH_SHORT).show()
 
                         var email:String? = ""
                         var photourl:Uri? = null
@@ -156,7 +156,7 @@ class LoginActivity : AppCompatActivity() {
         try {
             val account = completedTask.getResult(ApiException::class.java)
             // Signed in successfully, show authenticated UI.
-            Toast.makeText(this, "Success Login!", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, getString(R.string.success_login), Toast.LENGTH_SHORT).show()
 
             completedTask.addOnSuccessListener {
                 val name = it.displayName?.replace(" ", "-")
@@ -219,7 +219,7 @@ class LoginActivity : AppCompatActivity() {
             // Please refer to the GoogleSignInStatusCodes class reference for more information.
 //            Log.w(FragmentActivity.TAG, "signInResult:failed code=" + e.statusCode)
 //            updateUI(null)
-            Toast.makeText(this, "Failed to Login!", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, getString(R.string.failed_to_login), Toast.LENGTH_SHORT).show()
         }
     }
 

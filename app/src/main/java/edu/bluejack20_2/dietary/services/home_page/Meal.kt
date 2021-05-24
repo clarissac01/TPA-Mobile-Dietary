@@ -63,12 +63,12 @@ class Meal : AppCompatActivity() {
 
         val list = ArrayList<MealItem>()
         val list2 = ArrayList<MealItem>()
+        val list3 = ArrayList<MealItem>()
         //logic get recommended meal
 
         Tasks.whenAll(
             db.collection("users").whereEqualTo("username", FirebaseAuth.getInstance().currentUser.displayName).get().addOnSuccessListener {
                 if(!it.isEmpty){
-                    Log.wtf("the type, the userid, the day", type.toString() + " jdlasjdlas " + it.documents.first().id)
                     var userid = it.documents.first().id
                     db.collection("CustomMeals").whereEqualTo("type", type).whereEqualTo("UserID", userid).orderBy("day").get().addOnSuccessListener {
                         if(!it?.isEmpty!!){
@@ -79,14 +79,15 @@ class Meal : AppCompatActivity() {
                                         it.get("Calories").toString().toFloat(), FALSE
                                     )
                                 )
-                                Log.wtf("something is addedd", it.get("CustomMealName").toString())
                             }
                             for (i in currentDay+1 until list.size){
                                 list2.add(list.get(i))
-                                findViewById<RecyclerView>(R.id.recommend_meal_view).adapter?.notifyDataSetChanged()
                             }
                             for (i in 0 until currentDay){
                                 list2.add(list.get(i))
+                            }
+                            for(i in 0 until 10){
+                                list3.add(list2.get(i))
                                 findViewById<RecyclerView>(R.id.recommend_meal_view).adapter?.notifyDataSetChanged()
                             }
                         }
@@ -101,7 +102,7 @@ class Meal : AppCompatActivity() {
         }
 
 
-        return list2
+        return list3
     }
 
     fun getMealList2(): MutableList<MealItem>?{

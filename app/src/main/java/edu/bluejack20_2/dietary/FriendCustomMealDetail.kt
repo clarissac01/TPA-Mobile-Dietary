@@ -63,11 +63,11 @@ class FriendCustomMealDetail(val mealItem: MealItem? = null) : AppCompatActivity
 
         findViewById<Button>(R.id.addthismeal).setOnClickListener{
             MaterialAlertDialogBuilder(this)
-                .setTitle("Are you sure?")
-                .setPositiveButton("NO") { dialog, which ->
+                .setTitle(getString(R.string.are_you_sure))
+                .setPositiveButton(getString(R.string.no)) { dialog, which ->
                     // Respond to negative button press
                 }
-                .setNegativeButton("YES") { dialog, which ->
+                .setNegativeButton(getString(R.string.yes)) { dialog, which ->
                     // Respond to positive button press
                     db.collection("CustomMeals").document(menuId).get().addOnSuccessListener {
                         if(it.exists()){
@@ -91,7 +91,7 @@ class FriendCustomMealDetail(val mealItem: MealItem? = null) : AppCompatActivity
         db.collection("CustomMeals").document(menuId).get().addOnSuccessListener {
             if(it.exists()){
                 findViewById<TextView>(R.id.friendmealName).text = it.data?.get("CustomMealName").toString()
-                findViewById<TextView>(R.id.friendmealCalories).text = it.data?.get("Calories").toString() + " kcal"
+                findViewById<TextView>(R.id.friendmealCalories).text = getString(R.string.calories, it.data?.get("Calories").toString())
                 val ingredients = it.data?.get("CustomMealIngredients")!! as List<Map<*, *>>
                 ingredients.forEach {
                     var calCount = 0F

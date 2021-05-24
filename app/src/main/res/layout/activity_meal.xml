@@ -22,18 +22,18 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-            <TextView
-                android:id="@+id/textView8"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="17dp"
-                android:fontFamily="@font/rubik"
-                android:text="Change Meal"
-                android:textColor="?colorOnSecondary"
-                android:textSize="30sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+    <TextView
+        android:id="@+id/textView8"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="17dp"
+        android:fontFamily="@font/rubik"
+        android:text="@string/change_meal"
+        android:textColor="?colorOnSecondary"
+        android:textSize="30sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="0dp"
@@ -54,13 +54,13 @@
 
             <TextView
                 android:id="@+id/textView9"
-                android:layout_width="wrap_content"
+                android:layout_width="300dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="24dp"
                 android:layout_marginTop="24dp"
                 android:layout_marginBottom="24dp"
                 android:fontFamily="@font/rubik"
-                android:text="Recommended Meals"
+                android:text="@string/recommended_meal"
                 android:textColor="?colorPrimaryVariant"
                 android:textSize="24sp" />
 
@@ -73,12 +73,12 @@
 
             <TextView
                 android:id="@+id/textView10"
-                android:layout_width="wrap_content"
+                android:layout_width="300dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="24dp"
                 android:layout_marginTop="24dp"
                 android:layout_marginBottom="24dp"
-                android:text="Your Custom Meals"
+                android:text="@string/your_custom_meals"
                 android:textColor="?colorPrimaryVariant"
                 android:textSize="24sp" />
 
@@ -95,7 +95,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="24dp"
-                android:text="You have no custom meal"
+                android:text="@string/no_custom_meal"
                 android:textAlignment="center"
                 android:textColor="?colorOnSecondary"
                 android:textSize="24sp"

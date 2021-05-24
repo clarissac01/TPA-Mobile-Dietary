@@ -45,7 +45,7 @@ class CustomMealAdapter(
                 FirebaseFirestore.getInstance().collection("CustomMeals").document(customMealId).delete().addOnSuccessListener {
                     customMealItem.remove(customMealItem[position])
                     notifyDataSetChanged()
-                    Toast.makeText(holder.itemView.context, "Custom Meal Deleted", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(holder.itemView.context, holder.itemView.context.getText(R.string.custom_meal_deleted), Toast.LENGTH_SHORT).show()
                 }
             }
 
@@ -67,7 +67,7 @@ class CustomMealAdapter(
                 val customMealId = customMealItem[position].customMealId
 
                 if(newCustomMeal == "") {
-                    Toast.makeText(context, "Custom meal name can't be empty", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(context, context.getText(R.string.custom_meal_not_empty), Toast.LENGTH_SHORT).show()
                     return@setOnClickListener
                 }
                 else {
@@ -79,7 +79,7 @@ class CustomMealAdapter(
                         findViewById<MaterialTextView>(R.id.custom_meal_cal).visibility = View.VISIBLE
                         findViewById<MaterialButton>(R.id.update_custom_meal_btn).visibility = View.VISIBLE
                         findViewById<MaterialButton>(R.id.remove_custom_meal_btn).visibility = View.VISIBLE
-                        Toast.makeText(holder.itemView.context, "Update Custom Meal Success!", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(holder.itemView.context, holder.itemView.context.getText(R.string.success_update_custom_meal), Toast.LENGTH_SHORT).show()
                     }
                 }
 

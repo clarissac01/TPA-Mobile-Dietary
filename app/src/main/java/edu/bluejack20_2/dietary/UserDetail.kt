@@ -63,9 +63,9 @@ class UserDetail() : AppCompatActivity() {
             if(it?.exists()!!){
                 friends = it?.get("friends") as List<Any>?
                 var friendcount = findViewById<Button>(R.id.friend_count)
-                var countfriend = "0\nFRIENDS"
+                var countfriend = getString(R.string.friend_count, 0)
                 if(friends?.size != null){
-                    countfriend = friends?.size.toString()+"\nFRIENDS"
+                    countfriend = getString(R.string.friend_count, friends?.size.toString())
                 }
                 friendcount.text = countfriend
                 findViewById<TextView>(R.id.userdetailname).text = it.get("name").toString()
@@ -91,16 +91,16 @@ class UserDetail() : AppCompatActivity() {
 
         tabLayout = findViewById(R.id.tabLayout2)
 
-        tabLayout.addTab(tabLayout.newTab().setText("CUSTOM MEAL"))
-        tabLayout.addTab(tabLayout.newTab().setText("JOURNEY"))
+        tabLayout.addTab(tabLayout.newTab().setText(getString(R.string.custom_meal)))
+        tabLayout.addTab(tabLayout.newTab().setText(getString(R.string.journey)))
         
         viewPager2 = findViewById(R.id.friendviewpager)
         viewPager2.adapter = ChooseUserDetailPageNavigator(this, userDocId)
 
         TabLayoutMediator(tabLayout, viewPager2){tab, position->
             when(position){
-                0 -> tab.text = "CUSTOM MEAL"
-                1 -> tab.text = "JOURNEY"
+                0 -> tab.text = getString(R.string.custom_meal)
+                1 -> tab.text = getString(R.string.journey)
             }
         }.attach()
 
@@ -114,11 +114,11 @@ class UserDetail() : AppCompatActivity() {
 
     fun unfriend(view: View) {
         MaterialAlertDialogBuilder(view.context)
-            .setTitle("Are you sure?")
-            .setPositiveButton("NO") { dialog, which ->
+            .setTitle(getString(R.string.are_you_sure))
+            .setPositiveButton(getString(R.string.no)) { dialog, which ->
                 // Respond to negative button press
             }
-            .setNegativeButton("YES") { dialog, which ->
+            .setNegativeButton(getString(R.string.yes)) { dialog, which ->
                 // Respond to positive button press
                 db.collection("users").whereEqualTo("username", user.displayName).get()
                     .addOnSuccessListener {

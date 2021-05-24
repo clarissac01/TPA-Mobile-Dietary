@@ -101,11 +101,11 @@ class FriendCustomMealAdapter(var friendid: String, private val mealList: Mutabl
 
         holder.addmealBtn.setOnClickListener{
             MaterialAlertDialogBuilder(context)
-                .setTitle("Are you sure?")
-                .setPositiveButton("NO") { dialog, which ->
+                .setTitle(holder.itemView.context.getString(R.string.are_you_sure))
+                .setPositiveButton(holder.itemView.context.getString(R.string.no)) { dialog, which ->
                     // Respond to negative button press
                 }
-                .setNegativeButton("YES") { dialog, which ->
+                .setNegativeButton(holder.itemView.context.getString(R.string.yes)) { dialog, which ->
                     // Respond to positive button press
                     db.collection("CustomMeals").document(mealItem.mealId).get().addOnSuccessListener {
                         if(it.exists()){

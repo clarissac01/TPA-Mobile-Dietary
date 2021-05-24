@@ -16,7 +16,7 @@
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/main_ingredients_name"
-            android:layout_width="wrap_content"
+            android:layout_width="180dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="30dp"
             android:layout_marginTop="20dp"
@@ -36,19 +36,21 @@
             android:textColor="?colorPrimary"
             android:textSize="15dp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/main_ingredients_name" />
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/main_ingredients_weight"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="75dp"
+            android:layout_marginStart="4dp"
             android:layout_marginBottom="15dp"
             android:text="/100gr"
             android:textColor="?colorPrimary"
             android:textSize="15dp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintStart_toEndOf="@+id/main_ingredients_cal"
+            app:layout_constraintTop_toBottomOf="@+id/main_ingredients_name" />
 
         <Button
             android:id="@+id/substractBtn"
