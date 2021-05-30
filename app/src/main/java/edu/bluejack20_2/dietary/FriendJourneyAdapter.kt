@@ -23,6 +23,8 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import java.text.SimpleDateFormat
+import java.util.*
+import kotlin.collections.ArrayList
 import kotlin.math.roundToInt
 
 
@@ -31,6 +33,7 @@ class FriendJourneyAdapter(private val journeyList: MutableList<JourneyItem>?, p
 
     var db = FirebaseFirestore.getInstance()
     var user = FirebaseAuth.getInstance().currentUser
+    var language = Locale.getDefault().language
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
@@ -177,7 +180,11 @@ class FriendJourneyAdapter(private val journeyList: MutableList<JourneyItem>?, p
                     val ingredientId = it["ingredientID"].toString()
                     db.collection("MainIngredients").document(it["ingredientID"].toString()).get().addOnSuccessListener {
                         if(it.exists()){
-                            name = it.data?.get("IngredientsName")!!.toString()
+                            if(language.equals("in")){
+                                name = it.data?.get("IngredientsName_in")!!.toString()
+                            }else{
+                                name = it.data?.get("IngredientsName_en")!!.toString()
+                            }
                             list.add(IngredientItem(ingredientId, name, 0F, weight))
                             rv.adapter?.notifyDataSetChanged()
                         }

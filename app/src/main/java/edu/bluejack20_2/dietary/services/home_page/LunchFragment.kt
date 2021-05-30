@@ -16,6 +16,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import edu.bluejack20_2.dietary.MealDetail
 import edu.bluejack20_2.dietary.R
+import java.util.*
 import kotlin.math.roundToInt
 
 class LunchFragment(var currDay: Int = 0) : Fragment() {
@@ -26,6 +27,7 @@ class LunchFragment(var currDay: Int = 0) : Fragment() {
     private lateinit var calCount: TextView
     private lateinit var menuId: String
     private var isEditable: Boolean = false
+    var language = Locale.getDefault().language
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -170,7 +172,15 @@ class LunchFragment(var currDay: Int = 0) : Fragment() {
             if(!it?.isEmpty!!){
                 db.collection("CustomMeals").whereEqualTo("UserID", it.documents.first().id).whereEqualTo("type", "Lunch").whereEqualTo("day", currDay).addSnapshotListener() {it,_->
                     if(!it?.isEmpty!!){
-                        menuName.text = it.documents.first().getString("CustomMealName")
+                        if(it.documents.first().get("isCustom") == null){
+                            if(language.equals("in")){
+                                menuName.text = it.documents.first().getString("CustomMealName-en")
+                            }else {
+                                menuName.text = it.documents.first().getString("CustomMealName-in")
+                            }
+                        }else{
+                            menuName.text = it.documents.first().getString("CustomMealName")
+                        }
                         calCount.text = getString(R.string.calories, it.documents.first().get("Calories").toString().toFloat().roundToInt().toString())
                         menuId = it.documents.first().id
                     }

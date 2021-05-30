@@ -14,6 +14,7 @@ import com.google.android.material.textfield.TextInputEditText
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.FirebaseFirestore
+import java.util.*
 
 class MainIngredients : AppCompatActivity() {
     val ingredient = mutableMapOf<String, Int>()
@@ -23,15 +24,22 @@ class MainIngredients : AppCompatActivity() {
     val filtered = mutableMapOf<String, Int>()
     var lim:Long = 5
     lateinit var adapter: MainIngredientsAdapter
+    var language = Locale.getDefault().language
 
     fun getData(callback: () -> Unit) {
         FirebaseFirestore.getInstance().collection("MainIngredients").limit(lim).get()
             .addOnSuccessListener {
                 val tempList = mutableListOf<MainIngredientsData>()
                 for (document in it.documents) {
+                    var ingredientName = ""
+                    if(language.equals("in")){
+                        ingredientName = document.data?.getValue("IngredientsName_in").toString()
+                    }else{
+                        ingredientName = document.data?.getValue("IngredientsName_en").toString()
+                    }
                     val data = MainIngredientsData(
                         document.id,
-                        document.data?.getValue("IngredientsName").toString(),
+                        ingredientName,
                         document.data?.getValue("IngredientsCalories").toString().toInt(),
                         document.data?.getValue("IngredientsWeight").toString().toInt()
                     )
@@ -58,9 +66,16 @@ class MainIngredients : AppCompatActivity() {
             .addOnSuccessListener {
                 val tempList = mutableListOf<MainIngredientsData>()
                 for (document in it.documents) {
+                    var ingredientName = ""
+                    if(language.equals("in")){
+                        ingredientName = document.data?.getValue("IngredientsName_in").toString()
+                    }else{
+                        ingredientName = document.data?.getValue("IngredientsName_en").toString()
+                    }
+
                     val data = MainIngredientsData(
                         document.id,
-                        document.data?.getValue("IngredientsName").toString(),
+                        ingredientName,
                         document.data?.getValue("IngredientsCalories").toString().toInt(),
                         document.data?.getValue("IngredientsWeight").toString().toInt()
                     )

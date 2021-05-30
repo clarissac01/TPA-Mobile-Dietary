@@ -26,6 +26,7 @@ class FriendCustomMealDetail(val mealItem: MealItem? = null) : AppCompatActivity
     private lateinit var menuId: String
     private var hasMeal: Boolean = false
     private var friendid: String = ""
+    var language = Locale.getDefault().language
 
     private lateinit var mealCalories: TextView
 
@@ -105,7 +106,11 @@ class FriendCustomMealDetail(val mealItem: MealItem? = null) : AppCompatActivity
                             calCount /= it.data?.get("IngredientsWeight")!!.toString().toFloat()
                             calCount *= it.data?.get("IngredientsCalories")!!.toString().toFloat()
                             calCount = calCount.roundToInt().toFloat()
-                            name = it.data?.get("IngredientsName")!!.toString()
+                            if(language.equals("in")){
+                                name = it.data?.get("IngredientsName_in")!!.toString()
+                            }else{
+                                name = it.data?.get("IngredientsName_en")!!.toString()
+                            }
                             list.add(IngredientItem(ingredientId, name, calCount, weight))
                             findViewById<RecyclerView>(R.id.friendingredientView).adapter?.notifyDataSetChanged()
                         }
