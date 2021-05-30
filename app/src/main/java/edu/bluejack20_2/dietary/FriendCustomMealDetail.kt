@@ -1,6 +1,7 @@
 package edu.bluejack20_2.dietary
 
 import android.graphics.Color
+import android.icu.util.ULocale.getLanguage
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
