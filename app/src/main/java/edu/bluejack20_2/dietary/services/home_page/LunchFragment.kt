@@ -16,6 +16,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import edu.bluejack20_2.dietary.MealDetail
 import edu.bluejack20_2.dietary.R
+import java.util.*
 import kotlin.math.roundToInt
 
 class LunchFragment(var currDay: Int = 0) : Fragment() {
@@ -26,6 +27,7 @@ class LunchFragment(var currDay: Int = 0) : Fragment() {
     private lateinit var calCount: TextView
     private lateinit var menuId: String
     private var isEditable: Boolean = false
+    var language = Locale.getDefault().language
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -46,7 +48,7 @@ class LunchFragment(var currDay: Int = 0) : Fragment() {
         calCount = view.findViewById(R.id.calCount)
 
         initMenu()
-        view.findViewById<ConstraintLayout>(R.id.lunchLayout).setOnClickListener{
+        view.findViewById<ConstraintLayout>(R.id.lunchLayout).setOnClickListener {
             val intent = Intent(
                 context,
                 MealDetail::class.java
@@ -61,29 +63,36 @@ class LunchFragment(var currDay: Int = 0) : Fragment() {
 
         var userId = ""
 
-        db.collection("users").whereEqualTo("username", user.displayName).get().addOnSuccessListener {
-            if(!it.isEmpty){
-                userId = it.documents.first().id
-                db.collection("Journey").whereEqualTo("userID", userId).whereEqualTo("day", currDay).get().addOnSuccessListener {
-                    if(!it?.isEmpty!!){
-                        if(it.documents.first().get("lunchMenu")!= null){
-                            view.findViewById<Button>(R.id.changeLunch).visibility = View.INVISIBLE
-                            view.findViewById<FloatingActionButton>(R.id.floatingActionButton2).visibility = View.INVISIBLE
-                            isEditable = false
-                        }else{
+        db.collection("users").whereEqualTo("username", user.displayName).get()
+            .addOnSuccessListener {
+                if (!it.isEmpty) {
+                    userId = it.documents.first().id
+                    db.collection("Journey").whereEqualTo("userID", userId)
+                        .whereEqualTo("day", currDay).get().addOnSuccessListener {
+                        if (!it?.isEmpty!!) {
+                            if (it.documents.first().get("lunchMenu") != null) {
+                                view.findViewById<Button>(R.id.changeLunch).visibility =
+                                    View.INVISIBLE
+                                view.findViewById<FloatingActionButton>(R.id.floatingActionButton2).visibility =
+                                    View.INVISIBLE
+                                isEditable = false
+                            } else {
+                                view.findViewById<Button>(R.id.changeLunch).visibility =
+                                    View.VISIBLE
+                                view.findViewById<FloatingActionButton>(R.id.floatingActionButton2).visibility =
+                                    View.VISIBLE
+                                isEditable = true
+                            }
+                        } else {
                             view.findViewById<Button>(R.id.changeLunch).visibility = View.VISIBLE
-                            view.findViewById<FloatingActionButton>(R.id.floatingActionButton2).visibility = View.VISIBLE
+                            view.findViewById<FloatingActionButton>(R.id.floatingActionButton2).visibility =
+                                View.VISIBLE
                             isEditable = true
                         }
-                    }else{
-                        view.findViewById<Button>(R.id.changeLunch).visibility = View.VISIBLE
-                        view.findViewById<FloatingActionButton>(R.id.floatingActionButton2).visibility = View.VISIBLE
-                        isEditable = true
                     }
-                }
 
+                }
             }
-        }
 
         view.findViewById<Button>(R.id.changeLunch).setOnClickListener {
             val intent = Intent(
@@ -98,33 +107,38 @@ class LunchFragment(var currDay: Int = 0) : Fragment() {
         }
 
 
-        view.findViewById<FloatingActionButton>(R.id.floatingActionButton2).setOnClickListener{
+        view.findViewById<FloatingActionButton>(R.id.floatingActionButton2).setOnClickListener {
             var menucal = 0
             val customIngredient = mutableListOf<Map<*, *>>()
             isEditable = false
             Tasks.whenAll(
                 db.collection("CustomMeals").document(menuId).get().addOnSuccessListener {
-                    if(it.exists()){
+                    if (it.exists()) {
                         menucal = it.get("Calories").toString().toFloat().toInt()
                         var inglist = it.get("CustomMealIngredients") as List<Map<*, *>>
                         inglist.forEach {
-                            customIngredient.add(mapOf(
-                                "ingredientID" to it["IngredientID"],
-                                "weight" to it["Weight"]
-                            ))
+                            customIngredient.add(
+                                mapOf(
+                                    "ingredientID" to it["IngredientID"],
+                                    "weight" to it["Weight"]
+                                )
+                            )
                         }
                     }
                 }
             ).addOnSuccessListener {
-                db.collection("Journey").whereEqualTo("userID", userId).whereEqualTo("day", currDay).get().addOnSuccessListener {
-                    if(!it.isEmpty){
+                db.collection("Journey").whereEqualTo("userID", userId).whereEqualTo("day", currDay)
+                    .get().addOnSuccessListener {
+                    if (!it.isEmpty) {
                         var journeyid = it.documents.first().id
                         db.collection("Journey").document(journeyid).get().addOnSuccessListener {
-                            if(it.exists()){
+                            if (it.exists()) {
                                 var totalCal = 0
-                                if(it.get("totalCalories") != null){
-                                    totalCal = menucal + it.get("totalCalories").toString().toFloat().toInt()
-                                }else{
+                                if (it.get("totalCalories") != null) {
+                                    totalCal =
+                                        menucal + it.get("totalCalories").toString().toFloat()
+                                            .toInt()
+                                } else {
                                     totalCal = menucal
                                 }
                                 db.collection("Journey").document(journeyid).update(
@@ -134,14 +148,17 @@ class LunchFragment(var currDay: Int = 0) : Fragment() {
                                         "menuID" to menuId
                                     )
                                 ).addOnSuccessListener {
-                                    db.collection("Journey").document(journeyid).update("totalCalories", totalCal)
-                                    view.findViewById<FloatingActionButton>(R.id.floatingActionButton2).visibility = View.INVISIBLE
-                                    view.findViewById<Button>(R.id.changeLunch).visibility = View.INVISIBLE
+                                    db.collection("Journey").document(journeyid)
+                                        .update("totalCalories", totalCal)
+                                    view.findViewById<FloatingActionButton>(R.id.floatingActionButton2).visibility =
+                                        View.INVISIBLE
+                                    view.findViewById<Button>(R.id.changeLunch).visibility =
+                                        View.INVISIBLE
                                 }
 
                             }
                         }
-                    }else{
+                    } else {
                         db.collection("Journey").add(
                             hashMapOf(
                                 "userID" to userId,
@@ -155,7 +172,8 @@ class LunchFragment(var currDay: Int = 0) : Fragment() {
                                 )
                             )
                         ).addOnSuccessListener {
-                            view.findViewById<FloatingActionButton>(R.id.floatingActionButton2).visibility = View.INVISIBLE
+                            view.findViewById<FloatingActionButton>(R.id.floatingActionButton2).visibility =
+                                View.INVISIBLE
                             view.findViewById<Button>(R.id.changeLunch).visibility = View.INVISIBLE
                         }
                     }
@@ -164,21 +182,38 @@ class LunchFragment(var currDay: Int = 0) : Fragment() {
         }
     }
 
-    fun initMenu(){
+    fun initMenu() {
 
-        db.collection("users").whereEqualTo("username", user.displayName).addSnapshotListener(){ it, _ ->
-            if(!it?.isEmpty!!){
-                db.collection("CustomMeals").whereEqualTo("UserID", it.documents.first().id).whereEqualTo("type", "Lunch").whereEqualTo("day", currDay).addSnapshotListener() {it,_->
-                    if(!it?.isEmpty!!){
-                        menuName.text = it.documents.first().getString("CustomMealName")
-                        calCount.text = getString(R.string.calories, it.documents.first().get("Calories").toString().toFloat().roundToInt().toString())
-                        menuId = it.documents.first().id
-                    }
+        db.collection("users").whereEqualTo("username", user.displayName)
+            .addSnapshotListener() { it, _ ->
+                if (!it?.isEmpty!!) {
+                    db.collection("CustomMeals").whereEqualTo("UserID", it.documents.first().id)
+                        .whereEqualTo("type", "Lunch").whereEqualTo("day", currDay)
+                        .addSnapshotListener() { it, _ ->
+                            if (!it?.isEmpty!!) {
+                                if (it.documents.first().get("isCustom") == null) {
+                                    if (language.equals("in")) {
+                                        menuName.text =
+                                            it.documents.first().getString("CustomMealName-en")
+                                    } else {
+                                        menuName.text =
+                                            it.documents.first().getString("CustomMealName-in")
+                                    }
+                                } else {
+                                    menuName.text = it.documents.first().getString("CustomMealName")
+                                }
+                                calCount.text = getString(
+                                    R.string.calories,
+                                    it.documents.first().get("Calories").toString().toFloat()
+                                        .roundToInt().toString()
+                                )
+                                menuId = it.documents.first().id
+                            }
+                        }
+
+
                 }
-
-
             }
-        }
 
 
     }

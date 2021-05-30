@@ -42,6 +42,7 @@
     <string name="active_not_checked">Activity level must be checked</string>
     <string name="user_no_custommeal">This user has no custom meal!</string>
     <string name="user_no_journey">This user has no journey history!</string>
+    <string name="cancel_text">Cancel</string>
 
 
     <!-- TODO: Remove or change this placeholder text -->

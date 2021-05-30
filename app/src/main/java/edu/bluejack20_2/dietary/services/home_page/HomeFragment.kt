@@ -30,16 +30,14 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
     private lateinit var tabLayout: TabLayout
     private lateinit var viewPager2: ViewPager2
     private var currDay: Int = 0
+    private var languange = Locale.getDefault().language
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-
         profilepic = view.findViewById<CirleImageView>(
             R.id.user_profilepic
         )
-
-
 
         db.collection("users").whereEqualTo("username", user.displayName).get().addOnSuccessListener {
             if(!it?.isEmpty!!){

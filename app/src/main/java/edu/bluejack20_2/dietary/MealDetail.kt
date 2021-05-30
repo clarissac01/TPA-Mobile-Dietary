@@ -23,6 +23,7 @@ class MealDetail : AppCompatActivity() {
     private lateinit var menuId: String
     private var isEditable: Boolean = true
     private lateinit var mealCalories: TextView
+    var language = Locale.getDefault().language
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -62,7 +63,7 @@ class MealDetail : AppCompatActivity() {
                     "Calories" to totalCal))
                 .addOnSuccessListener {
                     Toast.makeText(this, getString(R.string.meal_update_success), Toast.LENGTH_LONG)
-            }
+                }
         }
 
     }
@@ -71,7 +72,17 @@ class MealDetail : AppCompatActivity() {
         val list = ArrayList<IngredientItem>()
         db.collection("CustomMeals").document(menuId).get().addOnSuccessListener {
             if(it.exists()){
-                findViewById<TextView>(R.id.mealName).text = it.data?.get("CustomMealName").toString()
+                var mealname = ""
+                if(it.get("isCustom")==null){
+                    if(language.equals("in")){
+                        mealname = it.data?.get("CustomMealName-in").toString()
+                    }else{
+                        mealname = it.data?.get("CustomMealName-en").toString()
+                    }
+                }else{
+                    mealname = it.data?.get("CustomMealName").toString()
+                }
+                findViewById<TextView>(R.id.mealName).text = mealname
                 findViewById<TextView>(R.id.mealCalories).text = getString(R.string.calories, it.data?.get("Calories").toString())
                 val ingredients = it.data?.get("CustomMealIngredients")!! as List<Map<*, *>>
                 ingredients.forEach {
@@ -87,7 +98,11 @@ class MealDetail : AppCompatActivity() {
                             calCount /= it.data?.get("IngredientsWeight")!!.toString().toFloat()
                             calCount *= it.data?.get("IngredientsCalories")!!.toString().toFloat()
                             calCount = calCount.roundToInt().toFloat()
-                            name = it.data?.get("IngredientsName")!!.toString()
+                            if(language.equals("in")){
+                                name = it.data?.get("IngredientsName_in")!!.toString()
+                            }else{
+                                name = it.data?.get("IngredientsName_en")!!.toString()
+                            }
 
                             Log.wtf("weightt2", weight.toString())
                             list.add(IngredientItem(ingredientId, name, calCount, weight))

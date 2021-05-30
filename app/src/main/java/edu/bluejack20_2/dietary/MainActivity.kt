@@ -134,6 +134,20 @@ class MainActivity : AppCompatActivity() {
                         var snackHour = it.getLong("snackHour").toString().toInt() - 7
                         var snackMinute = it.getLong("snackMinute").toString().toInt()
 
+                        val alarmManager2 =
+                            getSystemService(Context.ALARM_SERVICE) as? AlarmManager
+                        val pendingIntent =
+                            PendingIntent.getService(this, 0, intent,
+                                PendingIntent.FLAG_NO_CREATE)
+                        if (pendingIntent != null && alarmManager2 != null) {
+                            alarmManager.cancel(pendingIntent)
+                        }
+
+                        val alarmMgr = getSystemService(Context.ALARM_SERVICE) as AlarmManager
+                        val alarmIntent = Intent(this, AlarmReceiver::class.java).let { intent ->
+                            PendingIntent.getBroadcast(this, 0, intent, 0)
+                        }
+
                         val calendarBreakfast: Calendar = Calendar.getInstance().apply {
                             timeInMillis = System.currentTimeMillis()
                             if(breakfastHour != null && breakfastMinute != null) {
@@ -213,7 +227,6 @@ class MainActivity : AppCompatActivity() {
             AlarmManager.INTERVAL_DAY,
             alarmIntent
         )
-
     }
 
 

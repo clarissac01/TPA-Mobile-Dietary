@@ -21,6 +21,8 @@ import edu.bluejack20_2.dietary.IngredientItem
 import edu.bluejack20_2.dietary.MealItem
 import edu.bluejack20_2.dietary.NonEditableIngredientAdapter
 import edu.bluejack20_2.dietary.R
+import java.util.*
+import kotlin.collections.ArrayList
 import kotlin.math.roundToInt
 
 
@@ -30,7 +32,7 @@ class ChooseCustomMealAdapter(parentActivity: AppCompatActivity, private val mea
     var db = FirebaseFirestore.getInstance()
     var user = FirebaseAuth.getInstance().currentUser
     var parentActivity = parentActivity
-//    var expandState = SparseBooleanArray()
+    var language = Locale.getDefault().language
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
@@ -85,7 +87,11 @@ class ChooseCustomMealAdapter(parentActivity: AppCompatActivity, private val mea
                             calCount /= it.data?.get("IngredientsWeight")!!.toString().toFloat()
                             calCount *= it.data?.get("IngredientsCalories")!!.toString().toFloat()
                             calCount = calCount.roundToInt().toFloat()
-                            name = it.data?.get("IngredientsName")!!.toString()
+                            if(language.equals("in")){
+                                name = it.data?.get("IngredientsName_in")!!.toString()
+                            }else{
+                                name = it.data?.get("IngredientsName_en")!!.toString()
+                            }
                             list.add(
                                 IngredientItem(
                                     ingredientId,
