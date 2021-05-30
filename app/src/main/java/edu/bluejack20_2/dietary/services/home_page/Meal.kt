@@ -15,12 +15,15 @@ import edu.bluejack20_2.dietary.MealItem
 import edu.bluejack20_2.dietary.R
 import edu.bluejack20_2.dietary.services.home_page.adapter.RecommendMealsAdapter
 import java.lang.Boolean.FALSE
+import java.util.*
+import kotlin.collections.ArrayList
 
 class Meal : AppCompatActivity() {
 
     private lateinit var type:String
     private var currentDay:Int = 0
     var db = FirebaseFirestore.getInstance()
+    var language = Locale.getDefault().language
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -63,30 +66,50 @@ class Meal : AppCompatActivity() {
 
         val list = ArrayList<MealItem>()
         val list2 = ArrayList<MealItem>()
+        val list3 = ArrayList<MealItem>()
         //logic get recommended meal
 
         Tasks.whenAll(
             db.collection("users").whereEqualTo("username", FirebaseAuth.getInstance().currentUser.displayName).get().addOnSuccessListener {
                 if(!it.isEmpty){
-                    Log.wtf("the type, the userid, the day", type.toString() + " jdlasjdlas " + it.documents.first().id)
                     var userid = it.documents.first().id
                     db.collection("CustomMeals").whereEqualTo("type", type).whereEqualTo("UserID", userid).orderBy("day").get().addOnSuccessListener {
                         if(!it?.isEmpty!!){
                             it.documents.forEach{
-                                list.add(
-                                    MealItem(
-                                        it.id.toString(), it.get("CustomMealName") as String,
-                                        it.get("Calories").toString().toFloat(), FALSE
+                                if(it.get("isCustom") != null){
+                                    list.add(
+                                        MealItem(
+                                            it.id.toString(), it.get("CustomMealName") as String,
+                                            it.get("Calories").toString().toFloat(), FALSE
+                                        )
                                     )
-                                )
-                                Log.wtf("something is addedd", it.get("CustomMealName").toString())
+                                }else{
+                                    if(language.equals("in")){
+                                        list.add(
+                                            MealItem(
+                                                it.id.toString(), it.get("CustomMealName-in") as String,
+                                                it.get("Calories").toString().toFloat(), FALSE
+                                            )
+                                        )
+                                    }else{
+                                        list.add(
+                                            MealItem(
+                                                it.id.toString(), it.get("CustomMealName-en") as String,
+                                                it.get("Calories").toString().toFloat(), FALSE
+                                            )
+                                        )
+                                    }
+
+                                }
                             }
                             for (i in currentDay+1 until list.size){
                                 list2.add(list.get(i))
-                                findViewById<RecyclerView>(R.id.recommend_meal_view).adapter?.notifyDataSetChanged()
                             }
                             for (i in 0 until currentDay){
                                 list2.add(list.get(i))
+                            }
+                            for(i in 0 until 10){
+                                list3.add(list2.get(i))
                                 findViewById<RecyclerView>(R.id.recommend_meal_view).adapter?.notifyDataSetChanged()
                             }
                         }
@@ -101,7 +124,7 @@ class Meal : AppCompatActivity() {
         }
 
 
-        return list2
+        return list3
     }
 
     fun getMealList2(): MutableList<MealItem>?{
@@ -117,7 +140,6 @@ class Meal : AppCompatActivity() {
                     db.collection("CustomMeals").whereEqualTo("UserID", userid).whereEqualTo("isCustom", true).get().addOnSuccessListener {
                         if(!it?.isEmpty!!){
                             it.documents.forEach{
-
                                 list.add(
                                     MealItem(
                                         it.id.toString(), it.get("CustomMealName") as String,
@@ -130,8 +152,8 @@ class Meal : AppCompatActivity() {
                             }
                         }
                     }.addOnFailureListener {
-                            var errorMessage: TextView = findViewById(R.id.noCustomMealMessage)
-                            errorMessage.visibility = View.VISIBLE
+                        var errorMessage: TextView = findViewById(R.id.noCustomMealMessage)
+                        errorMessage.visibility = View.VISIBLE
                     }
                 }
             }

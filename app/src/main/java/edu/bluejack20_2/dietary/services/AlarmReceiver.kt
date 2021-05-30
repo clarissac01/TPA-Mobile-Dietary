@@ -20,8 +20,8 @@ class AlarmReceiver : BroadcastReceiver() {
     var user = FirebaseAuth.getInstance().currentUser
 
     override fun onReceive(context: Context, intent: Intent) {
-        if (intent.action == "android.intent.action.BOOT_COMPLETED") {
             // Set the alarm here.
+            Log.wtf("masuk sini dong", "oke siap otw")
             db.collection("users").whereEqualTo("username", user.displayName).get()
                 .addOnSuccessListener {
                     if (!it.isEmpty) {
@@ -39,529 +39,313 @@ class AlarmReceiver : BroadcastReceiver() {
                             db.collection("Journey").whereEqualTo("day", res)
                                 .whereEqualTo("userID", userid).get().addOnSuccessListener {
                                     if (it.isEmpty) {
-                                        //add breakfast menu
-                                        var menucal1 = 0
-                                        val customIngredient1 = mutableListOf<Map<*, *>>()
-                                        var menucal2 = 0
-                                        val customIngredient2 = mutableListOf<Map<*, *>>()
-                                        var menucal3 = 0
-                                        var menucal4 = 0
-                                        val customIngredient3 = mutableListOf<Map<*, *>>()
-                                        val customIngredient4 = mutableListOf<Map<*, *>>()
-                                        var breakfastmenuid = ""
-                                        var lunchmenuid = ""
-                                        var dinnermenuid = ""
-                                        var snackmenuid = ""
-                                        Tasks.whenAll(
-                                            db.collection("CustomMeals")
-                                                .whereEqualTo("UserID", userid)
-                                                .whereEqualTo("day", res)
-                                                .whereEqualTo("type", "Breakfast")
-                                                .get().addOnSuccessListener {
-                                                    if (!it.isEmpty) {
-                                                        breakfastmenuid = it.documents.first().id
-                                                        db.collection("CustomMeals")
-                                                            .document(it.documents.first().id).get()
-                                                            .addOnSuccessListener {
-                                                                if (it.exists()) {
-                                                                    menucal1 =
-                                                                        it.get("Calories")
-                                                                            .toString()
-                                                                            .toFloat().toInt()
-                                                                    var inglist =
-                                                                        it.get("CustomMealIngredients") as List<Map<*, *>>
-                                                                    inglist.forEach {
-                                                                        customIngredient1.add(
-                                                                            mapOf(
+                                        //make the journey collection
+
+                                        db.collection("Journey").add(
+                                            mapOf(
+                                                "Date" to Timestamp.now(),
+                                                "day" to res,
+                                                "userID" to userid
+                                            )
+                                        ).addOnSuccessListener {
+                                            Log.wtf("this is the journey id", it.id)
+                                            var journeyId = it.id
+
+                                            //get breakfast menu
+
+                                            db.collection("CustomMeals").whereEqualTo("UserID", userid).whereEqualTo("day", res)
+                                                .whereEqualTo("type", "Breakfast").get().addOnSuccessListener {
+                                                    if(!it.isEmpty){
+                                                        Log.wtf("inside", it.documents.toString())
+                                                        var menuId = it.documents.first().id
+                                                        var inglist = mutableListOf<Map<*, *>>()
+                                                        var cal = it.documents.first().get("Calories")
+                                                        var ingredients = it.documents.first().get("CustomMealIngredients") as List<Map<*, *>>
+                                                            Log.wtf("ada sesuatu", ingredients.toString())
+                                                        ingredients?.forEach {
+                                                            inglist.add(mapOf(
+                                                                "ingredientID" to it["IngredientID"],
+                                                                "weight" to it["Weight"]
+                                                            ))
+                                                        }
+                                                        db.collection("Journey").document(journeyId).update(
+                                                            mapOf(
+                                                                "totalCalories" to cal,
+                                                                "breakfastMenu" to mapOf(
+                                                                    "calories" to cal,
+                                                                    "ingredients" to inglist,
+                                                                    "menuID" to menuId
+                                                                )
+                                                            )
+                                                        ).addOnSuccessListener {
+                                                            db.collection("CustomMeals").whereEqualTo("UserID", userid).whereEqualTo("day", res)
+                                                                .whereEqualTo("type", "Lunch").get().addOnSuccessListener {
+                                                                    if(!it.isEmpty){
+                                                                        Log.wtf("inside", it.documents.toString())
+                                                                        var menuId = it.documents.first().id
+                                                                        var inglist = mutableListOf<Map<*, *>>()
+                                                                        var cal = it.documents.first().get("Calories").toString().toInt()
+                                                                        var ingredients = it.documents.first().get("CustomMealIngredients") as List<Map<*, *>>
+                                                                        Log.wtf("ada sesuatu", ingredients.toString())
+                                                                        ingredients?.forEach {
+                                                                            inglist.add(mapOf(
                                                                                 "ingredientID" to it["IngredientID"],
                                                                                 "weight" to it["Weight"]
-                                                                            )
-                                                                        )
-                                                                    }
-                                                                }
-                                                            }
-
-                                                    }
-                                                    db.collection("CustomMeals")
-                                                        .whereEqualTo("UserID", userid)
-                                                        .whereEqualTo("day", res)
-                                                        .whereEqualTo("type", "Lunch")
-                                                        .get().addOnSuccessListener {
-                                                            if (!it.isEmpty) {
-                                                                lunchmenuid =
-                                                                    it.documents.first().id
-                                                                db.collection("CustomMeals")
-                                                                    .document(it.documents.first().id)
-                                                                    .get().addOnSuccessListener {
-                                                                        if (it.exists()) {
-                                                                            menucal2 =
-                                                                                it.get("Calories")
-                                                                                    .toString()
-                                                                                    .toFloat()
-                                                                                    .toInt()
-                                                                            var inglist =
-                                                                                it.get("CustomMealIngredients") as List<Map<*, *>>
-                                                                            inglist.forEach {
-                                                                                customIngredient2.add(
-                                                                                    mapOf(
-                                                                                        "ingredientID" to it["IngredientID"],
-                                                                                        "weight" to it["Weight"]
-                                                                                    )
-                                                                                )
-                                                                            }
+                                                                            ))
                                                                         }
-                                                                    }
-                                                                db.collection("CustomMeals")
-                                                                    .whereEqualTo("UserID", userid)
-                                                                    .whereEqualTo("day", res)
-                                                                    .whereEqualTo("type", "Dinner")
-                                                                    .get().addOnSuccessListener {
-                                                                        if (!it.isEmpty) {
-                                                                            dinnermenuid =
-                                                                                it.documents.first().id
-                                                                            db.collection("CustomMeals")
-                                                                                .document(it.documents.first().id)
-                                                                                .get()
-                                                                                .addOnSuccessListener {
-                                                                                    if (it.exists()) {
-                                                                                        menucal3 =
-                                                                                            it.get("Calories")
-                                                                                                .toString()
-                                                                                                .toFloat()
-                                                                                                .toInt()
-                                                                                        var inglist =
-                                                                                            it.get("CustomMealIngredients") as List<Map<*, *>>
-                                                                                        inglist.forEach {
-                                                                                            customIngredient3.add(
-                                                                                                mapOf(
-                                                                                                    "ingredientID" to it["IngredientID"],
-                                                                                                    "weight" to it["Weight"]
-                                                                                                )
-                                                                                            )
-                                                                                        }
-                                                                                    }
-                                                                                }
-                                                                            db.collection("CustomMeals")
-                                                                                .whereEqualTo(
-                                                                                    "UserID",
-                                                                                    userid
-                                                                                ).whereEqualTo(
-                                                                                    "day",
-                                                                                    res
-                                                                                ).whereEqualTo(
-                                                                                    "type",
-                                                                                    "Snack"
-                                                                                )
-                                                                                .get()
-                                                                                .addOnSuccessListener {
-                                                                                    if (!it.isEmpty) {
-                                                                                        snackmenuid =
-                                                                                            it.documents.first().id
-                                                                                        db.collection(
-                                                                                            "CustomMeals"
+                                                                        db.collection("Journey").document(journeyId).get().addOnSuccessListener {
+                                                                            if(it.exists()){
+                                                                                var totalCal = it.get("totalCalories").toString().toInt()
+                                                                                db.collection("Journey").document(journeyId).update(
+                                                                                    mapOf(
+                                                                                        "totalCalories" to (totalCal+cal),
+                                                                                        "lunchMenu" to mapOf(
+                                                                                            "calories" to cal,
+                                                                                            "ingredients" to inglist,
+                                                                                            "menuID" to menuId
                                                                                         )
-                                                                                            .document(
-                                                                                                it.documents.first().id
-                                                                                            )
-                                                                                            .get()
-                                                                                            .addOnSuccessListener {
-                                                                                                if (it.exists()) {
-                                                                                                    menucal4 =
-                                                                                                        it.get(
-                                                                                                            "Calories"
-                                                                                                        )
-                                                                                                            .toString()
-                                                                                                            .toFloat()
-                                                                                                            .toInt()
-                                                                                                    var inglist =
-                                                                                                        it.get(
-                                                                                                            "CustomMealIngredients"
-                                                                                                        ) as List<Map<*, *>>
-                                                                                                    inglist.forEach {
-                                                                                                        customIngredient4.add(
+                                                                                    )
+                                                                                ).addOnSuccessListener {
+                                                                                    db.collection("CustomMeals").whereEqualTo("UserID", userid).whereEqualTo("day", res)
+                                                                                        .whereEqualTo("type", "Dinner").get().addOnSuccessListener {
+                                                                                            if(!it.isEmpty){
+                                                                                                Log.wtf("inside", it.documents.toString())
+                                                                                                var menuId = it.documents.first().id
+                                                                                                var inglist = mutableListOf<Map<*, *>>()
+                                                                                                var cal = it.documents.first().get("Calories").toString().toInt()
+                                                                                                var ingredients = it.documents.first().get("CustomMealIngredients") as List<Map<*, *>>
+                                                                                                Log.wtf("ada sesuatu", ingredients.toString())
+                                                                                                ingredients?.forEach {
+                                                                                                    inglist.add(mapOf(
+                                                                                                        "ingredientID" to it["IngredientID"],
+                                                                                                        "weight" to it["Weight"]
+                                                                                                    ))
+                                                                                                }
+                                                                                                db.collection("Journey").document(journeyId).get().addOnSuccessListener {
+                                                                                                    if(it.exists()){
+                                                                                                        var totalCal = it.get("totalCalories").toString().toInt()
+                                                                                                        db.collection("Journey").document(journeyId).update(
                                                                                                             mapOf(
-                                                                                                                "ingredientID" to it["IngredientID"],
-                                                                                                                "weight" to it["Weight"]
+                                                                                                                "totalCalories" to (totalCal+cal),
+                                                                                                                "dinnerMenu" to mapOf(
+                                                                                                                    "calories" to cal,
+                                                                                                                    "ingredients" to inglist,
+                                                                                                                    "menuID" to menuId
+                                                                                                                )
                                                                                                             )
-                                                                                                        )
+                                                                                                        ).addOnSuccessListener {
+                                                                                                            db.collection("CustomMeals").whereEqualTo("UserID", userid).whereEqualTo("day", res)
+                                                                                                                .whereEqualTo("type", "Snack").get().addOnSuccessListener {
+                                                                                                                    if(!it.isEmpty){
+                                                                                                                        Log.wtf("inside", it.documents.toString())
+                                                                                                                        var menuId = it.documents.first().id
+                                                                                                                        var inglist = mutableListOf<Map<*, *>>()
+                                                                                                                        var cal = it.documents.first().get("Calories").toString().toInt()
+                                                                                                                        var ingredients = it.documents.first().get("CustomMealIngredients") as List<Map<*, *>>
+                                                                                                                        Log.wtf("ada sesuatu", ingredients.toString())
+                                                                                                                        ingredients?.forEach {
+                                                                                                                            inglist.add(mapOf(
+                                                                                                                                "ingredientID" to it["IngredientID"],
+                                                                                                                                "weight" to it["Weight"]
+                                                                                                                            ))
+                                                                                                                        }
+                                                                                                                        db.collection("Journey").document(journeyId).get().addOnSuccessListener {
+                                                                                                                            if(it.exists()){
+                                                                                                                                var totalCal = it.get("totalCalories").toString().toInt()
+                                                                                                                                db.collection("Journey").document(journeyId).update(
+                                                                                                                                    mapOf(
+                                                                                                                                        "totalCalories" to (totalCal+cal),
+                                                                                                                                        "snackMenu" to mapOf(
+                                                                                                                                            "calories" to cal,
+                                                                                                                                            "ingredients" to inglist,
+                                                                                                                                            "menuID" to menuId
+                                                                                                                                        )
+                                                                                                                                    )
+                                                                                                                                )
+                                                                                                                            }
+                                                                                                                        }
+                                                                                                                    }
+                                                                                                                }
+                                                                                                        }
                                                                                                     }
                                                                                                 }
                                                                                             }
-
-                                                                                    }
+                                                                                        }
                                                                                 }
+                                                                            }
                                                                         }
                                                                     }
-                                                            }
+                                                                }
                                                         }
+                                                    }
                                                 }
 
-                                        ).addOnSuccessListener {
-                                            db.collection("Journey").add(
-                                                hashMapOf(
-                                                    "userID" to userid,
-                                                    "totalCalories" to (menucal1 + menucal2 + menucal3 + menucal4),
-                                                    "day" to res,
-                                                    "Date" to Timestamp.now(),
-                                                    "breakfastMenu" to hashMapOf(
-                                                        "calories" to menucal1,
-                                                        "ingredients" to customIngredient1,
-                                                        "menuID" to breakfastmenuid
-                                                    ),
-                                                    "lunchMenu" to hashMapOf(
-                                                        "calories" to menucal2,
-                                                        "ingredients" to customIngredient2,
-                                                        "menuID" to lunchmenuid
-                                                    ),
-                                                    "dinnerMenu" to hashMapOf(
-                                                        "calories" to menucal3,
-                                                        "ingredients" to customIngredient3,
-                                                        "menuID" to dinnermenuid
-                                                    ),
-                                                    "snackMenu" to hashMapOf(
-                                                        "calories" to menucal4,
-                                                        "ingredients" to customIngredient4,
-                                                        "menuID" to snackmenuid
-                                                    )
-                                                )
-                                            ).addOnSuccessListener {
-                                                Log.wtf("horray", "finally done")
-                                            }
+                                            //get lunch menu
+
+
+
+                                            //get dinner menu
+
+
+
+                                            //get snack menu
+
+
 
                                         }
 
                                     } else {
-                                        if (it.documents.first().get("breakfastMenu") == null) {
-                                            var menucal = 0
-                                            var menuId = ""
-                                            val customIngredient = mutableListOf<Map<*, *>>()
-                                            Tasks.whenAll(
-                                                db.collection("CustomMeals")
-                                                    .whereEqualTo("UserID", userid)
-                                                    .whereEqualTo("day", res)
-                                                    .whereEqualTo("type", "Breakfast").get()
-                                                    .addOnSuccessListener {
-                                                        if (!it.isEmpty) {
-                                                            menuId = it.documents.first().id
-                                                            db.collection("CustomMeals")
-                                                                .document(menuId)
-                                                                .get().addOnSuccessListener {
-                                                                    if (it.exists()) {
-                                                                        menucal = it.get("Calories")
-                                                                            .toString()
-                                                                            .toFloat().toInt()
-                                                                        var inglist =
-                                                                            it.get("CustomMealIngredients") as List<Map<*, *>>
-                                                                        inglist.forEach {
-                                                                            customIngredient.add(
-                                                                                mapOf(
-                                                                                    "ingredientID" to it["IngredientID"],
-                                                                                    "weight" to it["Weight"]
-                                                                                )
-                                                                            )
-                                                                        }
-                                                                    }
-                                                                }
+                                        var journeyId = it.documents.first().id
+
+                                        //update breakfast menu
+                                        if(it.documents.first().get("breakfastMenu") == null){
+                                            db.collection("CustomMeals").whereEqualTo("UserID", userid).whereEqualTo("day", res)
+                                                .whereEqualTo("type", "Breakfast").get().addOnSuccessListener {
+                                                    if(!it.isEmpty){
+                                                        Log.wtf("inside", it.documents.toString())
+                                                        var menuId = it.documents.first().id
+                                                        var inglist = mutableListOf<Map<*, *>>()
+                                                        var cal = it.documents.first().get("Calories").toString().toInt()
+                                                        var ingredients = it.documents.first().get("CustomMealIngredients") as List<Map<*, *>>
+                                                        Log.wtf("ada sesuatu", ingredients.toString())
+                                                        ingredients?.forEach {
+                                                            inglist.add(mapOf(
+                                                                "ingredientID" to it["IngredientID"],
+                                                                "weight" to it["Weight"]
+                                                            ))
+                                                        }
+                                                        db.collection("Journey").document(journeyId).get().addOnSuccessListener {
+                                                            if(it.exists()){
+                                                                var totalCal = it.get("totalCalories").toString().toInt()
+                                                                db.collection("Journey").document(journeyId).update(
+                                                                    mapOf(
+                                                                        "totalCalories" to (totalCal+cal),
+                                                                        "breakfastMenu" to mapOf(
+                                                                            "calories" to cal,
+                                                                            "ingredients" to inglist,
+                                                                            "menuID" to menuId
+                                                                        )
+                                                                    )
+                                                                )
+                                                            }
                                                         }
                                                     }
-
-                                            ).addOnSuccessListener {
-                                                db.collection("Journey")
-                                                    .whereEqualTo("userID", userid)
-                                                    .whereEqualTo("day", res).get()
-                                                    .addOnSuccessListener {
-                                                        if (!it.isEmpty) {
-                                                            var journeyid = it.documents.first().id
-                                                            db.collection("Journey")
-                                                                .document(journeyid)
-                                                                .get().addOnSuccessListener {
-                                                                    if (it.exists()) {
-                                                                        var totalCal = 0
-                                                                        if (it.get("totalCalories") != null) {
-                                                                            totalCal =
-                                                                                menucal + it.get("totalCalories")
-                                                                                    .toString()
-                                                                                    .toInt()
-                                                                        } else {
-                                                                            totalCal = menucal
-                                                                        }
-                                                                        db.collection("Journey")
-                                                                            .document(journeyid)
-                                                                            .update(
-                                                                                "breakfastMenu",
-                                                                                hashMapOf(
-                                                                                    "calories" to menucal,
-                                                                                    "ingredients" to customIngredient,
-                                                                                    "menuID" to menuId
-                                                                                )
-                                                                            ).addOnSuccessListener {
-                                                                                db.collection("Journey")
-                                                                                    .document(
-                                                                                        journeyid
-                                                                                    ).update(
-                                                                                        "totalCalories",
-                                                                                        totalCal
-                                                                                    )
-                                                                            }
-                                                                    }
-
-                                                                }
-                                                        }
-                                                    }
-                                            }
+                                                }
                                         }
 
-                                        //lunch Menu
+                                        //update lunch menu
+                                        if(it.documents.first().get("lunchMenu") == null){
 
-                                        if (it.documents.first().get("lunchMenu") == null) {
-                                            var menucal = 0
-                                            var menuId = ""
-                                            val customIngredient = mutableListOf<Map<*, *>>()
-                                            Tasks.whenAll(
-                                                db.collection("CustomMeals")
-                                                    .whereEqualTo("UserID", userid)
-                                                    .whereEqualTo("day", res)
-                                                    .whereEqualTo("type", "Lunch").get()
-                                                    .addOnSuccessListener {
-                                                        if (!it.isEmpty) {
-                                                            menuId = it.documents.first().id
-                                                            db.collection("CustomMeals")
-                                                                .document(menuId)
-                                                                .get().addOnSuccessListener {
-                                                                    if (it.exists()) {
-                                                                        menucal = it.get("Calories")
-                                                                            .toString()
-                                                                            .toFloat().toInt()
-                                                                        var inglist =
-                                                                            it.get("CustomMealIngredients") as List<Map<*, *>>
-                                                                        inglist.forEach {
-                                                                            customIngredient.add(
-                                                                                mapOf(
-                                                                                    "ingredientID" to it["IngredientID"],
-                                                                                    "weight" to it["Weight"]
-                                                                                )
-                                                                            )
-                                                                        }
-                                                                    }
-                                                                }
+                                            db.collection("CustomMeals").whereEqualTo("UserID", userid).whereEqualTo("day", res)
+                                                .whereEqualTo("type", "Lunch").get().addOnSuccessListener {
+                                                    if(!it.isEmpty){
+                                                        Log.wtf("inside", it.documents.toString())
+                                                        var menuId = it.documents.first().id
+                                                        var inglist = mutableListOf<Map<*, *>>()
+                                                        var cal = it.documents.first().get("Calories").toString().toInt()
+                                                        var ingredients = it.documents.first().get("CustomMealIngredients") as List<Map<*, *>>
+                                                        Log.wtf("ada sesuatu", ingredients.toString())
+                                                        ingredients?.forEach {
+                                                            inglist.add(mapOf(
+                                                                "ingredientID" to it["IngredientID"],
+                                                                "weight" to it["Weight"]
+                                                            ))
+                                                        }
+                                                        db.collection("Journey").document(journeyId).get().addOnSuccessListener {
+                                                            if(it.exists()){
+                                                                var totalCal = it.get("totalCalories").toString().toInt()
+                                                                db.collection("Journey").document(journeyId).update(
+                                                                    mapOf(
+                                                                        "totalCalories" to (totalCal+cal),
+                                                                        "lunchMenu" to mapOf(
+                                                                            "calories" to cal,
+                                                                            "ingredients" to inglist,
+                                                                            "menuID" to menuId
+                                                                        )
+                                                                    )
+                                                                )
+                                                            }
                                                         }
                                                     }
-
-                                            ).addOnSuccessListener {
-                                                db.collection("Journey")
-                                                    .whereEqualTo("userID", userid)
-                                                    .whereEqualTo("day", res).get()
-                                                    .addOnSuccessListener {
-                                                        if (!it.isEmpty) {
-                                                            var journeyid = it.documents.first().id
-                                                            db.collection("Journey")
-                                                                .document(journeyid)
-                                                                .get().addOnSuccessListener {
-                                                                    if (it.exists()) {
-                                                                        var totalCal = 0
-                                                                        if (it.get("totalCalories") != null) {
-                                                                            totalCal =
-                                                                                menucal + it.get("totalCalories")
-                                                                                    .toString()
-                                                                                    .toInt()
-                                                                        } else {
-                                                                            totalCal = menucal
-                                                                        }
-                                                                        db.collection("Journey")
-                                                                            .document(journeyid)
-                                                                            .update(
-                                                                                "lunchMenu",
-                                                                                hashMapOf(
-                                                                                    "calories" to menucal,
-                                                                                    "ingredients" to customIngredient,
-                                                                                    "menuID" to menuId
-                                                                                )
-                                                                            ).addOnSuccessListener {
-                                                                                db.collection("Journey")
-                                                                                    .document(
-                                                                                        journeyid
-                                                                                    ).update(
-                                                                                        "totalCalories",
-                                                                                        totalCal
-                                                                                    )
-                                                                            }
-                                                                    }
-
-                                                                }
-                                                        }
-                                                    }
-                                            }
+                                                }
                                         }
 
-                                        //dinner Menu
-
-                                        if (it.documents.first().get("dinnerMenu") == null) {
-                                            var menucal = 0
-                                            var menuId = ""
-                                            val customIngredient = mutableListOf<Map<*, *>>()
-                                            Tasks.whenAll(
-                                                db.collection("CustomMeals")
-                                                    .whereEqualTo("UserID", userid)
-                                                    .whereEqualTo("day", res)
-                                                    .whereEqualTo("type", "Dinner").get()
-                                                    .addOnSuccessListener {
-                                                        if (!it.isEmpty) {
-                                                            menuId = it.documents.first().id
-                                                            db.collection("CustomMeals")
-                                                                .document(menuId)
-                                                                .get().addOnSuccessListener {
-                                                                    if (it.exists()) {
-                                                                        menucal = it.get("Calories")
-                                                                            .toString()
-                                                                            .toFloat().toInt()
-                                                                        var inglist =
-                                                                            it.get("CustomMealIngredients") as List<Map<*, *>>
-                                                                        inglist.forEach {
-                                                                            customIngredient.add(
-                                                                                mapOf(
-                                                                                    "ingredientID" to it["IngredientID"],
-                                                                                    "weight" to it["Weight"]
-                                                                                )
-                                                                            )
-                                                                        }
-                                                                    }
-                                                                }
+                                        //update dinner menu
+                                        if(it.documents.first().get("dinnerMenu") == null){
+                                            db.collection("CustomMeals").whereEqualTo("UserID", userid).whereEqualTo("day", res)
+                                                .whereEqualTo("type", "Dinner").get().addOnSuccessListener {
+                                                    if(!it.isEmpty){
+                                                        Log.wtf("inside", it.documents.toString())
+                                                        var menuId = it.documents.first().id
+                                                        var inglist = mutableListOf<Map<*, *>>()
+                                                        var cal = it.documents.first().get("Calories").toString().toInt()
+                                                        var ingredients = it.documents.first().get("CustomMealIngredients") as List<Map<*, *>>
+                                                        Log.wtf("ada sesuatu", ingredients.toString())
+                                                        ingredients?.forEach {
+                                                            inglist.add(mapOf(
+                                                                "ingredientID" to it["IngredientID"],
+                                                                "weight" to it["Weight"]
+                                                            ))
+                                                        }
+                                                        db.collection("Journey").document(journeyId).get().addOnSuccessListener {
+                                                            if(it.exists()){
+                                                                var totalCal = it.get("totalCalories").toString().toInt()
+                                                                db.collection("Journey").document(journeyId).update(
+                                                                    mapOf(
+                                                                        "totalCalories" to (totalCal+cal),
+                                                                        "dinnerMenu" to mapOf(
+                                                                            "calories" to cal,
+                                                                            "ingredients" to inglist,
+                                                                            "menuID" to menuId
+                                                                        )
+                                                                    )
+                                                                )
+                                                            }
                                                         }
                                                     }
-
-                                            ).addOnSuccessListener {
-                                                db.collection("Journey")
-                                                    .whereEqualTo("userID", userid)
-                                                    .whereEqualTo("day", res).get()
-                                                    .addOnSuccessListener {
-                                                        if (!it.isEmpty) {
-                                                            var journeyid = it.documents.first().id
-                                                            db.collection("Journey")
-                                                                .document(journeyid)
-                                                                .get().addOnSuccessListener {
-                                                                    if (it.exists()) {
-                                                                        var totalCal = 0
-                                                                        if (it.get("totalCalories") != null) {
-                                                                            totalCal =
-                                                                                menucal + it.get("totalCalories")
-                                                                                    .toString()
-                                                                                    .toInt()
-                                                                        } else {
-                                                                            totalCal = menucal
-                                                                        }
-                                                                        db.collection("Journey")
-                                                                            .document(journeyid)
-                                                                            .update(
-                                                                                "dinnerMenu",
-                                                                                hashMapOf(
-                                                                                    "calories" to menucal,
-                                                                                    "ingredients" to customIngredient,
-                                                                                    "menuID" to menuId
-                                                                                )
-                                                                            ).addOnSuccessListener {
-                                                                                db.collection("Journey")
-                                                                                    .document(
-                                                                                        journeyid
-                                                                                    ).update(
-                                                                                        "totalCalories",
-                                                                                        totalCal
-                                                                                    )
-                                                                            }
-                                                                    }
-
-                                                                }
-                                                        }
-                                                    }
-                                            }
+                                                }
                                         }
 
-                                        //snack Menu
-
-                                        if (it.documents.first().get("snackMenu") == null) {
-                                            var menucal = 0
-                                            var menuId = ""
-                                            val customIngredient = mutableListOf<Map<*, *>>()
-                                            Tasks.whenAll(
-                                                db.collection("CustomMeals")
-                                                    .whereEqualTo("UserID", userid)
-                                                    .whereEqualTo("day", res)
-                                                    .whereEqualTo("type", "Snack").get()
-                                                    .addOnSuccessListener {
-                                                        if (!it.isEmpty) {
-                                                            menuId = it.documents.first().id
-                                                            db.collection("CustomMeals")
-                                                                .document(menuId)
-                                                                .get().addOnSuccessListener {
-                                                                    if (it.exists()) {
-                                                                        menucal = it.get("Calories")
-                                                                            .toString()
-                                                                            .toFloat().toInt()
-                                                                        var inglist =
-                                                                            it.get("CustomMealIngredients") as List<Map<*, *>>
-                                                                        inglist.forEach {
-                                                                            customIngredient.add(
-                                                                                mapOf(
-                                                                                    "ingredientID" to it["IngredientID"],
-                                                                                    "weight" to it["Weight"]
-                                                                                )
-                                                                            )
-                                                                        }
-                                                                    }
-                                                                }
+                                        //update snack menu
+                                        if(it.documents.first().get("snackMenu") == null){
+                                            db.collection("CustomMeals").whereEqualTo("UserID", userid).whereEqualTo("day", res)
+                                                .whereEqualTo("type", "Snack").get().addOnSuccessListener {
+                                                    if(!it.isEmpty){
+                                                        Log.wtf("inside", it.documents.toString())
+                                                        var menuId = it.documents.first().id
+                                                        var inglist = mutableListOf<Map<*, *>>()
+                                                        var cal = it.documents.first().get("Calories").toString().toInt()
+                                                        var ingredients = it.documents.first().get("CustomMealIngredients") as List<Map<*, *>>
+                                                        Log.wtf("ada sesuatu", ingredients.toString())
+                                                        ingredients?.forEach {
+                                                            inglist.add(mapOf(
+                                                                "ingredientID" to it["IngredientID"],
+                                                                "weight" to it["Weight"]
+                                                            ))
+                                                        }
+                                                        db.collection("Journey").document(journeyId).get().addOnSuccessListener {
+                                                            if(it.exists()){
+                                                                var totalCal = it.get("totalCalories").toString().toInt()
+                                                                db.collection("Journey").document(journeyId).update(
+                                                                    mapOf(
+                                                                        "totalCalories" to (totalCal+cal),
+                                                                        "snackMenu" to mapOf(
+                                                                            "calories" to cal,
+                                                                            "ingredients" to inglist,
+                                                                            "menuID" to menuId
+                                                                        )
+                                                                    )
+                                                                )
+                                                            }
                                                         }
                                                     }
-
-                                            ).addOnSuccessListener {
-                                                db.collection("Journey")
-                                                    .whereEqualTo("userID", userid)
-                                                    .whereEqualTo("day", res).get()
-                                                    .addOnSuccessListener {
-                                                        if (!it.isEmpty) {
-                                                            var journeyid = it.documents.first().id
-                                                            db.collection("Journey")
-                                                                .document(journeyid)
-                                                                .get().addOnSuccessListener {
-                                                                    if (it.exists()) {
-                                                                        var totalCal = 0
-                                                                        if (it.get("totalCalories") != null) {
-                                                                            totalCal =
-                                                                                menucal + it.get("totalCalories")
-                                                                                    .toString()
-                                                                                    .toInt()
-                                                                        } else {
-                                                                            totalCal = menucal
-                                                                        }
-                                                                        db.collection("Journey")
-                                                                            .document(journeyid)
-                                                                            .update(
-                                                                                "snackMenu",
-                                                                                hashMapOf(
-                                                                                    "calories" to menucal,
-                                                                                    "ingredients" to customIngredient,
-                                                                                    "menuID" to menuId
-                                                                                )
-                                                                            ).addOnSuccessListener {
-                                                                                db.collection("Journey")
-                                                                                    .document(
-                                                                                        journeyid
-                                                                                    ).update(
-                                                                                        "totalCalories",
-                                                                                        totalCal
-                                                                                    )
-                                                                            }
-                                                                    }
-
-                                                                }
-                                                        }
-                                                    }
-                                            }
+                                                }
                                         }
-                                        Log.wtf("done this notif", "hoorayyy")
+
                                     }
                                 }
                         }
                     }
                 }
-        }
     }
 }

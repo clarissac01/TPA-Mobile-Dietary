@@ -64,44 +64,47 @@ class JourneyFragment : Fragment(R.layout.fragment_journey) {
             val userID = it.documents.first().id
             db.collection("CustomMeals").get().addOnSuccessListener {
                 db.collection("Journey").whereEqualTo("userID", userID).limit(lim).get().addOnSuccessListener{ journey ->
-                    val tempList = mutableListOf<JourneyData>()
-                    for(document in journey.documents) {
-                        val breakfast = document?.get("breakfastMenu") as Map<String, Any>
-                        val lunch = document.get("lunchMenu") as Map<String, Any>
-                        val dinner = document.get("dinnerMenu") as Map<String, Any>?
-                        val snack = document.get("snackMenu") as Map<String, Any>
-                        val pattern = "yyyy-MM-dd"
-                        val simpleDateFormat = SimpleDateFormat(pattern)
-                        val date = simpleDateFormat.format(document.getTimestamp("Date")?.toDate())
-                        val perDay = mutableMapOf(
-                            "timestamp" to date
-                        )
-                        perDay["breakfast"] = it.find {
-                            it.id == breakfast["menuID"]
-                        }?.get("CustomMealName").toString()
-                        perDay["lunch"] = it.find {
-                            it.id == lunch["menuID"]
-                        }?.get("CustomMealName").toString()
-                        perDay["dinner"] = it.find {
-                            it.id == dinner!!["menuID"]
-                        }?.get("CustomMealName").toString()
-                        perDay["snack"] = it.find {
-                            it.id == snack["menuID"]
-                        }?.get("CustomMealName").toString()
-                        Log.wtf("map", perDay.toString())
-                        val data = JourneyData(
-                            document.get("totalCalories").toString().toInt(),
-                            perDay["timestamp"].toString(),
-                            perDay["breakfast"].toString(),
-                            perDay["lunch"].toString(),
-                            perDay["dinner"].toString(),
-                            perDay["snack"].toString()
-                        )
-                        tempList.add(data)
+                    if(!journey.isEmpty){
+                        val tempList = mutableListOf<JourneyData>()
+                        for(document in journey.documents) {
+                            val breakfast = document?.get("breakfastMenu") as Map<String, Any>?
+                            val lunch = document?.get("lunchMenu") as Map<String, Any>?
+                            val dinner = document?.get("dinnerMenu") as Map<String, Any>?
+                            val snack = document?.get("snackMenu") as Map<String, Any>?
+                            val pattern = "yyyy-MM-dd"
+                            val simpleDateFormat = SimpleDateFormat(pattern)
+                            val date = simpleDateFormat.format(document.getTimestamp("Date")?.toDate())
+                            val perDay = mutableMapOf(
+                                "timestamp" to date
+                            )
+                            perDay["breakfast"] = it.find {
+                                it.id == breakfast!!["menuID"]
+                            }?.get("CustomMealName").toString()
+                            perDay["lunch"] = it.find {
+                                it.id == lunch!!["menuID"]
+                            }?.get("CustomMealName").toString()
+                            perDay["dinner"] = it.find {
+                                it.id == dinner!!["menuID"]
+                            }?.get("CustomMealName").toString()
+                            perDay["snack"] = it.find {
+                                it.id == snack!!["menuID"]
+                            }?.get("CustomMealName").toString()
+                            Log.wtf("map", perDay.toString())
+                            val data = JourneyData(
+                                document.get("totalCalories").toString().toInt(),
+                                perDay["timestamp"].toString(),
+                                perDay["breakfast"].toString(),
+                                perDay["lunch"].toString(),
+                                perDay["dinner"].toString(),
+                                perDay["snack"].toString()
+                            )
+                            tempList.add(data)
+                        }
+                        journeyList.clear()
+                        journeyList.addAll(tempList.toList())
+                        callback()
+
                     }
-                    journeyList.clear()
-                    journeyList.addAll(tempList.toList())
-                    callback()
                 }
             }
         }

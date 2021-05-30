@@ -12,6 +12,7 @@ import com.google.android.material.floatingactionbutton.ExtendedFloatingActionBu
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.FirebaseFirestore
+import java.util.*
 import kotlin.math.roundToInt
 
 class MainIngredientsUpdateActivity : AppCompatActivity() {
@@ -19,6 +20,7 @@ class MainIngredientsUpdateActivity : AppCompatActivity() {
     var mainIngredientsList = mutableListOf<MainIngredientsData>()
     lateinit var search : SearchView
     val filtered  = mutableMapOf<String, Int>()
+    var language = Locale.getDefault().language
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,9 +37,16 @@ class MainIngredientsUpdateActivity : AppCompatActivity() {
             val result: StringBuffer = StringBuffer()
 
             for (document in it.documents) {
+                var ingredientName = ""
+                if(language.equals("in")){
+                    ingredientName = document.data?.getValue("IngredientsName_in").toString()
+                }else{
+                    ingredientName = document.data?.getValue("IngredientsName_en").toString()
+                }
+
                 val data = MainIngredientsData(
                     document.id,
-                    document.data?.getValue("IngredientsName").toString(),
+                    ingredientName,
                     document.data?.getValue("IngredientsCalories").toString().toInt(),
                     document.data?.getValue("IngredientsWeight").toString().toInt()
                 )
@@ -57,7 +66,7 @@ class MainIngredientsUpdateActivity : AppCompatActivity() {
                         findViewById<RecyclerView>(R.id.rvMainIngredients).adapter =
                             MainIngredientsAdapter(filter, ingredient)
                         findViewById<RecyclerView>(R.id.rvMainIngredients).adapter?.notifyDataSetChanged()
-                        Toast.makeText(applicationContext, "Ingredients Not Found!", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(applicationContext, getString(R.string.ingredients_not_found), Toast.LENGTH_SHORT).show()
                     }
                     else {
                         filtered.clear()
@@ -95,7 +104,7 @@ class MainIngredientsUpdateActivity : AppCompatActivity() {
                             findViewById<RecyclerView>(R.id.rvMainIngredients).adapter =
                                 MainIngredientsAdapter(filter, ingredient)
                             findViewById<RecyclerView>(R.id.rvMainIngredients).adapter?.notifyDataSetChanged()
-                            Toast.makeText(applicationContext, "Ingredients Not Found!", Toast.LENGTH_SHORT)
+                            Toast.makeText(applicationContext, getString(R.string.ingredients_not_found), Toast.LENGTH_SHORT)
                                 .show()
                         }
                     }
@@ -157,7 +166,7 @@ class MainIngredientsUpdateActivity : AppCompatActivity() {
                     "CustomMealIngredients" to customIngredient
                 )
                 db.collection("CustomMeals").document(customMealId!!).update(data).addOnSuccessListener {
-                    Toast.makeText(this, "Success Update Custom Meal", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this, getString(R.string.success_update_custom_meal), Toast.LENGTH_SHORT).show()
                     startActivity(Intent(this, MainActivity::class.java))
                 }
             }

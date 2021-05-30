@@ -20,7 +20,7 @@ class NotificationService: BroadcastReceiver() {
             NotificationCompat.Builder(context!!, uuid.toString())
                 .setSmallIcon(R.drawable.default_icon)
                 .setContentTitle("Dietary")
-                .setContentText("Hi, Time to Log Your Meal! :D")
+                .setContentText(context.getString(R.string.time_to_log_meal))
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT)
 
         val name: CharSequence = "DietaryChannel"

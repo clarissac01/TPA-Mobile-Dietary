@@ -2,7 +2,7 @@
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="90dp"
+    android:layout_height="wrap_content"
     android:backgroundTint="?colorSecondaryVariant"
     android:layout_marginTop="20dp"
     android:layout_marginLeft="5dp"
@@ -16,13 +16,15 @@
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/main_ingredients_name"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="30dp"
             android:layout_marginTop="20dp"
+            android:layout_marginEnd="15dp"
             android:text="Carrot"
             android:textColor="?colorPrimaryVariant"
-            android:textSize="25dp"
+            android:textSize="20dp"
+            app:layout_constraintEnd_toStartOf="@+id/substractBtn"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -31,24 +33,28 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="30dp"
+            android:layout_marginTop="5dp"
             android:layout_marginBottom="15dp"
             android:text="41Cal"
             android:textColor="?colorPrimary"
             android:textSize="15dp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/main_ingredients_name" />
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/main_ingredients_weight"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="75dp"
+            android:layout_marginStart="4dp"
+            android:layout_marginTop="5dp"
             android:layout_marginBottom="15dp"
             android:text="/100gr"
             android:textColor="?colorPrimary"
             android:textSize="15dp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintStart_toEndOf="@+id/main_ingredients_cal"
+            app:layout_constraintTop_toBottomOf="@+id/main_ingredients_name" />
 
         <Button
             android:id="@+id/substractBtn"

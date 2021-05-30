@@ -6,6 +6,7 @@
     <string name="second_fragment_label">Second Fragment</string>
     <string name="next">Next</string>
     <string name="previous">Previous</string>
+    <string name="logout">Log Out</string>
 
     <string name="hello_first_fragment">Hello first fragment</string>
     <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
@@ -14,8 +15,8 @@
     <string name="meal">Meal</string>
     <string name="friends">Friends</string>
     <string name="journey">Journey</string>
-    <string name="calories">%scal</string>
-    <string name="weight">/%sgr</string>
+    <string name="calories">%s cal</string>
+    <string name="weight">%s g</string>
     <string name="dark_mode_label">Dark Mode</string>
     <string name="setting_text">Settings</string>
     <string name="pick_time">Pick Time</string>
@@ -39,21 +40,12 @@
     <string name="age_empty_message">Age cannot be empty</string>
     <string name="gender_not_checked">Gender must be checked</string>
     <string name="active_not_checked">Activity level must be checked</string>
-    <string name="radio_male">Male</string>
-    <string name="radio_female">Female</string>
-    <string name="how_active">How Active Are You?</string>
-    <string name="radio_sedentary">Sedentary</string>
-    <string name="radio_light_active">Light Activity</string>
-    <string name="radio_moderate_active">Moderate Activity</string>
-    <string name="radio_very_active">Very Active</string>
-    <string name="default_notification_channel_id">Default</string>
-    <string name="question_edit_profile">What would you like to edit today, </string>
+    <string name="user_no_custommeal">This user has no custom meal!</string>
+    <string name="user_no_journey">This user has no journey history!</string>
+    <string name="cancel_text">Cancel</string>
+
 
     <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="title_activity_user_friend">UserFriend</string>
-    <string name="title_activity_meal_detail_page">MealDetailPage</string>
-    <string name="title_activity_friend_custom_meal_detail">FriendCustomMealDetail</string>
     <string name="username_null">Username must not be null!</string>
     <string name="password_null">Password must not be null!</string>
     <string name="password_alphanumeric">Password must be alphanumeric!</string>
@@ -64,6 +56,160 @@
     <string name="username_taken">This username is taken!</string>
     <string name="email_taken">This email is taken!</string>
     <string name="today_calories">Today Goals: %d kcal!</string>
+
+    <!-- activity_add_custom_meal -->
+    <string name="add_custom_meal">Add Custom Meal</string>
+    <string name="custom_meal_name">Custom Meal Name</string>
+    <string name="main_ingredients">Main Ingredients</string>
+
+    <!-- activity_add_friend -->
+    <string name="add_friend">Add Friend</string>
+    <string name="weight_in_kg">Weight (Kg)</string>
+    <string name="height_in_cm">Height (cm)</string>
+    <string name="age_in_years">Age (Years)</string>
+    <string name="radio_male">Male</string>
+    <string name="radio_female">Female</string>
+    <string name="how_active">How Active Are You?</string>
+    <string name="radio_sedentary">Sedentary</string>
+    <string name="radio_light_active">Light Activity</string>
+    <string name="radio_moderate_active">Moderate Activity</string>
+    <string name="radio_very_active">Very Active</string>
+    <string name="default_notification_channel_id">Default</string>
+    <string name="question_edit_profile">What would you like to edit today, </string>
+    <string name="calculate">Calculate</string>
+
+    <!-- activity_custom_meal_detail -->
+    <string name="custom_meal">Custom Meal</string>
+
+    <!-- activity_diet_plan -->
+    <string name="lose_weight">Lose Weight</string>
+    <string name="maintain_weight">Maintain Weight</string>
+    <string name="gain_weight">Gain Weight</string>
+
+    <!-- activity_friend_custom_meal_detail -->
+    <string name="add_meal">Add Meal</string>
+
+    <!-- activity_login -->
+    <string name="login">LOGIN</string>
+    <string name="password_hint">Password</string>
+    <string name="dont_have_account">Don\'t have an account?</string>
+    <string name="sign_up">Sign Up</string>
+    <string name="login_with_google">Log in with Google</string>
+
+    <!-- activity_main_ingredients_update.xml -->
+    <string name="update_custom_meal">Update Custom Meal</string>
+
+    <!-- activity_meal -->
+    <string name="change_meal">Change Meal</string>
+    <string name="recommended_meal">Recommended Meals</string>
+    <string name="your_custom_meals">Your Custom Meals</string>
+    <string name="no_custom_meal">You have no custom meal</string>
+
+    <!-- activity_meal_detail -->
+    <string name="save">Save</string>
+
+    <!-- activity_register -->
+    <string name="register">REGISTER</string>
+    <string name="name_hint">Name</string>
+    <string name="submit">Submit</string>
+
+    <!-- activity_user_detail -->
+    <string name="friend_count">%s\nFRIENDS</string>
+
+    <!-- custom_meal -->
+    <string name="delete_text">DELETE</string>
+
+    <!-- fragment_breakfast -->
+    <string name="change_text">Change</string>
+
+    <!-- fragment_home -->
+    <string name="salutation">Hello, %s!</string>
+    <string name="no_plan_message">You have no plans\nStart Now!</string>
+    <string name="way_to_go">Way to go..</string>
+    <string name="days_count">30 Days</string>
+    <string name="kkal_left">kcal left</string>
+    <string name="to_be_burned">cal to be burned</string>
+    <string name="heres_today_meal">Here\'s the meal for today!</string>
+
+    <!-- fragment_profile -->
+    <string name="welcome">Welcome, </string>
+    <string name="change_plan">Change Plan</string>
+
+    <!-- friend_additem -->
+    <string name="dayplan_count">Day\n%d</string>
+
+    <!-- friend_item -->
+    <string name="unfriend">UNFRIEND</string>
+
+    <!-- friend_journey_item -->
+    <string name="breakfast_detail">\tBreakfast Detail</string>
+    <string name="lunch_detail">\tLunch Detail</string>
+    <string name="dinner_detail">\tDinner Detail</string>
+    <string name="snack_detail">\tSnack Detail</string>
+
+    <!-- ingredients_item -->
+    <string name="in_G">(in g)</string>
+
+    <!-- journey -->
+    <string name="journey_date">Journey Date</string>
+    <string name="breakfast_meal">Breakfast Meal</string>
+    <string name="lunch_meal">Lunch Meal</string>
+    <string name="dinner_meal">Dinner Meal</string>
+    <string name="snack_meal">Snack</string>
+
+    <!-- meal_item -->
+    <string name="choose_Text">choose</string>
+    <string name="details">Details</string>
+
+    <!-- BMIActivity -->
+    <string name="success_add_plan">Success Add Plan!</string>
+
+    <!-- CustomMealAdapter -->
+    <string name="custom_meal_deleted">Custom Meal Deleted!</string>
+    <string name="custom_meal_not_empty">Custom meal name can\'t be empty!</string>
+
+    <!-- EditProfile -->
+    <string name="success_update_pp">Success update profile picture!</string>
+    <string name="old_pass_not_match">Old Password doesn\'t match!</string>
+    <string name="update_sucess">Update Success!</string>
+
+    <!-- FriendAdapter -->
+    <string name="are_you_sure">Are you sure?</string>
+    <string name="yes">YES</string>
+    <string name="no">NO</string>
+
+    <!-- MainIngredients -->
+    <string name="ingredients_not_found">Ingredients Not Found!</string>
+    <string name="success_add_custom_meal">Success Add Custom Meal!</string>
+    <string name="success_update_custom_meal">Success Update Custom Meal!</string>
+
+    <!-- MealDetail -->
+    <string name="meal_update_success">Success Update Meal!</string>
+
+    <!-- AddFriend -->
+    <string name="user_not_found">User Not Found!</string>
+
+    <!-- ChooseCustomMealAdapter -->
+    <string name="change_type_meal">Change %s meal?</string>
+    <string name="success_update_meal_type">Success update %s meal!</string>
+
+    <!-- LoginActivity -->
+    <string name="wrong_credentials">Wrong credentials!</string>
+    <string name="success_login">Success Login!</string>
+    <string name="failed_to_login">Failed to Login!</string>
+
+    <!-- RegisterActivity -->
+    <string name="permission_denied">Permission Denied!</string>
+
+    <!-- HomeFragment -->
+    <string name="breakfast_text">Breakfast</string>
+    <string name="lunch_text">Lunch</string>
+    <string name="dinner_text">Dinner</string>
+    <string name="snack_text">Snack</string>
+
+    <!-- Notification Service -->
+    <string name="time_to_log_meal">Hi, Time to Log Your Meal! :D</string>
+
     <!--
     This string is used for square devices and overridden by hello_world in
     values-round/strings.xml for round devices.

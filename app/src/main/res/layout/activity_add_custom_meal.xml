@@ -13,7 +13,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="30dp"
         android:layout_marginTop="70dp"
-        android:text="Add Custom Meal"
+        android:text="@string/add_custom_meal"
         android:textSize="35dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -25,7 +25,7 @@
         android:layout_marginStart="30dp"
         android:layout_marginTop="80dp"
         android:backgroundTint="#FFFFFF"
-        android:hint="Custom Meal Name"
+        android:hint="@string/custom_meal_name"
         app:boxStrokeColor="@color/basilgreen"
         app:hintTextColor="@color/basilgreen"
         app:layout_constraintStart_toStartOf="parent"
@@ -47,7 +47,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="30dp"
-        android:text="Main Ingredients"
+        android:text="@string/main_ingredients"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/custom_meal_name_input" />

@@ -21,6 +21,8 @@ import edu.bluejack20_2.dietary.IngredientItem
 import edu.bluejack20_2.dietary.MealItem
 import edu.bluejack20_2.dietary.NonEditableIngredientAdapter
 import edu.bluejack20_2.dietary.R
+import java.util.*
+import kotlin.collections.ArrayList
 import kotlin.math.roundToInt
 
 
@@ -30,7 +32,7 @@ class ChooseCustomMealAdapter(parentActivity: AppCompatActivity, private val mea
     var db = FirebaseFirestore.getInstance()
     var user = FirebaseAuth.getInstance().currentUser
     var parentActivity = parentActivity
-//    var expandState = SparseBooleanArray()
+    var language = Locale.getDefault().language
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
@@ -85,7 +87,11 @@ class ChooseCustomMealAdapter(parentActivity: AppCompatActivity, private val mea
                             calCount /= it.data?.get("IngredientsWeight")!!.toString().toFloat()
                             calCount *= it.data?.get("IngredientsCalories")!!.toString().toFloat()
                             calCount = calCount.roundToInt().toFloat()
-                            name = it.data?.get("IngredientsName")!!.toString()
+                            if(language.equals("in")){
+                                name = it.data?.get("IngredientsName_in")!!.toString()
+                            }else{
+                                name = it.data?.get("IngredientsName_en")!!.toString()
+                            }
                             list.add(
                                 IngredientItem(
                                     ingredientId,
@@ -106,38 +112,38 @@ class ChooseCustomMealAdapter(parentActivity: AppCompatActivity, private val mea
 
     fun changeMeal(view: View, mealItem: MealItem){
         MaterialAlertDialogBuilder(view.context)
-            .setTitle("Change "+ mealType +" meal?")
-            .setPositiveButton("NO") { dialog, which ->
+            .setTitle(view.context.getString(R.string.change_type_meal, mealType))
+            .setPositiveButton(view.context.getString(R.string.no)) { dialog, which ->
                 // Respond to negative button press
             }
-            .setNegativeButton("YES") { dialog, which ->
+            .setNegativeButton(view.context.getString(R.string.yes)) { dialog, which ->
                 // Respond to positive button press
                 db.collection("users").whereEqualTo("username", user.displayName).get()
                     .addOnSuccessListener {
                         if(!it?.isEmpty!!){
                             val userid = it.documents.first().id.toString()
                             when(mealType){
-                                "Breakfast" -> {
+                                view.context.getString(R.string.breakfast_text) -> {
                                     db.collection("users").document(userid).update("plan.breakfastMenu", mealItem.mealId).addOnSuccessListener {
-                                        Toast.makeText(view.context, "Update " + mealType + " meal success!", Toast.LENGTH_LONG)
+                                        Toast.makeText(view.context, view.context.getString(R.string.success_update_meal_type, mealType), Toast.LENGTH_LONG)
                                         parentActivity.finish()
                                     }
                                 }
-                                "Lunch" -> {
+                                view.context.getString(R.string.lunch_text) -> {
                                     db.collection("users").document(userid).update("plan.lunchMenu", mealItem.mealId).addOnSuccessListener {
-                                        Toast.makeText(view.context, "Update " + mealType + " meal success!", Toast.LENGTH_LONG)
+                                        Toast.makeText(view.context, view.context.getString(R.string.success_update_meal_type, mealType), Toast.LENGTH_LONG)
                                         parentActivity.finish()
                                     }
                                 }
-                                "Dinner" -> {
+                                view.context.getString(R.string.dinner_text) -> {
                                     db.collection("users").document(userid).update("plan.dinnerMenu", mealItem.mealId).addOnSuccessListener {
-                                        Toast.makeText(view.context, "Update " + mealType + " meal success!", Toast.LENGTH_LONG)
+                                        Toast.makeText(view.context, view.context.getString(R.string.success_update_meal_type, mealType), Toast.LENGTH_LONG)
                                         parentActivity.finish()
                                     }
                                 }
-                                "Snack" -> {
+                                view.context.getString(R.string.snack_text) -> {
                                     db.collection("users").document(userid).update("plan.snackMenu", mealItem.mealId).addOnSuccessListener {
-                                        Toast.makeText(view.context, "Update " + mealType + " meal success!", Toast.LENGTH_LONG)
+                                        Toast.makeText(view.context, view.context.getString(R.string.success_update_meal_type, mealType), Toast.LENGTH_LONG)
                                         parentActivity.finish()
                                     }
                                 }

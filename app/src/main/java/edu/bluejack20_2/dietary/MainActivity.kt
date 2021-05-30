@@ -209,20 +209,24 @@ class MainActivity : AppCompatActivity() {
 
         Log.i("MainActivity", "Notification Set!")
 
-// Set the alarm to start at 8:30 a.m.
-//        val call: Calendar = Calendar.getInstance().apply {
-//            timeInMillis = System.currentTimeMillis()
-//            set(Calendar.HOUR_OF_DAY, 23)
-//            set(Calendar.MINUTE, 58)
-//        }
-//
-//        alarmMgr?.setInexactRepeating(
-//            AlarmManager.RTC_WAKEUP,
-//            call.timeInMillis,
-//            AlarmManager.INTERVAL_DAY,
-//            alarmIntent
-//        )
+        val alarmMgr = getSystemService(Context.ALARM_SERVICE) as AlarmManager
+        val alarmIntent = Intent(this, AlarmReceiver::class.java).let { intent ->
+            PendingIntent.getBroadcast(this, abs(Random().nextInt()), intent, 0)
+        }
 
+// Set the alarm to start at 8:30 a.m.
+        val call: Calendar = Calendar.getInstance().apply {
+            timeInMillis = System.currentTimeMillis()
+            set(Calendar.HOUR_OF_DAY, 23)
+            set(Calendar.MINUTE, 58 )
+        }
+
+        alarmMgr?.setRepeating(
+            AlarmManager.RTC_WAKEUP,
+            call.timeInMillis,
+            AlarmManager.INTERVAL_DAY,
+            alarmIntent
+        )
     }
 
 

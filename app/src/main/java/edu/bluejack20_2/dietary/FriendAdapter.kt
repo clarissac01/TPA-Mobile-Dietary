@@ -72,7 +72,7 @@ class FriendAdapter(private val friendList: List<FriendItem>?, private val conte
             holder.friendname.text = currentFriend.username
         }
         if (currentFriend?.daycount!! > 0) {
-            holder.daycount.text = "Day\n" + currentFriend.daycount
+            holder.daycount.text = holder.itemView.context.getString(R.string.dayplan_count, currentFriend.daycount.toInt())
         }else{
             holder.daycount.visibility = View.INVISIBLE
         }
@@ -115,11 +115,11 @@ class FriendAdapter(private val friendList: List<FriendItem>?, private val conte
 
     fun unfriend(view: View, holder: FriendHolder, friendID: String) {
         MaterialAlertDialogBuilder(view.context)
-            .setTitle("Are you sure?")
-            .setPositiveButton("NO") { dialog, which ->
+            .setTitle(view.context.getString(R.string.are_you_sure))
+            .setPositiveButton(view.context.getString(R.string.no)) { dialog, which ->
                 // Respond to negative button press
             }
-            .setNegativeButton("YES") { dialog, which ->
+            .setNegativeButton(view.context.getString(R.string.yes)) { dialog, which ->
                 // Respond to positive button press
                 db.collection("users").whereEqualTo("username", user.displayName).get()
                     .addOnSuccessListener {

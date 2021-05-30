@@ -23,6 +23,8 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import java.text.SimpleDateFormat
+import java.util.*
+import kotlin.collections.ArrayList
 import kotlin.math.roundToInt
 
 
@@ -31,6 +33,7 @@ class FriendJourneyAdapter(private val journeyList: MutableList<JourneyItem>?, p
 
     var db = FirebaseFirestore.getInstance()
     var user = FirebaseAuth.getInstance().currentUser
+    var language = Locale.getDefault().language
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
@@ -72,92 +75,92 @@ class FriendJourneyAdapter(private val journeyList: MutableList<JourneyItem>?, p
         val pattern = "yyyy-MM-dd"
         val simpleDateFormat = SimpleDateFormat(pattern)
         val date = simpleDateFormat.format(journeyItem?.date?.toDate())
-        holder.journeyCalories.text = journeyItem?.calories.toString() + " kcal"
+        holder.journeyCalories.text = holder.itemView.context.getString(R.string.calories, journeyItem?.calories.toString())
         holder.journeyDate.text = date
 
 
         holder.breakfast.setOnClickListener{
             var journeyId = journeyList?.get(position)!!.journeyId
             val ingredientsList = getIngredients(journeyId, "breakfastMenu", holder.expandableViewBreakfast)
-                    if(!journeyList.get(position).isBreakfastExpand){
-                        holder.expandableViewBreakfast.adapter =
-                            NonEditableIngredientAdapter(ingredientsList, context)
-                        holder.expandableViewBreakfast.layoutManager =
-                            LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+            if(!journeyList.get(position).isBreakfastExpand){
+                holder.expandableViewBreakfast.adapter =
+                    NonEditableIngredientAdapter(ingredientsList, context)
+                holder.expandableViewBreakfast.layoutManager =
+                    LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
 
-                        holder.expandableLayoutBreakfast.initLayout()
-                        journeyList.get(position).isBreakfastExpand = true
-                        holder.expandableLayoutBreakfast.expand()
-                    }else{
-                        journeyList.get(position).isBreakfastExpand = false
-                        holder.expandableLayoutBreakfast.collapse()
-                        holder.expandableLayoutBreakfast.setInRecyclerView(false)
-                        holder.expandableViewBreakfast.adapter = null
-                        holder.expandableLayoutBreakfast.initLayout()
-                    }
+                holder.expandableLayoutBreakfast.initLayout()
+                journeyList.get(position).isBreakfastExpand = true
+                holder.expandableLayoutBreakfast.expand()
+            }else{
+                journeyList.get(position).isBreakfastExpand = false
+                holder.expandableLayoutBreakfast.collapse()
+                holder.expandableLayoutBreakfast.setInRecyclerView(false)
+                holder.expandableViewBreakfast.adapter = null
+                holder.expandableLayoutBreakfast.initLayout()
+            }
         }
 
         holder.lunch.setOnClickListener{
             var journeyId = journeyList?.get(position)!!.journeyId
             val ingredientsList = getIngredients(journeyId, "lunchMenu", holder.expandableViewLunch)
-                    if(!journeyList.get(position).isLunchExpand){
-                        holder.expandableViewLunch.adapter =
-                            NonEditableIngredientAdapter(ingredientsList, context)
-                        holder.expandableViewLunch.layoutManager =
-                            LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+            if(!journeyList.get(position).isLunchExpand){
+                holder.expandableViewLunch.adapter =
+                    NonEditableIngredientAdapter(ingredientsList, context)
+                holder.expandableViewLunch.layoutManager =
+                    LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
 
-                        holder.expandableLayoutLunch.initLayout()
-                        journeyList.get(position).isLunchExpand = true
-                        holder.expandableLayoutLunch.expand()
-                    }else{
-                        journeyList.get(position).isLunchExpand = false
-                        holder.expandableLayoutLunch.collapse()
-                        holder.expandableLayoutLunch.setInRecyclerView(false)
-                        holder.expandableViewLunch.adapter = null
-                        holder.expandableLayoutLunch.initLayout()
-                    }
+                holder.expandableLayoutLunch.initLayout()
+                journeyList.get(position).isLunchExpand = true
+                holder.expandableLayoutLunch.expand()
+            }else{
+                journeyList.get(position).isLunchExpand = false
+                holder.expandableLayoutLunch.collapse()
+                holder.expandableLayoutLunch.setInRecyclerView(false)
+                holder.expandableViewLunch.adapter = null
+                holder.expandableLayoutLunch.initLayout()
+            }
         }
 
         holder.dinner.setOnClickListener{
             var journeyId = journeyList?.get(position)!!.journeyId
             val ingredientsList = getIngredients(journeyId, "dinnerMenu", holder.expandableViewDinner)
-                    if(!journeyList.get(position).isDinnerExpand){
-                        holder.expandableViewDinner.adapter =
-                            NonEditableIngredientAdapter(ingredientsList, context)
-                        holder.expandableViewDinner.layoutManager =
-                            LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+            if(!journeyList.get(position).isDinnerExpand){
+                holder.expandableViewDinner.adapter =
+                    NonEditableIngredientAdapter(ingredientsList, context)
+                holder.expandableViewDinner.layoutManager =
+                    LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
 
-                        holder.expandableLayoutDinner.initLayout()
-                        journeyList.get(position).isDinnerExpand = true
-                        holder.expandableLayoutDinner.expand()
-                    }else{
-                        journeyList.get(position).isDinnerExpand = false
-                        holder.expandableLayoutDinner.collapse()
-                        holder.expandableLayoutDinner.setInRecyclerView(false)
-                        holder.expandableViewDinner.adapter = null
-                        holder.expandableLayoutDinner.initLayout()
-                    }
+                holder.expandableLayoutDinner.initLayout()
+                journeyList.get(position).isDinnerExpand = true
+                holder.expandableLayoutDinner.expand()
+            }else{
+                journeyList.get(position).isDinnerExpand = false
+                holder.expandableLayoutDinner.collapse()
+                holder.expandableLayoutDinner.setInRecyclerView(false)
+                holder.expandableViewDinner.adapter = null
+                holder.expandableLayoutDinner.initLayout()
+            }
         }
 
         holder.snack.setOnClickListener{
             var journeyId = journeyList?.get(position)!!.journeyId
             val ingredientsList = getIngredients(journeyId, "snackMenu", holder.expandableViewSnack)
-                    if(!journeyList.get(position).isSnackExpand){
-                        holder.expandableViewSnack.adapter =
-                            NonEditableIngredientAdapter(ingredientsList, context)
-                        holder.expandableViewSnack.layoutManager =
-                            LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+            if(!journeyList.get(position).isSnackExpand){
+                holder.expandableViewSnack.adapter =
+                    NonEditableIngredientAdapter(ingredientsList, context)
+                holder.expandableViewSnack.layoutManager =
+                    LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
 
-                        holder.expandableLayoutSnack.initLayout()
-                        journeyList.get(position).isSnackExpand = true
-                        holder.expandableLayoutSnack.expand()
-                    }else{
-                        journeyList.get(position).isSnackExpand = false
-                        holder.expandableLayoutSnack.collapse()
-                        holder.expandableLayoutSnack.setInRecyclerView(false)
-                        holder.expandableViewSnack.adapter = null
-                        holder.expandableLayoutSnack.initLayout()
-                    }
+                holder.expandableLayoutSnack.initLayout()
+                journeyList.get(position).isSnackExpand = true
+                holder.expandableLayoutSnack.expand()
+            }else{
+                journeyList.get(position).isSnackExpand = false
+                holder.expandableLayoutSnack.collapse()
+                holder.expandableLayoutSnack.setInRecyclerView(false)
+                holder.expandableViewSnack.adapter = null
+                holder.expandableLayoutSnack.initLayout()
+            }
         }
 
     }
@@ -177,7 +180,11 @@ class FriendJourneyAdapter(private val journeyList: MutableList<JourneyItem>?, p
                     val ingredientId = it["ingredientID"].toString()
                     db.collection("MainIngredients").document(it["ingredientID"].toString()).get().addOnSuccessListener {
                         if(it.exists()){
-                            name = it.data?.get("IngredientsName")!!.toString()
+                            if(language.equals("in")){
+                                name = it.data?.get("IngredientsName_in")!!.toString()
+                            }else{
+                                name = it.data?.get("IngredientsName_en")!!.toString()
+                            }
                             list.add(IngredientItem(ingredientId, name, 0F, weight))
                             rv.adapter?.notifyDataSetChanged()
                         }

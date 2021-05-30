@@ -13,7 +13,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="100dp"
         android:backgroundTint="#FFFFFF"
-        android:hint="Weight in Kg"
+        android:hint="@string/weight_in_kg"
         app:boxStrokeColor="@color/basilgreen"
         app:hintTextColor="@color/basilgreen"
         app:layout_constraintEnd_toEndOf="parent"
@@ -38,7 +38,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         android:backgroundTint="#FFFFFF"
-        android:hint="Height in CM"
+        android:hint="@string/height_in_cm"
         app:boxStrokeColor="@color/basilgreen"
         app:hintTextColor="@color/basilgreen"
         app:layout_constraintEnd_toEndOf="parent"
@@ -50,8 +50,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:backgroundTint="@color/beige"
-            android:inputType="number"
             android:fontFamily="@font/rubik"
+            android:inputType="number"
             android:textColor="@color/black"
             android:textColorHint="@color/basilgreen" />
 
@@ -63,7 +63,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         android:backgroundTint="#FFFFFF"
-        android:hint="Age in Years"
+        android:hint="@string/age_in_years"
         app:boxStrokeColor="@color/basilgreen"
         app:hintTextColor="@color/basilgreen"
         app:layout_constraintEnd_toEndOf="parent"
@@ -126,83 +126,73 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/radioGroup" />
 
-    <RadioGroup
-        android:id="@+id/radioGroupActivity"
-        android:layout_width="match_parent"
-        android:layout_height="100dp"
-        android:layout_marginTop="20dp"
-        android:orientation="horizontal"
-        app:layout_constraintEnd_toEndOf="parent"
+
+    <com.google.android.material.radiobutton.MaterialRadioButton
+        android:id="@+id/radio_sedentary"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="80dp"
+        android:layout_marginTop="30dp"
+        android:buttonTint="?colorPrimaryVariant"
+        android:text="@string/radio_sedentary"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/edit_profile_text">
+        app:layout_constraintTop_toBottomOf="@+id/edit_profile_text" />
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
+    <com.google.android.material.radiobutton.MaterialRadioButton
+        android:id="@+id/radio_light_active"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="60dp"
+        android:layout_marginTop="30dp"
+        android:buttonTint="?colorPrimaryVariant"
+        android:text="@string/radio_light_active"
+        app:layout_constraintStart_toEndOf="@+id/radio_sedentary"
+        app:layout_constraintTop_toBottomOf="@+id/edit_profile_text" />
 
-            <com.google.android.material.radiobutton.MaterialRadioButton
-                android:id="@+id/radio_sedentary"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="80dp"
-                android:buttonTint="?colorPrimaryVariant"
-                android:text="@string/radio_sedentary"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+    <com.google.android.material.radiobutton.MaterialRadioButton
+        android:id="@+id/radio_moderate_active"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="80dp"
+        android:buttonTint="?colorPrimaryVariant"
+        android:text="@string/radio_moderate_active"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/radio_sedentary" />
 
-            <com.google.android.material.radiobutton.MaterialRadioButton
-                android:id="@+id/radio_light_active"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="20dp"
-                android:buttonTint="?colorPrimaryVariant"
-                android:text="@string/radio_light_active"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/radio_sedentary"
-                app:layout_constraintTop_toTopOf="parent" />
+    <com.google.android.material.radiobutton.MaterialRadioButton
+        android:id="@+id/radio_very_active"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="13dp"
+        android:buttonTint="?colorPrimaryVariant"
+        android:text="@string/radio_very_active"
+        app:layout_constraintStart_toEndOf="@+id/radio_moderate_active"
+        app:layout_constraintTop_toBottomOf="@+id/radio_light_active" />
 
-            <com.google.android.material.radiobutton.MaterialRadioButton
-                android:id="@+id/radio_moderate_active"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="40dp"
-                android:buttonTint="?colorPrimaryVariant"
-                android:text="@string/radio_moderate_active"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/radio_sedentary" />
-
-            <com.google.android.material.radiobutton.MaterialRadioButton
-                android:id="@+id/radio_very_active"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="35dp"
-                android:buttonTint="?colorPrimaryVariant"
-                android:text="@string/radio_very_active"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/radio_moderate_active"
-                app:layout_constraintTop_toBottomOf="@+id/radio_light_active" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
-    </RadioGroup>
+    <com.udit.android.flatradiogroup.FlatRadioGroup
+        android:id="@+id/activityRadioGroup"
+        android:layout_height="match_parent"
+        android:layout_width="match_parent"
+        app:constraint_referenced_ids="radio_sedentary, radio_light_active, radio_moderate_active, radio_very_active"
+      />
 
     <Button
         android:id="@+id/calculate_btn"
         style="?attr/materialButtonOutlinedStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
+        android:layout_marginBottom="60dp"
         android:width="300dp"
         android:height="50dp"
         android:backgroundTint="?colorPrimaryVariant"
         android:fontFamily="@font/rubik"
-        android:text="Calculate"
+        android:text="@string/calculate"
         android:textColor="@color/beige"
         android:textSize="18sp"
         android:textStyle="bold"
         app:iconPadding="20dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/radioGroupActivity" />
+        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

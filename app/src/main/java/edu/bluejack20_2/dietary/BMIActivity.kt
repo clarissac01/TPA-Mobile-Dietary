@@ -116,7 +116,7 @@ class BMIActivity : AppCompatActivity() {
                                     }
                                 }
                             }
-                            Toast.makeText(this, "Success Add Plan", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(this, getText(R.string.success_add_plan), Toast.LENGTH_SHORT).show()
                             finish()
                         }
                     }
@@ -146,7 +146,7 @@ class BMIActivity : AppCompatActivity() {
                                     }
                                 }
                             }
-                            Toast.makeText(this, "Success Add Plan", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(this, getText(R.string.success_add_plan), Toast.LENGTH_SHORT).show()
                             finish()
                         }
                     }
@@ -175,7 +175,7 @@ class BMIActivity : AppCompatActivity() {
                                     }
                                 }
                             }
-                            Toast.makeText(this, "Success Add Plan", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(this, getText(R.string.success_add_plan), Toast.LENGTH_SHORT).show()
                             finish()
                         }
                     }
@@ -204,7 +204,7 @@ class BMIActivity : AppCompatActivity() {
                                     }
                                 }
                             }
-                            Toast.makeText(this, "Success Add Plan", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(this, getText(R.string.success_add_plan), Toast.LENGTH_SHORT).show()
                             finish()
                         }
                     }
@@ -288,7 +288,7 @@ class BMIActivity : AppCompatActivity() {
                                     }
                                 }
                             }
-                            Toast.makeText(this, "Success Add Plan", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(this, getText(R.string.success_add_plan), Toast.LENGTH_SHORT).show()
                             finish()
                         }
                     }
@@ -318,7 +318,7 @@ class BMIActivity : AppCompatActivity() {
                                     }
                                 }
                             }
-                            Toast.makeText(this, "Success Add Plan", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(this, getText(R.string.success_add_plan), Toast.LENGTH_SHORT).show()
                             finish()
                         }
                     }
@@ -347,7 +347,7 @@ class BMIActivity : AppCompatActivity() {
                                     }
                                 }
                             }
-                            Toast.makeText(this, "Success Add Plan", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(this, getText(R.string.success_add_plan), Toast.LENGTH_SHORT).show()
                             finish()
                         }
                     }
@@ -377,7 +377,7 @@ class BMIActivity : AppCompatActivity() {
                                     }
                                 }
                             }
-                            Toast.makeText(this, "Success Add Plan", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(this, getText(R.string.success_add_plan), Toast.LENGTH_SHORT).show()
                             finish()
                         }
                     }
@@ -461,7 +461,7 @@ class BMIActivity : AppCompatActivity() {
                                     }
                                 }
                             }
-                            Toast.makeText(this, "Success Add Plan", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(this, getText(R.string.success_add_plan), Toast.LENGTH_SHORT).show()
                             finish()
                         }
                     }
@@ -491,7 +491,7 @@ class BMIActivity : AppCompatActivity() {
                                     }
                                 }
                             }
-                            Toast.makeText(this, "Success Add Plan", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(this, getText(R.string.success_add_plan), Toast.LENGTH_SHORT).show()
                             finish()
                         }
                     }
@@ -520,7 +520,7 @@ class BMIActivity : AppCompatActivity() {
                                     }
                                 }
                             }
-                            Toast.makeText(this, "Success Add Plan", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(this, getText(R.string.success_add_plan), Toast.LENGTH_SHORT).show()
                             finish()
                         }
                     }
@@ -550,7 +550,7 @@ class BMIActivity : AppCompatActivity() {
                                     }
                                 }
                             }
-                            Toast.makeText(this, "Success Add Plan", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(this, getText(R.string.success_add_plan), Toast.LENGTH_SHORT).show()
                             finish()
                         }
                     }

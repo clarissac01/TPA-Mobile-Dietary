@@ -79,6 +79,8 @@ dependencies {
     implementation 'com.google.firebase:firebase-iid:21.1.0'
     implementation 'com.google.firebase:firebase-messaging:22.0.0'
     implementation 'android.arch.work:work-runtime:1.0.1'
+//    implementation 'com.udit.android:flatradiogroup:0.0.1'
+    implementation 'com.github.droid-it:Flat-Radio-Group:master'
 
     testImplementation 'junit:junit:4.+'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'

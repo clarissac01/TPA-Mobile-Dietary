@@ -13,7 +13,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         android:fontFamily="@font/rubik"
-        android:text="Add Friend"
+        android:text="@string/add_friend"
         android:textColor="@color/basilorange"
         android:textSize="30sp"
         app:layout_constraintEnd_toEndOf="parent"

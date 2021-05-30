@@ -8,11 +8,13 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.textview.MaterialTextView
 import com.google.firebase.firestore.FirebaseFirestore
+import java.util.*
 
 class CustomMealDetail : AppCompatActivity() {
     val db = FirebaseFirestore.getInstance()
     val ingredient = mutableMapOf<String, Int>()
     val customMealIngredientList = mutableListOf<CustomMealIngredientData>()
+    var language = Locale.getDefault().language
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,12 +36,23 @@ class CustomMealDetail : AppCompatActivity() {
                 var ingredientID = ingredient["IngredientID"]
                 db.collection("MainIngredients").document(ingredientID.toString()).get()
                     .addOnSuccessListener {
-                        val data = CustomMealIngredientData(
-                            it.get("IngredientsName").toString(),
-                            it.get("IngredientsCalories").toString().toInt()
-                        )
-                        customMealIngredientList.add(data)
-                        adapter.notifyDataSetChanged()
+                        if(language.equals("in")){
+                            val data = CustomMealIngredientData(
+
+                                it.get("IngredientsName_in").toString(),
+                                it.get("IngredientsCalories").toString().toInt()
+                            )
+                            customMealIngredientList.add(data)
+                            adapter.notifyDataSetChanged()
+                        }else{
+                            val data = CustomMealIngredientData(
+
+                                it.get("IngredientsName_en").toString(),
+                                it.get("IngredientsCalories").toString().toInt()
+                            )
+                            customMealIngredientList.add(data)
+                            adapter.notifyDataSetChanged()
+                        }
                     }
             }
             findViewById<RecyclerView>(R.id.rvCustomMealIngredients).adapter = adapter

@@ -64,26 +64,29 @@ class EditProfile : AppCompatActivity() {
 
         val userFire = FirebaseFirestore.getInstance().collection("users")
             .whereEqualTo("username", user.displayName).get().addOnSuccessListener {
-            if (it.documents.first().getString("password") == null) {
+                if (it.documents.first().getString("password") == null) {
 //                Log.wtf("uid", user.uid)
-                Log.wtf("heh", it.documents.first().getString("password"))
-                findViewById<TextInputLayout>(R.id.user_email_field).isEnabled = false
-                findViewById<TextInputLayout>(R.id.user_password_field).isEnabled = false
-                findViewById<TextInputLayout>(R.id.user_confirm_password_field).isEnabled = false
+                    Log.wtf("heh", it.documents.first().getString("password"))
+                    findViewById<TextInputLayout>(R.id.user_email_field).isEnabled = false
+                    findViewById<TextInputLayout>(R.id.user_password_field).isEnabled = false
+                    findViewById<TextInputLayout>(R.id.user_confirm_password_field).isEnabled =
+                        false
+                }
             }
-        }
 
 
         if (user != null) {
             findViewById<TextInputLayout>(R.id.user_username_field).hint = user.displayName
             findViewById<TextInputLayout>(R.id.user_email_field).hint = user.email
 
-            if (user.photoUrl != null) {
-                Picasso.get().load(user.photoUrl).memoryPolicy(MemoryPolicy.NO_CACHE).into(findViewById<ImageView>(R.id.profile_pic))
-            } else {
-                Picasso.get().load("@drawable/ic_photo")
-                    .into(findViewById<ImageView>(R.id.profile_pic))
-            }
+//            if (user.photoUrl != null) {
+//                Picasso.get().load(user.photoUrl).memoryPolicy(MemoryPolicy.NO_CACHE)
+//                    .into(findViewById<ImageView>(R.id.profile_pic))
+//            } else {
+//                Picasso.get().load("@drawable/ic_photo")
+//                    .into(findViewById<ImageView>(R.id.profile_pic))
+//            }
+            updateProfilePic()
 
             findViewById<TextInputEditText>(R.id.user_username_text).setOnFocusChangeListener { v, hasFocus ->
                 findViewById<TextInputLayout>(R.id.user_username_field).hint =
@@ -96,22 +99,32 @@ class EditProfile : AppCompatActivity() {
             }
 
             findViewById<Button>(R.id.save_profile_pic).setOnClickListener {
-                if(bitmap!=null){
+                if (bitmap != null) {
                     val stream = ByteArrayOutputStream()
                     bitmap!!.compress(Bitmap.CompressFormat.JPEG, 100, stream)
                     val imageRef = stream.toByteArray()
-                    storageRef.child("user/${user.displayName}").putBytes(imageRef).addOnSuccessListener{
-                        storageRef.child("user/${user.displayName}").downloadUrl.addOnSuccessListener { uri ->
-                            FirebaseFirestore.getInstance().collection("users").whereEqualTo("username", user.displayName).get().addOnSuccessListener {
-                                it.documents.first().reference.update("photoURL", uri.toString())
-                                Log.wtf("uri", uri.toString())
-                                Picasso.get().load(uri.toString()).memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE).networkPolicy(NetworkPolicy.NO_CACHE, NetworkPolicy.NO_STORE).into(findViewById<ImageView>(R.id.profile_pic))
+                    storageRef.child("user/${user.displayName}").putBytes(imageRef)
+                        .addOnSuccessListener {
+                            storageRef.child("user/${user.displayName}").downloadUrl.addOnSuccessListener { uri ->
+                                FirebaseFirestore.getInstance().collection("users")
+                                    .whereEqualTo("username", user.displayName).get()
+                                    .addOnSuccessListener {
+                                        it.documents.first().reference.update(
+                                            "photoURL",
+                                            uri.toString()
+                                        ).addOnSuccessListener {
+                                            updateProfilePic()
+                                            Toast.makeText(
+                                                this,
+                                                getText(R.string.success_update_pp),
+                                                Toast.LENGTH_SHORT
+                                            ).show()
+                                            startActivity(Intent(this, MainActivity::class.java))
+                                        }
+                                    }
                             }
                         }
-                    }
                 }
-                Toast.makeText(this, "Success update profile picture!", Toast.LENGTH_SHORT).show()
-                startActivity(Intent(this, MainActivity::class.java))
             }
 
             currentUsername = user.displayName
@@ -185,6 +198,11 @@ class EditProfile : AppCompatActivity() {
         userUsername = username.text.toString()
         val emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+"
         val passPattern = "^(?=.*[0-9])(?=.*[a-zA-Z])([a-zA-Z0-9]+)$"
+
+        if (userEmail.isNullOrBlank() && userPassword.isNullOrBlank() && userConfirmPassword.isNullOrBlank() && userUsername.isNullOrBlank()) {
+            return
+        }
+
         if (userEmail == "") {
             userEmail = currentEmail
         }
@@ -199,7 +217,11 @@ class EditProfile : AppCompatActivity() {
         }
         if (userPassword != "" && userConfirmPassword != "") {
             if (!userConfirmPassword.matches(passPattern.toRegex())) {
-                return Toast.makeText(this, "Password must be alphanumeric!", Toast.LENGTH_SHORT)
+                return Toast.makeText(
+                    this,
+                    getText(R.string.password_alphanumeric),
+                    Toast.LENGTH_SHORT
+                )
                     .show()
             }
             if (isLettersOrDigits(userConfirmPassword) && userConfirmPassword.length >= 8) {
@@ -207,17 +229,18 @@ class EditProfile : AppCompatActivity() {
             } else {
                 return Toast.makeText(
                     this,
-                    "Password must be more than 7 characters!",
+                    getText(R.string.password_length),
                     Toast.LENGTH_SHORT
                 ).show()
             }
         }
         if (userEmail != "") {
             if (!userEmail.matches(emailPattern.toRegex())) {
-                return Toast.makeText(this, "Invalid Email Address!", Toast.LENGTH_SHORT).show()
+                return Toast.makeText(this, getText(R.string.email_invalid), Toast.LENGTH_SHORT)
+                    .show()
             }
         }
-        updateUser(userUsername, userEmail, userPassword, bitmap.toString())
+//        updateUser(userUsername, userEmail, userPassword, bitmap.toString())
     }
 
     fun isLettersOrDigits(chars: String): Boolean {
@@ -225,11 +248,11 @@ class EditProfile : AppCompatActivity() {
             .length == chars.length
     }
 
-                fun updateUser(name: String, email: String, password: String, image: String? = null) {
-                    SafetyNet.getClient(this).verifyWithRecaptcha("6LfJCNYaAAAAAF7Dte27iGN9jt0iOeTUo3BJrh8x")
-                        .addOnSuccessListener { response ->
-                            val userResponseToken = response.tokenResult
-                            val oldUname = user.displayName
+    fun updateUser(name: String, email: String, password: String, image: String? = null) {
+        SafetyNet.getClient(this).verifyWithRecaptcha("6LfJCNYaAAAAAF7Dte27iGN9jt0iOeTUo3BJrh8x")
+            .addOnSuccessListener { response ->
+                val userResponseToken = response.tokenResult
+                val oldUname = user.displayName
                 FirebaseFirestore.getInstance()
                     .collection("users")
                     .whereEqualTo("username", oldUname)
@@ -244,7 +267,11 @@ class EditProfile : AppCompatActivity() {
                         val oldPassword = doc.getString("password")
 
                         if (oldPassword != null && oldPassword != password) {
-                            Toast.makeText(this, "Old Password doesn't match!", Toast.LENGTH_SHORT)
+                            Toast.makeText(
+                                this,
+                                getText(R.string.old_pass_not_match),
+                                Toast.LENGTH_SHORT
+                            )
                                 .show()
                             return@addOnSuccessListener
                         }
@@ -274,7 +301,12 @@ class EditProfile : AppCompatActivity() {
                             Log.wtf("user confirm pass", userConfirmPassword)
                             Log.wtf("user password", userPassword)
                             Log.wtf("user email", user.email)
-                            user.reauthenticate(EmailAuthProvider.getCredential(user.email, userPassword))
+                            user.reauthenticate(
+                                EmailAuthProvider.getCredential(
+                                    user.email,
+                                    userPassword
+                                )
+                            )
 
                             data.add(
                                 FirebaseAuth.getInstance().currentUser.updatePassword(
@@ -289,9 +321,11 @@ class EditProfile : AppCompatActivity() {
                                 Log.wtf("hehe", it.toString())
                             }
                             .addOnSuccessListener {
+                                user.reload()
+
                                 Toast.makeText(
                                     EditProfile@ this,
-                                    "Update Success",
+                                    getText(R.string.update_sucess),
                                     Toast.LENGTH_SHORT
                                 )
                                     .show()
@@ -310,6 +344,19 @@ class EditProfile : AppCompatActivity() {
 
     fun onClick(view: View) {
 
+    }
+
+    fun updateProfilePic() {
+        db.collection("users").whereEqualTo("username", user.displayName).get()
+            .addOnSuccessListener {
+                if (it.documents.first().getString("photoURL") != null) {
+                    Picasso.get().load(it.documents.first().getString("photoURL"))
+                        .into(findViewById<ImageView>(R.id.profile_pic))
+                } else {
+                    Picasso.get().load("@drawa ble/ic_photo")
+                        .into(findViewById<ImageView>(R.id.profile_pic))
+                }
+            }
     }
 
 

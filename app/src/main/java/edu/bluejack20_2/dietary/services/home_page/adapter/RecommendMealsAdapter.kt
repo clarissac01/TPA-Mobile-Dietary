@@ -21,6 +21,8 @@ import edu.bluejack20_2.dietary.IngredientItem
 import edu.bluejack20_2.dietary.MealItem
 import edu.bluejack20_2.dietary.NonEditableIngredientAdapter
 import edu.bluejack20_2.dietary.R
+import java.util.*
+import kotlin.collections.ArrayList
 import kotlin.math.roundToInt
 
 
@@ -30,6 +32,7 @@ class RecommendMealsAdapter(val currday: Int, parentActivity: AppCompatActivity,
     var db = FirebaseFirestore.getInstance()
     var user = FirebaseAuth.getInstance().currentUser
     var parentActivity = parentActivity
+    var language = Locale.getDefault().language
 //    var expandState = SparseBooleanArray()
 
     override fun onCreateViewHolder(
@@ -66,7 +69,7 @@ class RecommendMealsAdapter(val currday: Int, parentActivity: AppCompatActivity,
         val mealItem = mealList?.get(position)
 
         holder.mealName.text = mealItem?.mealName!!
-        holder.mealCalories.text = mealItem.mealCalories.toString() + " kcal"
+        holder.mealCalories.text = context.getString(R.string.calories, mealItem.mealCalories.toString() )
 
         holder.chooseMealBtn.setOnClickListener {
             changeMeal(it, mealItem)
@@ -126,7 +129,11 @@ class RecommendMealsAdapter(val currday: Int, parentActivity: AppCompatActivity,
                             calCount /= it.data?.get("IngredientsWeight")!!.toString().toFloat()
                             calCount *= it.data?.get("IngredientsCalories")!!.toString().toFloat()
                             calCount = calCount.roundToInt().toFloat()
-                            name = it.data?.get("IngredientsName")!!.toString()
+                            if(language.equals("in")){
+                                name = it.data?.get("IngredientsName_in")!!.toString()
+                            }else{
+                                name = it.data?.get("IngredientsName_en")!!.toString()
+                            }
                             list.add(
                                 IngredientItem(
                                     ingredientId,
@@ -147,18 +154,18 @@ class RecommendMealsAdapter(val currday: Int, parentActivity: AppCompatActivity,
 
     fun changeMeal(view: View, mealItem: MealItem){
         MaterialAlertDialogBuilder(view.context)
-            .setTitle("Change "+ mealType +" meal?")
-            .setPositiveButton("NO") { dialog, which ->
+            .setTitle(view.context.getString(R.string.change_type_meal))
+            .setPositiveButton(view.context.getString(R.string.no)) { dialog, which ->
                 // Respond to negative button press
             }
-            .setNegativeButton("YES") { dialog, which ->
+            .setNegativeButton(view.context.getString(R.string.yes)) { dialog, which ->
                 // Respond to positive button press
                 db.collection("users").whereEqualTo("username", user.displayName).get()
                     .addOnSuccessListener {
                         if(!it?.isEmpty!!){
                             val userid = it.documents.first().id.toString()
                             when(mealType){
-                                "Breakfast" -> {
+                                view.context.getString(R.string.breakfast_text) -> {
                                     db.collection("CustomMeals").whereEqualTo("UserID", userid).whereEqualTo("type", "Breakfast").whereEqualTo("day", currday).get().addOnSuccessListener {
                                         if(!it.isEmpty){
                                             var changeid = it.documents.first().id
@@ -168,14 +175,14 @@ class RecommendMealsAdapter(val currday: Int, parentActivity: AppCompatActivity,
                                                     changeday = it.get("day").toString().toInt()
                                                     db.collection("CustomMeals").document(changeid).update("day", changeday)
                                                     db.collection("CustomMeals").document(mealItem.mealId).update("day", currday)
-                                                    Toast.makeText(view.context, "Update " + mealType + " meal success!", Toast.LENGTH_LONG)
+                                                    Toast.makeText(view.context, view.context.getString(R.string.success_update_meal_type), Toast.LENGTH_LONG)
                                                     parentActivity.finish()
                                                 }
                                             }
                                         }
                                     }
                                 }
-                                "Lunch" -> {
+                                view.context.getString(R.string.lunch_text) -> {
                                     db.collection("CustomMeals").whereEqualTo("UserID", userid).whereEqualTo("type", "Lunch").whereEqualTo("day", currday).get().addOnSuccessListener {
                                         if(!it.isEmpty){
                                             var changeid = it.documents.first().id
@@ -185,14 +192,14 @@ class RecommendMealsAdapter(val currday: Int, parentActivity: AppCompatActivity,
                                                     changeday = it.get("day").toString().toInt()
                                                     db.collection("CustomMeals").document(changeid).update("day", changeday)
                                                     db.collection("CustomMeals").document(mealItem.mealId).update("day", currday)
-                                                    Toast.makeText(view.context, "Update " + mealType + " meal success!", Toast.LENGTH_LONG)
+                                                    Toast.makeText(view.context, view.context.getString(R.string.success_update_meal_type), Toast.LENGTH_LONG)
                                                     parentActivity.finish()
                                                 }
                                             }
                                         }
                                     }
                                 }
-                                "Dinner" -> {
+                                view.context.getString(R.string.dinner_text) -> {
                                     db.collection("CustomMeals").whereEqualTo("UserID", userid).whereEqualTo("type", "Dinner").whereEqualTo("day", currday).get().addOnSuccessListener {
                                         if(!it.isEmpty){
                                             var changeid = it.documents.first().id
@@ -202,14 +209,14 @@ class RecommendMealsAdapter(val currday: Int, parentActivity: AppCompatActivity,
                                                     changeday = it.get("day").toString().toInt()
                                                     db.collection("CustomMeals").document(changeid).update("day", changeday)
                                                     db.collection("CustomMeals").document(mealItem.mealId).update("day", currday)
-                                                    Toast.makeText(view.context, "Update " + mealType + " meal success!", Toast.LENGTH_LONG)
+                                                    Toast.makeText(view.context, view.context.getString(R.string.success_update_meal_type), Toast.LENGTH_LONG)
                                                     parentActivity.finish()
                                                 }
                                             }
                                         }
                                     }
                                 }
-                                "Snack" -> {
+                                view.context.getString(R.string.snack_text) -> {
                                     db.collection("CustomMeals").whereEqualTo("UserID", userid).whereEqualTo("type", "Snack").whereEqualTo("day", currday).get().addOnSuccessListener {
                                         if(!it.isEmpty){
                                             var changeid = it.documents.first().id
@@ -219,7 +226,7 @@ class RecommendMealsAdapter(val currday: Int, parentActivity: AppCompatActivity,
                                                     changeday = it.get("day").toString().toInt()
                                                     db.collection("CustomMeals").document(changeid).update("day", changeday)
                                                     db.collection("CustomMeals").document(mealItem.mealId).update("day", currday)
-                                                    Toast.makeText(view.context, "Update " + mealType + " meal success!", Toast.LENGTH_LONG)
+                                                    Toast.makeText(view.context, view.context.getString(R.string.success_update_meal_type), Toast.LENGTH_LONG)
                                                     parentActivity.finish()
                                                 }
                                             }
