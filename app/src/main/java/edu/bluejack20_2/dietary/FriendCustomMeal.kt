@@ -52,16 +52,18 @@ class FriendCustomMeal(var FriendID: String = "") : Fragment() {
                         db.collection("CustomMeals").whereEqualTo("UserID", FriendID).get().addOnSuccessListener {
                             if(!it.isEmpty){
                                 it.documents.forEach{
-                                    var menuID = it.id
-                                    var mealname = it.getString("CustomMealName")
-                                    var calories = it.get("Calories").toString().toFloat()
-                                    if(currentuserlist.contains(menuID)) {
-                                        list.add(MealItem(menuID, mealname!!, calories, true, true))
-                                        view.findViewById<RecyclerView>(R.id.friendmealrecyclerview)?.adapter?.notifyDataSetChanged()
-                                    }
-                                    else{
-                                        list.add(MealItem(menuID, mealname!!, calories, true, false))
-                                        view.findViewById<RecyclerView>(R.id.friendmealrecyclerview)?.adapter?.notifyDataSetChanged()
+                                    if(it.get("isCustom") != null){
+                                        var menuID = it.id
+                                        var mealname = it.getString("CustomMealName")
+                                        var calories = it.get("Calories").toString().toFloat()
+                                        if(currentuserlist.contains(menuID)) {
+                                            list.add(MealItem(menuID, mealname!!, calories, true, true))
+                                            view.findViewById<RecyclerView>(R.id.friendmealrecyclerview)?.adapter?.notifyDataSetChanged()
+                                        }
+                                        else{
+                                            list.add(MealItem(menuID, mealname!!, calories, true, false))
+                                            view.findViewById<RecyclerView>(R.id.friendmealrecyclerview)?.adapter?.notifyDataSetChanged()
+                                        }
                                     }
                                 }
                                 if(list.size > 0){
@@ -83,12 +85,14 @@ class FriendCustomMeal(var FriendID: String = "") : Fragment() {
                         db.collection("CustomMeals").whereEqualTo("UserID", FriendID).get().addOnSuccessListener {
                             if(!it.isEmpty){
                                 it.documents.forEach{
-                                    var menuID = it.id
-                                    var mealname = it.getString("CustomMealName")
-                                    var calories = it.get("Calories").toString().toFloat()
+                                    if(it.get("isCustom")!=null){
+                                        var menuID = it.id
+                                        var mealname = it.getString("CustomMealName")
+                                        var calories = it.get("Calories").toString().toFloat()
 
-                                    list.add(MealItem(menuID, mealname!!, calories, true, false))
-                                    view.findViewById<RecyclerView>(R.id.friendmealrecyclerview)?.adapter?.notifyDataSetChanged()
+                                        list.add(MealItem(menuID, mealname!!, calories, true, false))
+                                        view.findViewById<RecyclerView>(R.id.friendmealrecyclerview)?.adapter?.notifyDataSetChanged()
+                                    }
 
                                 }
                                 if(list.size > 0){

@@ -191,15 +191,13 @@ class LunchFragment(var currDay: Int = 0) : Fragment() {
                         .whereEqualTo("type", "Lunch").whereEqualTo("day", currDay)
                         .addSnapshotListener() { it, _ ->
                             if (!it?.isEmpty!!) {
-                                if (it.documents.first().get("isCustom") == null) {
-                                    if (language.equals("in")) {
-                                        menuName.text =
-                                            it.documents.first().getString("CustomMealName_en")
-                                    } else {
-                                        menuName.text =
-                                            it.documents.first().getString("CustomMealName_in")
+                                if(it.documents.first().get("isCustom") == null){
+                                    if(language.equals("in")){
+                                        menuName.text = it.documents.first().getString("CustomMealName_in")
+                                    }else {
+                                        menuName.text = it.documents.first().getString("CustomMealName_en")
                                     }
-                                } else {
+                                }else{
                                     menuName.text = it.documents.first().getString("CustomMealName")
                                 }
                                 calCount.text = getString(
