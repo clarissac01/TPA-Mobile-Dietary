@@ -63,7 +63,7 @@ class UserDetail() : AppCompatActivity() {
             if(it?.exists()!!){
                 friends = it?.get("friends") as List<Any>?
                 var friendcount = findViewById<Button>(R.id.friend_count)
-                var countfriend = getString(R.string.friend_count, 0)
+                var countfriend = getString(R.string.friend_count, "0")
                 if(friends?.size != null){
                     countfriend = getString(R.string.friend_count, friends?.size.toString())
                 }

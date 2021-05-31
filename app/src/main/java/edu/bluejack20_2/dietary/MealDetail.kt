@@ -75,9 +75,9 @@ class MealDetail : AppCompatActivity() {
                 var mealname = ""
                 if(it.get("isCustom")==null){
                     if(language.equals("in")){
-                        mealname = it.data?.get("CustomMealName-in").toString()
+                        mealname = it.data?.get("CustomMealName_in").toString()
                     }else{
-                        mealname = it.data?.get("CustomMealName-en").toString()
+                        mealname = it.data?.get("CustomMealName_en").toString()
                     }
                 }else{
                     mealname = it.data?.get("CustomMealName").toString()

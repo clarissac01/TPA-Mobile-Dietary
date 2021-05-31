@@ -153,6 +153,7 @@ class RegisterActivity : AppCompatActivity() {
                 findViewById<TextView>(R.id.passwordNull).visibility = View.INVISIBLE
             }
         }
+        userUsername = userUsername.toLowerCase()
         if (userEmail.matches(emailPattern.toRegex())) {
             if (userPassword.matches(passPattern.toRegex()) && userPassword.length >= 8) {
                 writeNewUser(userName, userUsername, userEmail, userPassword, bitmap.toString())

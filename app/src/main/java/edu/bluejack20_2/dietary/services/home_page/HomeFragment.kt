@@ -56,7 +56,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
                         30
                     view.findViewById<CircularProgressIndicator>(R.id.planprogresscircle).progress =
                         res.toLong().toInt()
-                    if(res>0){
+                    if(res>=0){
                         activatePlan(view)
                     }
                     else{

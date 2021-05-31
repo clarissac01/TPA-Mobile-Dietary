@@ -87,14 +87,14 @@ class Meal : AppCompatActivity() {
                                     if(language.equals("in")){
                                         list.add(
                                             MealItem(
-                                                it.id.toString(), it.get("CustomMealName-in") as String,
+                                                it.id.toString(), it.get("CustomMealName_in") as String,
                                                 it.get("Calories").toString().toFloat(), FALSE
                                             )
                                         )
                                     }else{
                                         list.add(
                                             MealItem(
-                                                it.id.toString(), it.get("CustomMealName-en") as String,
+                                                it.id.toString(), it.get("CustomMealName_en") as String,
                                                 it.get("Calories").toString().toFloat(), FALSE
                                             )
                                         )

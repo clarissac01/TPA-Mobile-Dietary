@@ -18,6 +18,7 @@ class FriendCustomMeal(var FriendID: String = "") : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        Log.wtf("test", FriendID.toString())
 
     }
 
@@ -67,8 +68,37 @@ class FriendCustomMeal(var FriendID: String = "") : Fragment() {
                                     view.findViewById<RecyclerView>(R.id.friendmealrecyclerview).adapter = FriendCustomMealAdapter(FriendID, list, view.context)
                                     view.findViewById<RecyclerView>(R.id.friendmealrecyclerview).layoutManager =
                                         GridLayoutManager(view.context, 2)
+                                    Log.wtf("ada menu", "ada menu")
                                 }else{
                                     view.findViewById<TextView>(R.id.nofriendcustommealmessage).visibility = View.VISIBLE
+                                    Log.wtf("gak ada menu", "gak ada menu")
+                                }
+                            }else{
+                                view.findViewById<TextView>(R.id.nofriendcustommealmessage).visibility = View.VISIBLE
+                            }
+                        }.addOnFailureListener {
+                            view.findViewById<TextView>(R.id.nofriendcustommealmessage).visibility = View.VISIBLE
+                        }
+                    }else{
+                        db.collection("CustomMeals").whereEqualTo("UserID", FriendID).get().addOnSuccessListener {
+                            if(!it.isEmpty){
+                                it.documents.forEach{
+                                    var menuID = it.id
+                                    var mealname = it.getString("CustomMealName")
+                                    var calories = it.get("Calories").toString().toFloat()
+
+                                    list.add(MealItem(menuID, mealname!!, calories, true, false))
+                                    view.findViewById<RecyclerView>(R.id.friendmealrecyclerview)?.adapter?.notifyDataSetChanged()
+
+                                }
+                                if(list.size > 0){
+                                    view.findViewById<RecyclerView>(R.id.friendmealrecyclerview).adapter = FriendCustomMealAdapter(FriendID, list, view.context)
+                                    view.findViewById<RecyclerView>(R.id.friendmealrecyclerview).layoutManager =
+                                        GridLayoutManager(view.context, 2)
+                                    Log.wtf("ada menu", "ada menu")
+                                }else{
+                                    view.findViewById<TextView>(R.id.nofriendcustommealmessage).visibility = View.VISIBLE
+                                    Log.wtf("gak ada menu", "gak ada menu")
                                 }
                             }else{
                                 view.findViewById<TextView>(R.id.nofriendcustommealmessage).visibility = View.VISIBLE

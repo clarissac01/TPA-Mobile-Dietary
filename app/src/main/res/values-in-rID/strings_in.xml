@@ -147,13 +147,13 @@
     <string name="unfriend">BERHENTI BERTEMAN</string>
 
     <!-- friend_journey_item -->
-    <string name="breakfast_detail">\tDetail Sarapan</string>
-    <string name="lunch_detail">\tDetail Makan Siang</string>
-    <string name="dinner_detail">\tDetail Makan Malam</string>
-    <string name="snack_detail">\tDetail Cemilan</string>
+    <string name="breakfast_detail">\t\tDetail Sarapan</string>
+    <string name="lunch_detail">\t\tDetail Makan Siang</string>
+    <string name="dinner_detail">\t\tDetail Makan Malam</string>
+    <string name="snack_detail">\t\tDetail Cemilan</string>
 
     <!-- ingredients_item -->
-    <string name="in_G">(dalam gr)</string>
+    <string name="in_G">(gr)</string>
 
     <!-- journey -->
     <string name="journey_date">Tanggal Perjalanan</string>

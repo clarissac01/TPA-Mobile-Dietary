@@ -74,7 +74,7 @@ class LoginActivity : AppCompatActivity() {
         }else{
             findViewById<TextView>(R.id.passwordTextnull).visibility = View.INVISIBLE
         }
-
+        userUsername = userUsername.toLowerCase()
         db.collection("users")
                 .whereEqualTo("username", userUsername).whereEqualTo("password", userPassword).get()
                 .addOnSuccessListener {
