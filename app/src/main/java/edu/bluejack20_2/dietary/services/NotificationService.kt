@@ -15,7 +15,7 @@ import kotlin.math.abs
 
 class NotificationService: BroadcastReceiver() {
     override fun onReceive(context: Context?, intent: Intent?) {
-        val uuid = UUID.randomUUID()
+        val uuid = "UUID.randomUUID()"
         val builder =
             NotificationCompat.Builder(context!!, uuid.toString())
                 .setSmallIcon(R.drawable.default_icon)
@@ -31,7 +31,7 @@ class NotificationService: BroadcastReceiver() {
 
         val notificationManager = NotificationManagerCompat.from(context!!)
         notificationManager.createNotificationChannel(channel)
-        notificationManager.notify(abs(Random().nextInt()), builder!!.build())
+        notificationManager.notify(77777, builder!!.build())
         Log.i("NotificationService", "Alarm Called!")
     }
 }
