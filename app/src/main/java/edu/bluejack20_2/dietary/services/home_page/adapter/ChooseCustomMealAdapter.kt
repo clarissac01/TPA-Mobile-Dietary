@@ -111,8 +111,23 @@ class ChooseCustomMealAdapter(parentActivity: AppCompatActivity, private val mea
     }
 
     fun changeMeal(view: View, mealItem: MealItem){
+        var mealType_in = mealType
+        if(language.equals("in")){
+            if(mealType.equals("Breakfast")){
+                mealType_in = view.context.getString(R.string.breakfast_text)
+            }
+            if(mealType.equals("Lunch")){
+                mealType_in = view.context.getString(R.string.lunch_text)
+            }
+            if(mealType.equals("Dinner")){
+                mealType_in = view.context.getString(R.string.dinner_text)
+            }
+            else{
+                mealType_in = view.context.getString(R.string.snack_text)
+            }
+        }
         MaterialAlertDialogBuilder(view.context)
-            .setTitle(view.context.getString(R.string.change_type_meal, mealType))
+            .setTitle(view.context.getString(R.string.change_type_meal, mealType_in))
             .setPositiveButton(view.context.getString(R.string.no)) { dialog, which ->
                 // Respond to negative button press
             }
