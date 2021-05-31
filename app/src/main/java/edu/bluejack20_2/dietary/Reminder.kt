@@ -22,14 +22,14 @@ class Reminder(val activity: Activity) {
     var db = FirebaseFirestore.getInstance()
 
 
-    val intent = Intent(activity, NotificationService::class.java)
-    val breakfastAlarm = PendingIntent.getBroadcast(activity, 7, intent, 0)
-    val lunchAlarm = PendingIntent.getBroadcast(activity, 77, intent, 0)
-    val dinnerAlarm = PendingIntent.getBroadcast(activity, 777, intent, 0)
-    val snackAlarm = PendingIntent.getBroadcast(activity, 7777, intent, 0)
 
     fun setNotification() {
         val alarmManager = activity.getSystemService(Context.ALARM_SERVICE) as AlarmManager
+        val intent = Intent(activity, NotificationService::class.java)
+        val breakfastAlarm = PendingIntent.getBroadcast(activity, 7, intent, 0)
+        val lunchAlarm = PendingIntent.getBroadcast(activity, 77, intent, 0)
+        val dinnerAlarm = PendingIntent.getBroadcast(activity, 777, intent, 0)
+        val snackAlarm = PendingIntent.getBroadcast(activity, 7777, intent, 0)
 
         var userID: String
         auth = FirebaseAuth.getInstance()
