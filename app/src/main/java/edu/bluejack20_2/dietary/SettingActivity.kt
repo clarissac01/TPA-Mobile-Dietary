@@ -10,6 +10,7 @@ import android.widget.CompoundButton
 import android.widget.TimePicker
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
+import com.google.android.gms.tasks.Tasks
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.switchmaterial.SwitchMaterial
 import com.google.firebase.auth.FirebaseAuth
@@ -24,6 +25,7 @@ class SettingActivity : AppCompatActivity() {
     private lateinit var auth: FirebaseAuth
     private lateinit var user: FirebaseUser
     var db = FirebaseFirestore.getInstance()
+    val remind = Reminder(this)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -49,7 +51,6 @@ class SettingActivity : AppCompatActivity() {
         findViewById<Button>(R.id.setting_close_btn).setOnClickListener {
             finish()
         }
-
         findViewById<MaterialButton>(R.id.set_breakfast_time_btn).setOnClickListener {
             val cal = Calendar.getInstance()
             var userID : String
@@ -61,8 +62,13 @@ class SettingActivity : AppCompatActivity() {
 
                 db.collection("users").whereEqualTo("username", user.displayName).get().addOnSuccessListener {
                     userID = it.documents.first().id
-                    db.collection("users").document(userID).update("breakfastHour", hour)
-                    db.collection("users").document(userID).update("breakfastMinute", minute)
+
+                    Tasks.whenAllSuccess<Any>(
+                        db.collection("users").document(userID).update("breakfastHour", hour),
+                        db.collection("users").document(userID).update("breakfastMinute", minute)
+                    ).addOnSuccessListener {
+                        remind.setNotification()
+                    }
                 }
             }
             TimePickerDialog(this, timerSetListener, cal.get(Calendar.HOUR_OF_DAY), cal.get(Calendar.MINUTE), true).show()
@@ -78,8 +84,13 @@ class SettingActivity : AppCompatActivity() {
 
                 db.collection("users").whereEqualTo("username", user.displayName).get().addOnSuccessListener {
                     userID = it.documents.first().id
-                    db.collection("users").document(userID).update("lunchHour", hour)
-                    db.collection("users").document(userID).update("lunchMinute", minute)
+
+                    Tasks.whenAllSuccess<Any>(
+                        db.collection("users").document(userID).update("lunchHour", hour),
+                        db.collection("users").document(userID).update("lunchMinute", minute)
+                    ).addOnSuccessListener {
+                        remind.setNotification()
+                    }
                 }
             }
             TimePickerDialog(this, timerSetListener, cal.get(Calendar.HOUR_OF_DAY), cal.get(Calendar.MINUTE), true).show()
@@ -95,8 +106,13 @@ class SettingActivity : AppCompatActivity() {
 
                 db.collection("users").whereEqualTo("username", user.displayName).get().addOnSuccessListener {
                     userID = it.documents.first().id
-                    db.collection("users").document(userID).update("dinnerHour", hour)
-                    db.collection("users").document(userID).update("dinnerMinute", minute)
+
+                    Tasks.whenAllSuccess<Any>(
+                        db.collection("users").document(userID).update("dinnerHour", hour),
+                        db.collection("users").document(userID).update("dinnerMinute", minute)
+                    ).addOnSuccessListener {
+                        remind.setNotification()
+                    }
                 }
             }
             TimePickerDialog(this, timerSetListener, cal.get(Calendar.HOUR_OF_DAY), cal.get(Calendar.MINUTE), true).show()
@@ -112,8 +128,13 @@ class SettingActivity : AppCompatActivity() {
 
                 db.collection("users").whereEqualTo("username", user.displayName).get().addOnSuccessListener {
                     userID = it.documents.first().id
-                    db.collection("users").document(userID).update("snackHour", hour)
-                    db.collection("users").document(userID).update("snackMinute", minute)
+
+                    Tasks.whenAllSuccess<Any>(
+                        db.collection("users").document(userID).update("snackHour", hour),
+                        db.collection("users").document(userID).update("snackMinute", minute)
+                    ).addOnSuccessListener {
+                        remind.setNotification()
+                    }
                 }
             }
             TimePickerDialog(this, timerSetListener, cal.get(Calendar.HOUR_OF_DAY), cal.get(Calendar.MINUTE), true).show()

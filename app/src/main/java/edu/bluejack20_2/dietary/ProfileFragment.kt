@@ -70,7 +70,7 @@ class ProfileFragment : Fragment() {
                     Picasso.get().load(it.documents.first().getString("photoURL"))
                         .into(view?.findViewById<ImageView>(R.id.profile_pic))
                 } else {
-                    Picasso.get().load("@drawa ble/ic_photo")
+                    Picasso.get().load("@drawable/ic_photo")
                         .into(view?.findViewById<ImageView>(R.id.profile_pic))
                 }
             }
