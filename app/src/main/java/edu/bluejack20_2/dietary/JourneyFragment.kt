@@ -24,6 +24,7 @@ class JourneyFragment : Fragment(R.layout.fragment_journey) {
     val journeyList = mutableListOf<JourneyData>()
     var lim:Long = 5
     lateinit var adapter: JourneyAdapter
+    var language = Locale.getDefault().language
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -77,18 +78,50 @@ class JourneyFragment : Fragment(R.layout.fragment_journey) {
                             val perDay = mutableMapOf(
                                 "timestamp" to date
                             )
+                            var name_lan = ""
+                            if(language.equals("in")){
+                                name_lan = "CustomMealName_in"
+                            }else{
+                                name_lan = "CustomMealName_en"
+                            }
                             perDay["breakfast"] = it.find {
                                 it.id == breakfast!!["menuID"]
-                            }?.get("CustomMealName").toString()
+                            }?.get(name_lan).toString()
+                            Log.wtf("breakfast localization", perDay["breakfast"].toString())
+                            if(perDay["breakfast"] != null){
+                                perDay["breakfast"] = it.find {
+                                    it.id == breakfast!!["menuID"] &&
+                                    it.getBoolean("isCustom") == true
+                                }?.get("CustomMealName").toString()
+                            }
+                            Log.wtf("breakfast not localization", perDay["breakfast"].toString())
                             perDay["lunch"] = it.find {
                                 it.id == lunch!!["menuID"]
-                            }?.get("CustomMealName").toString()
+                            }?.get(name_lan).toString()
+                            if(perDay["lunch"]!= null){
+                                perDay["lunch"] = it.find {
+                                    it.id == lunch!!["menuID"] &&
+                                    it.getBoolean("isCustom") == true
+                                }?.get("CustomMealName").toString()
+                            }
                             perDay["dinner"] = it.find {
                                 it.id == dinner!!["menuID"]
-                            }?.get("CustomMealName").toString()
+                            }?.get(name_lan).toString()
+                            if(perDay["dinner"]!=null){
+                                perDay["dinner"] = it.find {
+                                    it.id == dinner!!["menuID"] &&
+                                    it.getBoolean("isCustom") == true
+                                }?.get("CustomMealName").toString()
+                            }
                             perDay["snack"] = it.find {
                                 it.id == snack!!["menuID"]
-                            }?.get("CustomMealName").toString()
+                            }?.get(name_lan).toString()
+                            if(perDay["snack"]!=null){
+                                perDay["snack"] = it.find {
+                                    it.id == snack!!["menuID"] &&
+                                    it.getBoolean("isCustom") == true
+                                }?.get("CustomMealName").toString()
+                            }
                             Log.wtf("map", perDay.toString())
                             val data = JourneyData(
                                 document.get("totalCalories").toString().toInt(),

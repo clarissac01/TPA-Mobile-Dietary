@@ -2,6 +2,7 @@ package edu.bluejack20_2.dietary.services.home_page.adapter
 
 import android.animation.ObjectAnimator
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -180,69 +181,109 @@ class RecommendMealsAdapter(val currday: Int, parentActivity: AppCompatActivity,
                         if(!it?.isEmpty!!){
                             val userid = it.documents.first().id.toString()
                             when(mealType){
-                                view.context.getString(R.string.breakfast_text) -> {
+                                "Breakfast" -> {
                                     db.collection("CustomMeals").whereEqualTo("UserID", userid).whereEqualTo("type", "Breakfast").whereEqualTo("day", currday).get().addOnSuccessListener {
                                         if(!it.isEmpty){
                                             var changeid = it.documents.first().id
                                             var changeday = 0
                                             db.collection("CustomMeals").document(mealItem.mealId).get().addOnSuccessListener {
                                                 if(it.exists()){
-                                                    changeday = it.get("day").toString().toInt()
-                                                    db.collection("CustomMeals").document(changeid).update("day", changeday)
-                                                    db.collection("CustomMeals").document(mealItem.mealId).update("day", currday)
-                                                    Toast.makeText(view.context, view.context.getString(R.string.success_update_meal_type), Toast.LENGTH_LONG)
-                                                    parentActivity.finish()
+                                                    if(it.get("isCustom")==null){
+                                                        Log.wtf("in here", "hellow")
+                                                        changeday = it.get("day").toString().toInt()
+                                                        db.collection("CustomMeals").document(changeid).update("day", changeday)
+                                                        db.collection("CustomMeals").document(mealItem.mealId).update("day", currday)
+                                                        Toast.makeText(view.context, view.context.getString(R.string.success_update_meal_type), Toast.LENGTH_LONG)
+                                                        parentActivity.finish()
+                                                    }else{
+                                                        Log.wtf("in there", "hola")
+                                                        db.collection("CustomMeals").document(changeid).update("day", 31)
+                                                        db.collection("CustomMeals").document(mealItem.mealId).update("day", currday)
+                                                        db.collection("CustomMeals").document(mealItem.mealId).update("type", "Breakfast")
+                                                        Toast.makeText(view.context, view.context.getString(R.string.success_update_meal_type), Toast.LENGTH_LONG)
+                                                        parentActivity.finish()
+                                                    }
                                                 }
                                             }
                                         }
                                     }
                                 }
-                                view.context.getString(R.string.lunch_text) -> {
+                                "Lunch" -> {
                                     db.collection("CustomMeals").whereEqualTo("UserID", userid).whereEqualTo("type", "Lunch").whereEqualTo("day", currday).get().addOnSuccessListener {
                                         if(!it.isEmpty){
                                             var changeid = it.documents.first().id
                                             var changeday = 0
                                             db.collection("CustomMeals").document(mealItem.mealId).get().addOnSuccessListener {
                                                 if(it.exists()){
-                                                    changeday = it.get("day").toString().toInt()
-                                                    db.collection("CustomMeals").document(changeid).update("day", changeday)
-                                                    db.collection("CustomMeals").document(mealItem.mealId).update("day", currday)
-                                                    Toast.makeText(view.context, view.context.getString(R.string.success_update_meal_type), Toast.LENGTH_LONG)
-                                                    parentActivity.finish()
+                                                    if(it.get("isCustom")==null){
+                                                        Log.wtf("in here", "hellow")
+                                                        changeday = it.get("day").toString().toInt()
+                                                        db.collection("CustomMeals").document(changeid).update("day", changeday)
+                                                        db.collection("CustomMeals").document(mealItem.mealId).update("day", currday)
+                                                        Toast.makeText(view.context, view.context.getString(R.string.success_update_meal_type), Toast.LENGTH_LONG)
+                                                        parentActivity.finish()
+                                                    }else{
+                                                        Log.wtf("in there", "hola")
+                                                        db.collection("CustomMeals").document(changeid).update("day", 31)
+                                                        db.collection("CustomMeals").document(mealItem.mealId).update("day", currday)
+                                                        db.collection("CustomMeals").document(mealItem.mealId).update("type", "Lunch")
+                                                        Toast.makeText(view.context, view.context.getString(R.string.success_update_meal_type), Toast.LENGTH_LONG)
+                                                        parentActivity.finish()
+                                                    }
                                                 }
                                             }
                                         }
                                     }
                                 }
-                                view.context.getString(R.string.dinner_text) -> {
+                                "Dinner" -> {
                                     db.collection("CustomMeals").whereEqualTo("UserID", userid).whereEqualTo("type", "Dinner").whereEqualTo("day", currday).get().addOnSuccessListener {
                                         if(!it.isEmpty){
                                             var changeid = it.documents.first().id
                                             var changeday = 0
                                             db.collection("CustomMeals").document(mealItem.mealId).get().addOnSuccessListener {
                                                 if(it.exists()){
-                                                    changeday = it.get("day").toString().toInt()
-                                                    db.collection("CustomMeals").document(changeid).update("day", changeday)
-                                                    db.collection("CustomMeals").document(mealItem.mealId).update("day", currday)
-                                                    Toast.makeText(view.context, view.context.getString(R.string.success_update_meal_type), Toast.LENGTH_LONG)
-                                                    parentActivity.finish()
+                                                    if(it.get("isCustom")==null){
+                                                        Log.wtf("in here", "hellow")
+                                                        changeday = it.get("day").toString().toInt()
+                                                        db.collection("CustomMeals").document(changeid).update("day", changeday)
+                                                        db.collection("CustomMeals").document(mealItem.mealId).update("day", currday)
+                                                        Toast.makeText(view.context, view.context.getString(R.string.success_update_meal_type), Toast.LENGTH_LONG)
+                                                        parentActivity.finish()
+                                                    }else{
+                                                        Log.wtf("in there", "hola")
+                                                        db.collection("CustomMeals").document(changeid).update("day", 31)
+                                                        db.collection("CustomMeals").document(mealItem.mealId).update("day", currday)
+                                                        db.collection("CustomMeals").document(mealItem.mealId).update("type", "Dinner")
+                                                        Toast.makeText(view.context, view.context.getString(R.string.success_update_meal_type), Toast.LENGTH_LONG)
+                                                        parentActivity.finish()
+                                                    }
                                                 }
                                             }
                                         }
                                     }
                                 }
-                                view.context.getString(R.string.snack_text) -> {
+                                "Snack" -> {
                                     db.collection("CustomMeals").whereEqualTo("UserID", userid).whereEqualTo("type", "Snack").whereEqualTo("day", currday).get().addOnSuccessListener {
                                         if(!it.isEmpty){
                                             var changeid = it.documents.first().id
                                             var changeday = 0
                                             db.collection("CustomMeals").document(mealItem.mealId).get().addOnSuccessListener {
                                                 if(it.exists()){
-                                                    changeday = it.get("day").toString().toInt()
-                                                    db.collection("CustomMeals").document(changeid).update("day", changeday)
-                                                    db.collection("CustomMeals").document(mealItem.mealId).update("day", currday)
-                                                    Toast.makeText(view.context, view.context.getString(R.string.success_update_meal_type), Toast.LENGTH_LONG)
-                                                    parentActivity.finish()
+                                                    if(it.get("isCustom")==null){
+                                                        Log.wtf("in here", "hellow")
+                                                        changeday = it.get("day").toString().toInt()
+                                                        db.collection("CustomMeals").document(changeid).update("day", changeday)
+                                                        db.collection("CustomMeals").document(mealItem.mealId).update("day", currday)
+                                                        Toast.makeText(view.context, view.context.getString(R.string.success_update_meal_type), Toast.LENGTH_LONG)
+                                                        parentActivity.finish()
+                                                    }else{
+                                                        Log.wtf("in there", "hola")
+                                                        db.collection("CustomMeals").document(changeid).update("day", 31)
+                                                        db.collection("CustomMeals").document(mealItem.mealId).update("day", currday)
+                                                        db.collection("CustomMeals").document(mealItem.mealId).update("type", "Snack")
+                                                        Toast.makeText(view.context, view.context.getString(R.string.success_update_meal_type), Toast.LENGTH_LONG)
+                                                        parentActivity.finish()
+                                                    }
                                                 }
                                             }
                                         }
