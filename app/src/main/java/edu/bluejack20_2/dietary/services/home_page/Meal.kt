@@ -76,14 +76,8 @@ class Meal : AppCompatActivity() {
                     db.collection("CustomMeals").whereEqualTo("type", type).whereEqualTo("UserID", userid).orderBy("day").get().addOnSuccessListener {
                         if(!it?.isEmpty!!){
                             it.documents.forEach{
-                                if(it.get("isCustom") != null){
-                                    list.add(
-                                        MealItem(
-                                            it.id.toString(), it.get("CustomMealName") as String,
-                                            it.get("Calories").toString().toFloat(), FALSE
-                                        )
-                                    )
-                                }else{
+                                if(it.get("isCustom") == null){
+                                    Log.wtf("is not empty", "ada loh")
                                     if(language.equals("in")){
                                         list.add(
                                             MealItem(
@@ -108,8 +102,10 @@ class Meal : AppCompatActivity() {
                             for (i in 0 until currentDay){
                                 list2.add(list.get(i))
                             }
-                            for(i in 0 until 10){
-                                list3.add(list2.get(i))
+                            for(i in 0 until 5){
+                                if(list2.get(i)!=null){
+                                    list3.add(list2.get(i))
+                                }
                                 findViewById<RecyclerView>(R.id.recommend_meal_view).adapter?.notifyDataSetChanged()
                             }
                         }

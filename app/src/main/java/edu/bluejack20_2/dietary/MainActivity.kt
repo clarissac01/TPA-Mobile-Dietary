@@ -34,7 +34,6 @@ class MainActivity : AppCompatActivity() {
     val remind = Reminder(this)
 
     override fun onStart() {
-//        FirebaseAuth.getInstance().signOut()
 
 
         super.onStart()

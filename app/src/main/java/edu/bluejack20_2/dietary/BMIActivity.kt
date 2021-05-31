@@ -14,6 +14,7 @@ import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 import java.sql.Timestamp
 import java.time.LocalDateTime
@@ -104,6 +105,13 @@ class BMIActivity : AppCompatActivity() {
                 db.collection("users").whereEqualTo("username", user.displayName).get().addOnSuccessListener {
                     var userid = it.documents.first().id
                     db.collection("users").document(it.documents.first().id).update("plan", plan)
+                    db.collection("Journey").whereEqualTo("userID", userid).get().addOnSuccessListener {
+                        if(!it.isEmpty){
+                            it.forEach{
+                                db.collection("Journey").document(it.id).update("day", FieldValue.delete())
+                            }
+                        }
+                    }
                     db.collection("CustomMeals").orderBy("day").get().addOnSuccessListener {
                         if(!it.isEmpty){
                             it.documents.forEach {
@@ -134,6 +142,13 @@ class BMIActivity : AppCompatActivity() {
                 db.collection("users").whereEqualTo("username", user.displayName).get().addOnSuccessListener {
                     var userid = it.documents.first().id
                     db.collection("users").document(it.documents.first().id).update("plan", plan)
+                    db.collection("Journey").whereEqualTo("userID", userid).get().addOnSuccessListener {
+                        if(!it.isEmpty){
+                            it.forEach{
+                                db.collection("Journey").document(it.id).update("day", FieldValue.delete())
+                            }
+                        }
+                    }
                     db.collection("CustomMeals").orderBy("day").get().addOnSuccessListener {
                         if(!it.isEmpty){
                             it.documents.forEach {
@@ -163,6 +178,13 @@ class BMIActivity : AppCompatActivity() {
                 db.collection("users").whereEqualTo("username", user.displayName).get().addOnSuccessListener {
                     var userid = it.documents.first().id
                     db.collection("users").document(it.documents.first().id).update("plan", plan)
+                    db.collection("Journey").whereEqualTo("userID", userid).get().addOnSuccessListener {
+                        if(!it.isEmpty){
+                            it.forEach{
+                                db.collection("Journey").document(it.id).update("day", FieldValue.delete())
+                            }
+                        }
+                    }
                     db.collection("CustomMeals").orderBy("day").get().addOnSuccessListener {
                         if(!it.isEmpty){
                             it.documents.forEach {
@@ -192,6 +214,13 @@ class BMIActivity : AppCompatActivity() {
                 db.collection("users").whereEqualTo("username", user.displayName).get().addOnSuccessListener {
                     var userid = it.documents.first().id
                     db.collection("users").document(it.documents.first().id).update("plan", plan)
+                    db.collection("Journey").whereEqualTo("userID", userid).get().addOnSuccessListener {
+                        if(!it.isEmpty){
+                            it.forEach{
+                                db.collection("Journey").document(it.id).update("day", FieldValue.delete())
+                            }
+                        }
+                    }
                     db.collection("CustomMeals").orderBy("day").get().addOnSuccessListener {
                         if(!it.isEmpty){
                             it.documents.forEach {
@@ -276,6 +305,13 @@ class BMIActivity : AppCompatActivity() {
                 db.collection("users").whereEqualTo("username", user.displayName).get().addOnSuccessListener {
                     var userid = it.documents.first().id
                     db.collection("users").document(it.documents.first().id).update("plan", plan)
+                    db.collection("Journey").whereEqualTo("userID", userid).get().addOnSuccessListener {
+                        if(!it.isEmpty){
+                            it.forEach{
+                                db.collection("Journey").document(it.id).update("day", FieldValue.delete())
+                            }
+                        }
+                    }
                     db.collection("CustomMeals").orderBy("day").get().addOnSuccessListener {
                         if(!it.isEmpty){
                             it.documents.forEach {
@@ -305,7 +341,13 @@ class BMIActivity : AppCompatActivity() {
                 db.collection("users").whereEqualTo("username", user.displayName).get().addOnSuccessListener {
                     var userid = it.documents.first().id
                     db.collection("users").document(it.documents.first().id).update("plan", plan)
-
+                    db.collection("Journey").whereEqualTo("userID", userid).get().addOnSuccessListener {
+                        if(!it.isEmpty){
+                            it.forEach{
+                                db.collection("Journey").document(it.id).update("day", FieldValue.delete())
+                            }
+                        }
+                    }
                     db.collection("CustomMeals").orderBy("day").get().addOnSuccessListener {
                         if(!it.isEmpty){
                             it.documents.forEach {
@@ -335,6 +377,13 @@ class BMIActivity : AppCompatActivity() {
                 db.collection("users").whereEqualTo("username", user.displayName).get().addOnSuccessListener {
                     var userid = it.documents.first().id
                     db.collection("users").document(it.documents.first().id).update("plan", plan)
+                    db.collection("Journey").whereEqualTo("userID", userid).get().addOnSuccessListener {
+                        if(!it.isEmpty){
+                            it.forEach{
+                                db.collection("Journey").document(it.id).update("day", FieldValue.delete())
+                            }
+                        }
+                    }
                     db.collection("CustomMeals").orderBy("day").get().addOnSuccessListener {
                         if(!it.isEmpty){
                             it.documents.forEach {
@@ -364,7 +413,13 @@ class BMIActivity : AppCompatActivity() {
                 db.collection("users").whereEqualTo("username", user.displayName).get().addOnSuccessListener {
                     var userid = it.documents.first().id
                     db.collection("users").document(it.documents.first().id).update("plan", plan)
-
+                    db.collection("Journey").whereEqualTo("userID", userid).get().addOnSuccessListener {
+                        if(!it.isEmpty){
+                            it.forEach{
+                                db.collection("Journey").document(it.id).update("day", FieldValue.delete())
+                            }
+                        }
+                    }
                     db.collection("CustomMeals").orderBy("day").get().addOnSuccessListener {
                         if(!it.isEmpty){
                             it.documents.forEach {
@@ -448,7 +503,13 @@ class BMIActivity : AppCompatActivity() {
                 db.collection("users").whereEqualTo("username", user.displayName).get().addOnSuccessListener {
                     var userid = it.documents.first().id
                     db.collection("users").document(it.documents.first().id).update("plan", plan)
-
+                    db.collection("Journey").whereEqualTo("userID", userid).get().addOnSuccessListener {
+                        if(!it.isEmpty){
+                            it.forEach{
+                                db.collection("Journey").document(it.id).update("day", FieldValue.delete())
+                            }
+                        }
+                    }
                     db.collection("CustomMeals").orderBy("day").get().addOnSuccessListener {
                         if(!it.isEmpty){
                             it.documents.forEach {
@@ -478,7 +539,13 @@ class BMIActivity : AppCompatActivity() {
                 db.collection("users").whereEqualTo("username", user.displayName).get().addOnSuccessListener {
                     var userid = it.documents.first().id
                     db.collection("users").document(it.documents.first().id).update("plan", plan)
-
+                    db.collection("Journey").whereEqualTo("userID", userid).get().addOnSuccessListener {
+                        if(!it.isEmpty){
+                            it.forEach{
+                                db.collection("Journey").document(it.id).update("day", FieldValue.delete())
+                            }
+                        }
+                    }
                     db.collection("CustomMeals").orderBy("day").get().addOnSuccessListener {
                         if(!it.isEmpty){
                             it.documents.forEach {
@@ -508,6 +575,13 @@ class BMIActivity : AppCompatActivity() {
                 db.collection("users").whereEqualTo("username", user.displayName).get().addOnSuccessListener {
                     var userid = it.documents.first().id
                     db.collection("users").document(it.documents.first().id).update("plan", plan)
+                    db.collection("Journey").whereEqualTo("userID", userid).get().addOnSuccessListener {
+                        if(!it.isEmpty){
+                            it.forEach{
+                                db.collection("Journey").document(it.id).update("day", FieldValue.delete())
+                            }
+                        }
+                    }
                     db.collection("CustomMeals").orderBy("day").get().addOnSuccessListener {
                         if(!it.isEmpty){
                             it.documents.forEach {
@@ -537,7 +611,13 @@ class BMIActivity : AppCompatActivity() {
                 db.collection("users").whereEqualTo("username", user.displayName).get().addOnSuccessListener {
                     var userid = it.documents.first().id
                     db.collection("users").document(it.documents.first().id).update("plan", plan)
-
+                    db.collection("Journey").whereEqualTo("userID", userid).get().addOnSuccessListener {
+                        if(!it.isEmpty){
+                            it.forEach{
+                                db.collection("Journey").document(it.id).update("day", FieldValue.delete())
+                            }
+                        }
+                    }
                     db.collection("CustomMeals").orderBy("day").get().addOnSuccessListener {
                         if(!it.isEmpty){
                             it.documents.forEach {
