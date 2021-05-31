@@ -108,7 +108,7 @@ class Meal : AppCompatActivity() {
                             for (i in 0 until currentDay){
                                 list2.add(list.get(i))
                             }
-                            for(i in 0 until 10){
+                            for(i in 0 until 5){
                                 list3.add(list2.get(i))
                                 findViewById<RecyclerView>(R.id.recommend_meal_view).adapter?.notifyDataSetChanged()
                             }
