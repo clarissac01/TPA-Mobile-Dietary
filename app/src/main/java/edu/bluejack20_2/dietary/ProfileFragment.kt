@@ -10,6 +10,7 @@ import android.widget.Button
 import android.widget.ImageView
 import com.google.android.material.textview.MaterialTextView
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.FirebaseFirestore
 import com.squareup.picasso.MemoryPolicy
 import com.squareup.picasso.Picasso
@@ -17,6 +18,8 @@ import edu.bluejack20_2.dietary.services.login.LoginActivity
 
 class ProfileFragment : Fragment() {
     private lateinit var auth: FirebaseAuth
+    var db = FirebaseFirestore.getInstance()
+    private lateinit var user: FirebaseUser
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -29,17 +32,11 @@ class ProfileFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val auth = FirebaseAuth.getInstance()
-        val user = auth.currentUser
-        val db = FirebaseFirestore.getInstance()
+        auth = FirebaseAuth.getInstance()
+        user = auth.currentUser
 
         if (user != null) {
-            if (user.photoUrl != null) {
-                Picasso.get().load(user.photoUrl).memoryPolicy(MemoryPolicy.NO_CACHE).into(requireActivity().findViewById<ImageView>(R.id.profile_pic))
-            } else {
-                Picasso.get().load("@drawable/ic_photo")
-                    .into(requireActivity().findViewById<ImageView>(R.id.profile_pic))
-            }
+            updateProfilePic()
 
             requireActivity().findViewById<MaterialTextView>(R.id.username_text).text = user.displayName
             requireActivity().findViewById<MaterialTextView>(R.id.email_text).text = user.email
@@ -64,6 +61,19 @@ class ProfileFragment : Fragment() {
             startActivity(Intent(requireContext(), LoginActivity::class.java))
         }
 
+    }
+
+    fun updateProfilePic() {
+        db.collection("users").whereEqualTo("username", user.displayName).get()
+            .addOnSuccessListener {
+                if (it.documents.first().getString("photoURL") != null) {
+                    Picasso.get().load(it.documents.first().getString("photoURL"))
+                        .into(view?.findViewById<ImageView>(R.id.profile_pic))
+                } else {
+                    Picasso.get().load("@drawable/ic_photo")
+                        .into(view?.findViewById<ImageView>(R.id.profile_pic))
+                }
+            }
     }
 
 }

@@ -28,13 +28,15 @@ class CustomMealAdapter(
 
     override fun onBindViewHolder(holder: CustomMealViewHolder, position: Int) {
         holder.itemView.apply {
-            findViewById<MaterialTextView>(R.id.custom_meal_name).text = customMealItem[position].customMealName
+            val customMealName = customMealItem[position].customMealName
+            findViewById<MaterialTextView>(R.id.custom_meal_name).text =
+                if (customMealName.length > 8) customMealName.take(8) + "..." else customMealName
             findViewById<MaterialTextView>(R.id.custom_meal_cal).text = resources.getString(
                 R.string.calories,
                 customMealItem[position].customMealCalories.toString()
             )
 
-            findViewById<CardView>(R.id.cvCustomMeal).setOnClickListener{
+            findViewById<CardView>(R.id.cvCustomMeal).setOnClickListener {
                 val intent = Intent(context, CustomMealDetail::class.java)
                 intent.putExtra("customMealId", customMealItem[position].customMealId)
                 this.context.startActivity(intent)
@@ -42,10 +44,15 @@ class CustomMealAdapter(
 
             findViewById<MaterialButton>(R.id.remove_custom_meal_btn).setOnClickListener {
                 val customMealId = customMealItem[position].customMealId
-                FirebaseFirestore.getInstance().collection("CustomMeals").document(customMealId).delete().addOnSuccessListener {
+                FirebaseFirestore.getInstance().collection("CustomMeals").document(customMealId)
+                    .delete().addOnSuccessListener {
                     customMealItem.remove(customMealItem[position])
                     notifyDataSetChanged()
-                    Toast.makeText(holder.itemView.context, holder.itemView.context.getText(R.string.custom_meal_deleted), Toast.LENGTH_SHORT).show()
+                    Toast.makeText(
+                        holder.itemView.context,
+                        holder.itemView.context.getText(R.string.custom_meal_deleted),
+                        Toast.LENGTH_SHORT
+                    ).show()
                 }
             }
 
@@ -57,8 +64,10 @@ class CustomMealAdapter(
                 findViewById<MaterialButton>(R.id.cancel_btn).visibility = View.VISIBLE
                 findViewById<MaterialTextView>(R.id.custom_meal_name).visibility = View.INVISIBLE
                 findViewById<MaterialTextView>(R.id.custom_meal_cal).visibility = View.INVISIBLE
-                findViewById<MaterialButton>(R.id.update_custom_meal_btn).visibility = View.INVISIBLE
-                findViewById<MaterialButton>(R.id.remove_custom_meal_btn).visibility = View.INVISIBLE
+                findViewById<MaterialButton>(R.id.update_custom_meal_btn).visibility =
+                    View.INVISIBLE
+                findViewById<MaterialButton>(R.id.remove_custom_meal_btn).visibility =
+                    View.INVISIBLE
             }
 
             findViewById<MaterialButton>(R.id.update_submit_btn).setOnClickListener {
@@ -66,26 +75,43 @@ class CustomMealAdapter(
                 val customMealName = findViewById<MaterialTextView>(R.id.custom_meal_name)
                 val customMealId = customMealItem[position].customMealId
 
-                if(newCustomMeal == "") {
-                    Toast.makeText(context, context.getText(R.string.custom_meal_not_empty), Toast.LENGTH_SHORT).show()
+                if (newCustomMeal == "") {
+                    Toast.makeText(
+                        context,
+                        context.getText(R.string.custom_meal_not_empty),
+                        Toast.LENGTH_SHORT
+                    ).show()
                     return@setOnClickListener
-                }
-                else {
-                    FirebaseFirestore.getInstance().collection("CustomMeals").document(customMealId).update("CustomMealName", newCustomMeal).addOnSuccessListener {
+                } else {
+                    FirebaseFirestore.getInstance().collection("CustomMeals").document(customMealId)
+                        .update("CustomMealName", newCustomMeal).addOnSuccessListener {
+                        customMealItem[position].customMealName = newCustomMeal
                         findViewById<EditText>(R.id.custom_meal_edit).visibility = View.INVISIBLE
-                        findViewById<MaterialButton>(R.id.update_submit_btn).visibility = View.INVISIBLE
+                        findViewById<MaterialButton>(R.id.update_submit_btn).visibility =
+                            View.INVISIBLE
                         findViewById<MaterialButton>(R.id.cancel_btn).visibility = View.INVISIBLE
                         customMealName.visibility = View.VISIBLE
-                        findViewById<MaterialTextView>(R.id.custom_meal_cal).visibility = View.VISIBLE
-                        findViewById<MaterialButton>(R.id.update_custom_meal_btn).visibility = View.VISIBLE
-                        findViewById<MaterialButton>(R.id.remove_custom_meal_btn).visibility = View.VISIBLE
-                        Toast.makeText(holder.itemView.context, holder.itemView.context.getText(R.string.success_update_custom_meal), Toast.LENGTH_SHORT).show()
+                        findViewById<MaterialTextView>(R.id.custom_meal_cal).visibility =
+                            View.VISIBLE
+                        findViewById<MaterialButton>(R.id.update_custom_meal_btn).visibility =
+                            View.VISIBLE
+                        findViewById<MaterialButton>(R.id.remove_custom_meal_btn).visibility =
+                            View.VISIBLE
+                        Toast.makeText(
+                            holder.itemView.context,
+                            holder.itemView.context.getText(R.string.success_update_custom_meal),
+                            Toast.LENGTH_SHORT
+                        ).show()
                     }
                 }
 
 
-                FirebaseFirestore.getInstance().collection("CustomMeals").document(customMealId).get().addOnSuccessListener {
-                    customMealName.text = it.getString("CustomMealName").toString()
+                FirebaseFirestore.getInstance().collection("CustomMeals").document(customMealId)
+                    .get().addOnSuccessListener {
+                    customMealName.text = if (it.getString("CustomMealName")
+                            .toString().length > 8
+                    ) it.getString("CustomMealName").toString()
+                        .take(8) + "..." else it.getString("CustomMealName").toString()
                 }
             }
 

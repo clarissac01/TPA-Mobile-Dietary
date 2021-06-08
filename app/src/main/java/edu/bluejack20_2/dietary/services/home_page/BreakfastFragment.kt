@@ -172,12 +172,12 @@ class BreakfastFragment(var currDay: Int = 0) : Fragment() {
                     if(!it?.isEmpty!!){
                         if(it.documents.first().get("isCustom") == null){
                             if(language.equals("in")){
-                                menuName.text = it.documents.first().getString("CustomMealName-in")
+                                menuName.text = it.documents.first().getString("CustomMealName_in")
                             }else {
-                                menuName.text = it.documents.first().getString("CustomMealName-en")
+                                menuName.text = it.documents.first().getString("CustomMealName_en")
                             }
                         }else{
-                                menuName.text = it.documents.first().getString("CustomMealName")
+                            menuName.text = it.documents.first().getString("CustomMealName")
                         }
                         calCount.text = getString(R.string.calories, it.documents.first().get("Calories").toString().toFloat().roundToInt().toString())
                         menuId = it.documents.first().id

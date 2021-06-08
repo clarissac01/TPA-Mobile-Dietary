@@ -28,6 +28,7 @@
     <string name="add_text">Add</string>
     <string name="save_profile_pic">Save Profile Pic</string>
     <string name="update_text">Update</string>
+    <string name="change">Update</string>
     <string name="new_password_hint">New Password</string>
     <string name="old_password_hint">Old Password</string>
     <string name="email_hint">Email</string>
@@ -42,6 +43,7 @@
     <string name="active_not_checked">Activity level must be checked</string>
     <string name="user_no_custommeal">This user has no custom meal!</string>
     <string name="user_no_journey">This user has no journey history!</string>
+    <string name="cancel_text">Cancel</string>
 
 
     <!-- TODO: Remove or change this placeholder text -->
@@ -141,10 +143,10 @@
     <string name="unfriend">UNFRIEND</string>
 
     <!-- friend_journey_item -->
-    <string name="breakfast_detail">\tBreakfast Detail</string>
-    <string name="lunch_detail">\tLunch Detail</string>
-    <string name="dinner_detail">\tDinner Detail</string>
-    <string name="snack_detail">\tSnack Detail</string>
+    <string name="breakfast_detail">\t\tBreakfast Detail</string>
+    <string name="lunch_detail">\t\tLunch Detail</string>
+    <string name="dinner_detail">\t\tDinner Detail</string>
+    <string name="snack_detail">\t\tSnack Detail</string>
 
     <!-- ingredients_item -->
     <string name="in_G">(in g)</string>

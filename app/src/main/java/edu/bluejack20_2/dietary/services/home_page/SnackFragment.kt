@@ -82,7 +82,7 @@ class SnackFragment(var currDay: Int = 0) : Fragment() {
                     }else{
                         view.findViewById<Button>(R.id.changeSnack).visibility = View.VISIBLE
                         view.findViewById<FloatingActionButton>(R.id.floatingActionButton5).visibility = View.VISIBLE
-                            isEditable = true
+                        isEditable = true
                     }
                 }
 
@@ -175,15 +175,16 @@ class SnackFragment(var currDay: Int = 0) : Fragment() {
                     if(!it?.isEmpty!!){
                         if(it.documents.first().get("isCustom") == null){
                             if(language.equals("in")){
-                                menuName.text = it.documents.first().getString("CustomMealName-en")
+                                menuName.text = it.documents.first().getString("CustomMealName_in")
                             }else {
-                                menuName.text = it.documents.first().getString("CustomMealName-in")
+                                menuName.text = it.documents.first().getString("CustomMealName_en")
                             }
                         }else{
                             menuName.text = it.documents.first().getString("CustomMealName")
                         }
                         calCount.text = getString(R.string.calories, it.documents.first().get("Calories").toString().toFloat().roundToInt().toString())
                         menuId = it.documents.first().id
+                        Log.wtf("snack menu id", menuId.toString())
                     }
                 }
 

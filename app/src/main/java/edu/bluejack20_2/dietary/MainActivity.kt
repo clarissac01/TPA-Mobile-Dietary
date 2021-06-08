@@ -31,9 +31,9 @@ class MainActivity : AppCompatActivity() {
     private lateinit var auth: FirebaseAuth
     private lateinit var user: FirebaseUser
     var db = FirebaseFirestore.getInstance()
+    val remind = Reminder(this)
 
     override fun onStart() {
-//        FirebaseAuth.getInstance().signOut()
 
 
         super.onStart()
@@ -47,10 +47,10 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        if(FirebaseAuth.getInstance().currentUser == null){
+        if (FirebaseAuth.getInstance().currentUser == null) {
             startActivity(Intent(this, LoginActivity::class.java))
             return
-        }else{
+        } else {
             val account = GoogleSignIn.getLastSignedInAccount(this)
         }
 
@@ -75,8 +75,8 @@ class MainActivity : AppCompatActivity() {
         val nav = findViewById<BubbleNavigationConstraintView>(R.id.bottom_navigation_view_linear)
 
         setCurrentFragment(homeFragment)
-        nav.setNavigationChangeListener {view, position ->
-            when(view.id) {
+        nav.setNavigationChangeListener { view, position ->
+            when (view.id) {
                 R.id.l_item_home -> setCurrentFragment(homeFragment)
                 R.id.l_item_custom_meal -> setCurrentFragment(customMealFragment)
                 R.id.l_item_profile -> setCurrentFragment(profileFragment)
@@ -89,7 +89,8 @@ class MainActivity : AppCompatActivity() {
 //        nav.setCurrentActiveItem(0)
 
 //        createNotificationChannel()
-        setNotification()
+//        setNotification()
+        remind.setNotification()
     }
 
 //    private fun createNotificationChannel() {
@@ -113,83 +114,90 @@ class MainActivity : AppCompatActivity() {
 
         Log.wtf("hour", hour)
         Log.wtf("minute", minute)
-        
+
         Log.wtf("username", user.displayName)
-        if(auth.currentUser != null) {
+        if (auth.currentUser != null) {
             db.collection("users").whereEqualTo("username", user.displayName).get()
                 .addOnFailureListener { f -> Log.wtf("hehe", f.toString()) }
                 .addOnSuccessListener {
-                if(it.documents.isEmpty()) {
-                    return@addOnSuccessListener
-                }
-                else {
-                    userID = it.documents.first().id
-                    db.collection("users").document(userID).get().addOnSuccessListener {
-                        var breakfastHour = it.getLong("breakfastHour").toString().toInt() - 7
-                        var breakfastMinute = it.getLong("breakfastMinute").toString().toInt()
-                        var lunchHour = it.getLong("lunchHour").toString().toInt() - 7
-                        var lunchMinute = it.getLong("lunchMinute").toString().toInt()
-                        var dinnerHour = it.getLong("dinnerHour").toString().toInt() - 7
-                        var dinnerMinute = it.getLong("dinnerMinute").toString().toInt()
-                        var snackHour = it.getLong("snackHour").toString().toInt() - 7
-                        var snackMinute = it.getLong("snackMinute").toString().toInt()
+                    if (it.documents.isEmpty()) {
+                        return@addOnSuccessListener
+                    } else {
+                        userID = it.documents.first().id
+                        db.collection("users").document(userID).get().addOnSuccessListener {
+                            var breakfastHour = it.getLong("breakfastHour").toString().toInt()
+                            var breakfastMinute = it.getLong("breakfastMinute").toString().toInt()
+                            var lunchHour = it.getLong("lunchHour").toString().toInt()
+                            var lunchMinute = it.getLong("lunchMinute").toString().toInt()
+                            var dinnerHour = it.getLong("dinnerHour").toString().toInt()
+                            var dinnerMinute = it.getLong("dinnerMinute").toString().toInt()
+                            var snackHour = it.getLong("snackHour").toString().toInt()
+                            var snackMinute = it.getLong("snackMinute").toString().toInt()
 
-                        val calendarBreakfast: Calendar = Calendar.getInstance().apply {
-                            timeInMillis = System.currentTimeMillis()
-                            if(breakfastHour != null && breakfastMinute != null) {
-                                set(Calendar.HOUR_OF_DAY, breakfastHour)
-                                set(Calendar.MINUTE, breakfastMinute)
+                            val alarmManager2 =
+                                getSystemService(Context.ALARM_SERVICE) as? AlarmManager
+                            val pendingIntent =
+                                PendingIntent.getService(
+                                    this, 0, intent,
+                                    PendingIntent.FLAG_NO_CREATE
+                                )
+                            if (pendingIntent != null && alarmManager2 != null) {
+                                alarmManager.cancel(pendingIntent)
                             }
-                        }
-                        val calendarLunch: Calendar = Calendar.getInstance().apply {
-                            timeInMillis = System.currentTimeMillis()
-                            if(lunchHour != null && lunchMinute != null) {
-                                set(Calendar.HOUR_OF_DAY, lunchHour)
-                                set(Calendar.MINUTE, lunchMinute)
-                            }
-                        }
-                        val calendarDinner: Calendar = Calendar.getInstance().apply {
-                            timeInMillis = System.currentTimeMillis()
-                            if(dinnerHour != null && dinnerMinute != null) {
-                                set(Calendar.HOUR_OF_DAY, dinnerHour)
-                                set(Calendar.MINUTE, dinnerMinute)
-                            }
-                        }
-                        val calendarSnack: Calendar = Calendar.getInstance().apply {
-                            timeInMillis = System.currentTimeMillis()
-                            if(snackHour != null && snackMinute != null) {
-                                set(Calendar.HOUR_OF_DAY, snackHour)
-                                set(Calendar.MINUTE, snackMinute)
-                            }
-                        }
 
-                        alarmManager?.setRepeating(
-                            AlarmManager.RTC_WAKEUP,
-                            calendarBreakfast.timeInMillis,
-                            AlarmManager.INTERVAL_DAY,
-                            breakfastAlarm
-                        )
-                        alarmManager?.setRepeating(
-                            AlarmManager.RTC_WAKEUP,
-                            calendarLunch.timeInMillis,
-                            AlarmManager.INTERVAL_DAY,
-                            lunchAlarm
-                        )
-                        alarmManager?.setRepeating(
-                            AlarmManager.RTC_WAKEUP,
-                            calendarDinner.timeInMillis,
-                            AlarmManager.INTERVAL_DAY,
-                            dinnerAlarm
-                        )
-                        alarmManager?.setRepeating(
-                            AlarmManager.RTC_WAKEUP,
-                            calendarSnack.timeInMillis,
-                            AlarmManager.INTERVAL_DAY,
-                            snackAlarm
-                        )
+                            val alarmMgr = getSystemService(Context.ALARM_SERVICE) as AlarmManager
+                            val alarmIntent =
+                                Intent(this, AlarmReceiver::class.java).let { intent ->
+                                    PendingIntent.getBroadcast(this, 0, intent, 0)
+                                }
+
+                            val calendarBreakfast: Calendar = Calendar.getInstance().apply {
+                                timeInMillis = System.currentTimeMillis()
+                                if (breakfastHour != null && breakfastMinute != null) {
+                                    set(Calendar.HOUR_OF_DAY, breakfastHour)
+                                    set(Calendar.MINUTE, breakfastMinute)
+                                }
+                            }
+                            val calendarLunch: Calendar = Calendar.getInstance().apply {
+                                timeInMillis = System.currentTimeMillis()
+                                if (lunchHour != null && lunchMinute != null) {
+                                    set(Calendar.HOUR_OF_DAY, lunchHour)
+                                    set(Calendar.MINUTE, lunchMinute)
+                                }
+                            }
+                            val calendarDinner: Calendar = Calendar.getInstance().apply {
+                                timeInMillis = System.currentTimeMillis()
+                                if (dinnerHour != null && dinnerMinute != null) {
+                                    set(Calendar.HOUR_OF_DAY, dinnerHour)
+                                    set(Calendar.MINUTE, dinnerMinute)
+                                }
+                            }
+                            val calendarSnack: Calendar = Calendar.getInstance().apply {
+                                timeInMillis = System.currentTimeMillis()
+                                if (snackHour != null && snackMinute != null) {
+                                    set(Calendar.HOUR_OF_DAY, snackHour)
+                                    set(Calendar.MINUTE, snackMinute)
+                                }
+                            }
+
+                            listOf(
+                                breakfastAlarm to calendarBreakfast,
+                                lunchAlarm to calendarLunch,
+                                dinnerAlarm to calendarDinner,
+                                snackAlarm to calendarSnack
+                            ).forEach {
+                                alarmManager.cancel(it.first)
+                                alarmManager.setAlarmClock(
+                                    AlarmManager.AlarmClockInfo(
+                                        it.second.timeInMillis,
+                                        it.first
+                                    ),
+                                    it.first
+                                )
+                            }
+                        }
                     }
                 }
-            }
         }
 
 
@@ -204,7 +212,7 @@ class MainActivity : AppCompatActivity() {
         val call: Calendar = Calendar.getInstance().apply {
             timeInMillis = System.currentTimeMillis()
             set(Calendar.HOUR_OF_DAY, 23)
-            set(Calendar.MINUTE, 58 )
+            set(Calendar.MINUTE, 58)
         }
 
         alarmMgr?.setRepeating(
@@ -213,12 +221,10 @@ class MainActivity : AppCompatActivity() {
             AlarmManager.INTERVAL_DAY,
             alarmIntent
         )
-
     }
 
 
-
-    fun setCurrentFragment(fragment : Fragment) =
+    fun setCurrentFragment(fragment: Fragment) =
         supportFragmentManager.beginTransaction().apply {
             replace(R.id.flFragment, fragment)
             commit()
@@ -226,7 +232,7 @@ class MainActivity : AppCompatActivity() {
 
 
     fun gotoMainIngredients(view: View) {
-        startActivity(Intent(this, MainIngredients::class.java) )
+        startActivity(Intent(this, MainIngredients::class.java))
     }
 
     fun gotoEditProfile(view: View) {

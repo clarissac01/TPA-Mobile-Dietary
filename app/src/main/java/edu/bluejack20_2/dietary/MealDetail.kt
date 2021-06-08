@@ -63,7 +63,7 @@ class MealDetail : AppCompatActivity() {
                     "Calories" to totalCal))
                 .addOnSuccessListener {
                     Toast.makeText(this, getString(R.string.meal_update_success), Toast.LENGTH_LONG)
-            }
+                }
         }
 
     }
@@ -75,15 +75,16 @@ class MealDetail : AppCompatActivity() {
                 var mealname = ""
                 if(it.get("isCustom")==null){
                     if(language.equals("in")){
-                        mealname = it.data?.get("CustomMealName-in").toString()
+                        mealname = it.data?.get("CustomMealName_in").toString()
                     }else{
-                        mealname = it.data?.get("CustomMealName-en").toString()
+                        mealname = it.data?.get("CustomMealName_en").toString()
                     }
                 }else{
                     mealname = it.data?.get("CustomMealName").toString()
                 }
                 findViewById<TextView>(R.id.mealName).text = mealname
-                findViewById<TextView>(R.id.mealCalories).text = getString(R.string.calories, it.data?.get("Calories").toString())
+                var caloriess = it.data?.get("Calories").toString().toFloat().roundToInt().toString()
+                findViewById<TextView>(R.id.mealCalories).text = getString(R.string.calories, caloriess)
                 val ingredients = it.data?.get("CustomMealIngredients")!! as List<Map<*, *>>
                 ingredients.forEach {
                     var calCount = 0F

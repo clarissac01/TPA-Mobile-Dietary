@@ -82,85 +82,85 @@ class FriendJourneyAdapter(private val journeyList: MutableList<JourneyItem>?, p
         holder.breakfast.setOnClickListener{
             var journeyId = journeyList?.get(position)!!.journeyId
             val ingredientsList = getIngredients(journeyId, "breakfastMenu", holder.expandableViewBreakfast)
-                    if(!journeyList.get(position).isBreakfastExpand){
-                        holder.expandableViewBreakfast.adapter =
-                            NonEditableIngredientAdapter(ingredientsList, context)
-                        holder.expandableViewBreakfast.layoutManager =
-                            LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+            if(!journeyList.get(position).isBreakfastExpand){
+                holder.expandableViewBreakfast.adapter =
+                    NonEditableIngredientAdapter(ingredientsList, context)
+                holder.expandableViewBreakfast.layoutManager =
+                    LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
 
-                        holder.expandableLayoutBreakfast.initLayout()
-                        journeyList.get(position).isBreakfastExpand = true
-                        holder.expandableLayoutBreakfast.expand()
-                    }else{
-                        journeyList.get(position).isBreakfastExpand = false
-                        holder.expandableLayoutBreakfast.collapse()
-                        holder.expandableLayoutBreakfast.setInRecyclerView(false)
-                        holder.expandableViewBreakfast.adapter = null
-                        holder.expandableLayoutBreakfast.initLayout()
-                    }
+                holder.expandableLayoutBreakfast.initLayout()
+                journeyList.get(position).isBreakfastExpand = true
+                holder.expandableLayoutBreakfast.expand()
+            }else{
+                journeyList.get(position).isBreakfastExpand = false
+                holder.expandableLayoutBreakfast.collapse()
+                holder.expandableLayoutBreakfast.setInRecyclerView(false)
+                holder.expandableViewBreakfast.adapter = null
+                holder.expandableLayoutBreakfast.initLayout()
+            }
         }
 
         holder.lunch.setOnClickListener{
             var journeyId = journeyList?.get(position)!!.journeyId
             val ingredientsList = getIngredients(journeyId, "lunchMenu", holder.expandableViewLunch)
-                    if(!journeyList.get(position).isLunchExpand){
-                        holder.expandableViewLunch.adapter =
-                            NonEditableIngredientAdapter(ingredientsList, context)
-                        holder.expandableViewLunch.layoutManager =
-                            LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+            if(!journeyList.get(position).isLunchExpand){
+                holder.expandableViewLunch.adapter =
+                    NonEditableIngredientAdapter(ingredientsList, context)
+                holder.expandableViewLunch.layoutManager =
+                    LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
 
-                        holder.expandableLayoutLunch.initLayout()
-                        journeyList.get(position).isLunchExpand = true
-                        holder.expandableLayoutLunch.expand()
-                    }else{
-                        journeyList.get(position).isLunchExpand = false
-                        holder.expandableLayoutLunch.collapse()
-                        holder.expandableLayoutLunch.setInRecyclerView(false)
-                        holder.expandableViewLunch.adapter = null
-                        holder.expandableLayoutLunch.initLayout()
-                    }
+                holder.expandableLayoutLunch.initLayout()
+                journeyList.get(position).isLunchExpand = true
+                holder.expandableLayoutLunch.expand()
+            }else{
+                journeyList.get(position).isLunchExpand = false
+                holder.expandableLayoutLunch.collapse()
+                holder.expandableLayoutLunch.setInRecyclerView(false)
+                holder.expandableViewLunch.adapter = null
+                holder.expandableLayoutLunch.initLayout()
+            }
         }
 
         holder.dinner.setOnClickListener{
             var journeyId = journeyList?.get(position)!!.journeyId
             val ingredientsList = getIngredients(journeyId, "dinnerMenu", holder.expandableViewDinner)
-                    if(!journeyList.get(position).isDinnerExpand){
-                        holder.expandableViewDinner.adapter =
-                            NonEditableIngredientAdapter(ingredientsList, context)
-                        holder.expandableViewDinner.layoutManager =
-                            LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+            if(!journeyList.get(position).isDinnerExpand){
+                holder.expandableViewDinner.adapter =
+                    NonEditableIngredientAdapter(ingredientsList, context)
+                holder.expandableViewDinner.layoutManager =
+                    LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
 
-                        holder.expandableLayoutDinner.initLayout()
-                        journeyList.get(position).isDinnerExpand = true
-                        holder.expandableLayoutDinner.expand()
-                    }else{
-                        journeyList.get(position).isDinnerExpand = false
-                        holder.expandableLayoutDinner.collapse()
-                        holder.expandableLayoutDinner.setInRecyclerView(false)
-                        holder.expandableViewDinner.adapter = null
-                        holder.expandableLayoutDinner.initLayout()
-                    }
+                holder.expandableLayoutDinner.initLayout()
+                journeyList.get(position).isDinnerExpand = true
+                holder.expandableLayoutDinner.expand()
+            }else{
+                journeyList.get(position).isDinnerExpand = false
+                holder.expandableLayoutDinner.collapse()
+                holder.expandableLayoutDinner.setInRecyclerView(false)
+                holder.expandableViewDinner.adapter = null
+                holder.expandableLayoutDinner.initLayout()
+            }
         }
 
         holder.snack.setOnClickListener{
             var journeyId = journeyList?.get(position)!!.journeyId
             val ingredientsList = getIngredients(journeyId, "snackMenu", holder.expandableViewSnack)
-                    if(!journeyList.get(position).isSnackExpand){
-                        holder.expandableViewSnack.adapter =
-                            NonEditableIngredientAdapter(ingredientsList, context)
-                        holder.expandableViewSnack.layoutManager =
-                            LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+            if(!journeyList.get(position).isSnackExpand){
+                holder.expandableViewSnack.adapter =
+                    NonEditableIngredientAdapter(ingredientsList, context)
+                holder.expandableViewSnack.layoutManager =
+                    LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
 
-                        holder.expandableLayoutSnack.initLayout()
-                        journeyList.get(position).isSnackExpand = true
-                        holder.expandableLayoutSnack.expand()
-                    }else{
-                        journeyList.get(position).isSnackExpand = false
-                        holder.expandableLayoutSnack.collapse()
-                        holder.expandableLayoutSnack.setInRecyclerView(false)
-                        holder.expandableViewSnack.adapter = null
-                        holder.expandableLayoutSnack.initLayout()
-                    }
+                holder.expandableLayoutSnack.initLayout()
+                journeyList.get(position).isSnackExpand = true
+                holder.expandableLayoutSnack.expand()
+            }else{
+                journeyList.get(position).isSnackExpand = false
+                holder.expandableLayoutSnack.collapse()
+                holder.expandableLayoutSnack.setInRecyclerView(false)
+                holder.expandableViewSnack.adapter = null
+                holder.expandableLayoutSnack.initLayout()
+            }
         }
 
     }
