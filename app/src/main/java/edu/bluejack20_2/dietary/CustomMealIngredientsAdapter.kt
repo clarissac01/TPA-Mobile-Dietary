@@ -22,10 +22,10 @@ class CustomMealIngredientsAdapter (
     override fun onBindViewHolder(holder: CustomMealIngredientsViewHolder, position: Int) {
         holder.itemView.apply {
             findViewById<MaterialTextView>(R.id.main_ingredients_name).text = customMealIngredient[position].ingredientName
-            findViewById<MaterialTextView>(R.id.main_ingredients_cal).text = resources.getString(
-                R.string.calories,
-                customMealIngredient[position].ingredientCalories.toString()
-            )
+//            findViewById<MaterialTextView>(R.id.main_ingredients_cal).text = resources.getString(
+//                R.string.calories,
+//                customMealIngredient[position].ingredientCalories.toString()
+//            )
         }
     }
 

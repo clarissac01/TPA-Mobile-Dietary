@@ -170,8 +170,8 @@ class FriendJourneyAdapter(private val journeyList: MutableList<JourneyItem>?, p
 
         db.collection("Journey").document(journeyId).get().addOnSuccessListener{
             if(it?.exists()!!){
-                var meal = it.data?.get(type) as Map<*, *>
-                meal["menuID"]
+                var meal = it.data?.get(type) as Map<*, *>?
+                meal?.get("menuID")!!
                 var ingredients = meal["ingredients"] as List<Map<*, *>>?
                 var weight = 0F
                 var name = ""

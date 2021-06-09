@@ -93,9 +93,11 @@ class EditProfile : AppCompatActivity() {
                     if (hasFocus) "Username" else user.displayName
             }
 
-            findViewById<TextInputEditText>(R.id.user_email_text).setOnFocusChangeListener { v, hasFocus ->
-                findViewById<TextInputLayout>(R.id.user_email_field).hint =
-                    if (hasFocus) "Email" else user.email
+            db.collection("users").whereEqualTo("username", user.displayName).get().addOnSuccessListener {
+                findViewById<TextInputEditText>(R.id.user_email_text).setOnFocusChangeListener { v, hasFocus ->
+                    findViewById<TextInputLayout>(R.id.user_email_field).hint =
+                        if (hasFocus) "Email" else it.documents.first().getString("email")
+                }
             }
 
             findViewById<Button>(R.id.save_profile_pic).setOnClickListener {
@@ -321,7 +323,14 @@ class EditProfile : AppCompatActivity() {
                                 Log.wtf("hehe", it.toString())
                             }
                             .addOnSuccessListener {
-                                user.reload()
+                                user.reload().addOnSuccessListener {
+                                    db.collection("users").whereEqualTo("username", user.displayName).get().addOnSuccessListener {
+                                        findViewById<TextInputEditText>(R.id.user_email_text).setOnFocusChangeListener { v, hasFocus ->
+                                            findViewById<TextInputLayout>(R.id.user_email_field).hint =
+                                                if (hasFocus) "Email" else it.documents.first().getString("email")
+                                        }
+                                    }
+                                }
 
                                 Toast.makeText(
                                     EditProfile@ this,
