@@ -184,6 +184,7 @@ class SnackFragment(var currDay: Int = 0) : Fragment() {
                         }
                         calCount.text = getString(R.string.calories, it.documents.first().get("Calories").toString().toFloat().roundToInt().toString())
                         menuId = it.documents.first().id
+                        Log.wtf("snack menu id", menuId.toString())
                     }
                 }
 

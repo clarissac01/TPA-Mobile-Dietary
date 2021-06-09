@@ -44,6 +44,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
                 view.findViewById<TextView>(R.id.salutation).text = getString(R.string.salutation, it.documents.first().get("name").toString())
                 var userid = it.documents.first().id
 
+
                 if(it.documents.first().get("plan") != null){
                     val getMapping = it.documents.first().get("plan") as Map<*, *>
                     val date1 = Date()

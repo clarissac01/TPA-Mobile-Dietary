@@ -30,6 +30,7 @@
     <string name="add_text">Tambah</string>
     <string name="save_profile_pic">Simpan Gambar Profil</string>
     <string name="update_text">Memperbarui</string>
+    <string name="change">Ubah</string>
     <string name="new_password_hint">Kata Sandi Baru</string>
     <string name="old_password_hint">Kata Sandi Lama</string>
     <string name="email_hint">Email</string>
@@ -147,10 +148,10 @@
     <string name="unfriend">BERHENTI BERTEMAN</string>
 
     <!-- friend_journey_item -->
-    <string name="breakfast_detail">\t\tDetail Sarapan</string>
-    <string name="lunch_detail">\t\tDetail Makan Siang</string>
-    <string name="dinner_detail">\t\tDetail Makan Malam</string>
-    <string name="snack_detail">\t\tDetail Cemilan</string>
+    <string name="breakfast_detail">\t\t\t\tDetail Sarapan</string>
+    <string name="lunch_detail">\t\t\t\tDetail Makan Siang</string>
+    <string name="dinner_detail">\t\t\t\tDetail Makan Malam</string>
+    <string name="snack_detail">\t\t\t\tDetail Cemilan</string>
 
     <!-- ingredients_item -->
     <string name="in_G">(gr)</string>

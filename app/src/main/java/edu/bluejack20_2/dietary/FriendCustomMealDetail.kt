@@ -93,7 +93,8 @@ class FriendCustomMealDetail(val mealItem: MealItem? = null) : AppCompatActivity
         db.collection("CustomMeals").document(menuId).get().addOnSuccessListener {
             if(it.exists()){
                 findViewById<TextView>(R.id.friendmealName).text = it.data?.get("CustomMealName").toString()
-                findViewById<TextView>(R.id.friendmealCalories).text = getString(R.string.calories, it.data?.get("Calories").toString())
+                var caloriess = it.data?.get("Calories").toString().toFloat().roundToInt().toString()
+                findViewById<TextView>(R.id.friendmealCalories).text = getString(R.string.calories, caloriess)
                 val ingredients = it.data?.get("CustomMealIngredients")!! as List<Map<*, *>>
                 ingredients.forEach {
                     var calCount = 0F

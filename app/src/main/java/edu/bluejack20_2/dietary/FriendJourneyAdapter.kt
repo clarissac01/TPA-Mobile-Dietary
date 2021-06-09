@@ -176,6 +176,7 @@ class FriendJourneyAdapter(private val journeyList: MutableList<JourneyItem>?, p
                 var weight = 0F
                 var name = ""
                 ingredients?.forEach {
+                    var weight = 0F
                     weight = it["weight"].toString().toFloat()
                     val ingredientId = it["ingredientID"].toString()
                     db.collection("MainIngredients").document(it["ingredientID"].toString()).get().addOnSuccessListener {

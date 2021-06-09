@@ -60,7 +60,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="190dp"
             android:backgroundTint="?colorPrimary"
-            android:text="Update"
+            android:text="@string/change"
             android:textColor="?colorSecondary"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"

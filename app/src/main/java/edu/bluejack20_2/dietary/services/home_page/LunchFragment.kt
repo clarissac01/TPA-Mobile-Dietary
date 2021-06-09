@@ -2,6 +2,7 @@ package edu.bluejack20_2.dietary.services.home_page
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -191,13 +192,16 @@ class LunchFragment(var currDay: Int = 0) : Fragment() {
                         .whereEqualTo("type", "Lunch").whereEqualTo("day", currDay)
                         .addSnapshotListener() { it, _ ->
                             if (!it?.isEmpty!!) {
-                                if(it.documents.first().get("isCustom") == null){
-                                    if(language.equals("in")){
-                                        menuName.text = it.documents.first().getString("CustomMealName_in")
-                                    }else {
-                                        menuName.text = it.documents.first().getString("CustomMealName_en")
+                                if (it.documents.first().get("isCustom") == null) {
+                                    if (language.equals("in")) {
+                                        menuName.text =
+                                            it.documents.first().getString("CustomMealName_in")
+                                        Log.wtf("ada sesuatu", "si")
+                                    } else {
+                                        menuName.text =
+                                            it.documents.first().getString("CustomMealName_en")
                                     }
-                                }else{
+                                } else {
                                     menuName.text = it.documents.first().getString("CustomMealName")
                                 }
                                 calCount.text = getString(
@@ -208,13 +212,8 @@ class LunchFragment(var currDay: Int = 0) : Fragment() {
                                 menuId = it.documents.first().id
                             }
                         }
-
-
                 }
             }
-
-
     }
-
 
 }
