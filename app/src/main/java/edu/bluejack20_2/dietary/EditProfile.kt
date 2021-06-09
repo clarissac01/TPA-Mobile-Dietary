@@ -77,7 +77,7 @@ class EditProfile : AppCompatActivity() {
 
         if (user != null) {
             findViewById<TextInputLayout>(R.id.user_username_field).hint = user.displayName
-            findViewById<TextInputLayout>(R.id.user_email_field).hint = user.email
+
 
 //            if (user.photoUrl != null) {
 //                Picasso.get().load(user.photoUrl).memoryPolicy(MemoryPolicy.NO_CACHE)
@@ -93,12 +93,14 @@ class EditProfile : AppCompatActivity() {
                     if (hasFocus) "Username" else user.displayName
             }
 
-            db.collection("users").whereEqualTo("username", user.displayName).get().addOnSuccessListener {
-                findViewById<TextInputEditText>(R.id.user_email_text).setOnFocusChangeListener { v, hasFocus ->
-                    findViewById<TextInputLayout>(R.id.user_email_field).hint =
-                        if (hasFocus) "Email" else it.documents.first().getString("email")
+            db.collection("users").whereEqualTo("username", user.displayName).get()
+                .addOnSuccessListener {
+                    findViewById<TextInputLayout>(R.id.user_email_field).hint = it.documents.first().getString("email")
+                    findViewById<TextInputEditText>(R.id.user_email_text).setOnFocusChangeListener { v, hasFocus ->
+                        findViewById<TextInputLayout>(R.id.user_email_field).hint =
+                            if (hasFocus) "Email" else it.documents.first().getString("email")
+                    }
                 }
-            }
 
             findViewById<Button>(R.id.save_profile_pic).setOnClickListener {
                 if (bitmap != null) {
@@ -277,78 +279,104 @@ class EditProfile : AppCompatActivity() {
                                 .show()
                             return@addOnSuccessListener
                         }
-                        val data = mutableListOf(
-                            user.updateEmail(email).addOnFailureListener {
-                                Log.wtf("hehe", it.toString())
-                            },
-                            user.updateProfile(
-                                UserProfileChangeRequest.Builder()
-                                    .setDisplayName(name)
-                                    .build()
-                            ).addOnFailureListener {
-                                Log.wtf("hehe", it.toString())
-                            },
-                            doc.reference.update(
-                                mapOf(
-                                    "email" to email,
-                                    "password" to userConfirmPassword,
-                                    "username" to name
-                                )
-                            ).addOnFailureListener {
-                                Log.wtf("hehe", it.toString())
-                            }
-                        )
-                        if (doc.getString("password") != userConfirmPassword) {
-                            Log.wtf("hahaha", "masuk yok")
-                            Log.wtf("user confirm pass", userConfirmPassword)
-                            Log.wtf("user password", userPassword)
-                            Log.wtf("user email", user.email)
-                            user.reauthenticate(
-                                EmailAuthProvider.getCredential(
-                                    user.email,
-                                    userPassword
-                                )
-                            )
-
-                            data.add(
-                                FirebaseAuth.getInstance().currentUser.updatePassword(
-                                    userConfirmPassword
-                                ).addOnFailureListener {
-                                    Log.wtf("hehe", it.toString())
-                                })
-                        }
-                        Tasks.whenAll(data)
-
-                            .addOnFailureListener {
-                                Log.wtf("hehe", it.toString())
-                            }
+                        db.collection("users").whereEqualTo("email", email).get()
                             .addOnSuccessListener {
-                                user.reload().addOnSuccessListener {
-                                    db.collection("users").whereEqualTo("username", user.displayName).get().addOnSuccessListener {
-                                        findViewById<TextInputEditText>(R.id.user_email_text).setOnFocusChangeListener { v, hasFocus ->
-                                            findViewById<TextInputLayout>(R.id.user_email_field).hint =
-                                                if (hasFocus) "Email" else it.documents.first().getString("email")
+//                                if (it != null) {
+//                                    Log.wtf("email has taken!", email)
+//                                    Toast.makeText(this, getString(R.string.email_taken), Toast.LENGTH_SHORT).show()
+//                                    return@addOnSuccessListener
+//                                } else {
+                                    val data = mutableListOf(
+                                        user.updateEmail(email).addOnFailureListener {
+                                            Log.wtf("hehe", it.toString())
+                                        },
+                                        user.updateProfile(
+                                            UserProfileChangeRequest.Builder()
+                                                .setDisplayName(name)
+                                                .build()
+                                        ).addOnFailureListener {
+                                            Log.wtf("hehe", it.toString())
+                                        },
+                                        doc.reference.update(
+                                            mapOf(
+                                                "email" to email,
+                                                "password" to userConfirmPassword,
+                                                "username" to name
+                                            )
+                                        ).addOnFailureListener {
+                                            Log.wtf("hehe", it.toString())
                                         }
-                                    }
-                                }
+                                    )
+                                    if (doc.getString("password") != userConfirmPassword) {
+                                        Log.wtf("hahaha", "masuk yok")
+                                        Log.wtf("user confirm pass", userConfirmPassword)
+                                        Log.wtf("user password", userPassword)
+                                        Log.wtf("user email", user.email)
+                                        user.reauthenticate(
+                                            EmailAuthProvider.getCredential(
+                                                user.email,
+                                                userPassword
+                                            )
+                                        )
 
-                                Toast.makeText(
-                                    EditProfile@ this,
-                                    getText(R.string.update_sucess),
-                                    Toast.LENGTH_SHORT
-                                )
-                                    .show()
+                                        data.add(
+                                            FirebaseAuth.getInstance().currentUser.updatePassword(
+                                                userConfirmPassword
+                                            ).addOnFailureListener {
+                                                Log.wtf("hehe", it.toString())
+                                            })
+                                    }
+                                    Tasks.whenAll(data)
+
+                                        .addOnFailureListener {
+                                            Log.wtf("hehe", it.toString())
+                                        }
+                                        .addOnSuccessListener {
+                                            user.reload().addOnSuccessListener {
+                                                Log.wtf(
+                                                    "user skrg",
+                                                    user.displayName + " " + user.email
+                                                )
+                                                findViewById<TextInputLayout>(R.id.user_email_field).hint =
+                                                    ""
+                                                db.collection("users")
+                                                    .whereEqualTo("username", user.displayName)
+                                                    .get().addOnSuccessListener {
+                                                    findViewById<TextInputEditText>(R.id.user_email_text).setOnFocusChangeListener { v, hasFocus ->
+                                                        findViewById<TextInputLayout>(R.id.user_email_field).hint =
+                                                            if (hasFocus) "Email" else it.documents.first()
+                                                                .getString("email")
+                                                        Log.wtf(
+                                                            "emailnya keubah",
+                                                            findViewById<TextInputLayout>(R.id.user_email_field).hint.toString()
+                                                        )
+                                                    }
+                                                }
+                                            }
+
+                                            Toast.makeText(
+                                                EditProfile@ this,
+                                                getText(R.string.update_sucess),
+                                                Toast.LENGTH_SHORT
+                                            )
+                                                .show()
+                                        }
+                                }
+                                startActivity(Intent(this, MainActivity::class.java))
                             }
-                    }
-                startActivity(Intent(this, MainActivity::class.java))
+                            .addOnFailureListener { e ->
+                                if (e is ApiException) {
+                                    Log.d(
+                                        "TAG",
+                                        "Error: ${CommonStatusCodes.getStatusCodeString(e.statusCode)}"
+                                    )
+                                } else {
+                                    Log.d("TAG", "Error: ${e.message}")
+                                }
+                            }
+//                    }
             }
-            .addOnFailureListener { e ->
-                if (e is ApiException) {
-                    Log.d("TAG", "Error: ${CommonStatusCodes.getStatusCodeString(e.statusCode)}")
-                } else {
-                    Log.d("TAG", "Error: ${e.message}")
-                }
-            }
+
     }
 
     fun onClick(view: View) {
