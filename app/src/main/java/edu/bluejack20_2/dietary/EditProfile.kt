@@ -321,14 +321,15 @@ class EditProfile : AppCompatActivity() {
                                 Log.wtf("hehe", it.toString())
                             }
                             .addOnSuccessListener {
-                                user.reload()
+                                user.reload().addOnSuccessListener {
 
-                                Toast.makeText(
-                                    EditProfile@ this,
-                                    getText(R.string.update_sucess),
-                                    Toast.LENGTH_SHORT
-                                )
-                                    .show()
+                                    Toast.makeText(
+                                        EditProfile@ this,
+                                        getText(R.string.update_sucess),
+                                        Toast.LENGTH_SHORT
+                                    )
+                                        .show()
+                                }
                             }
                     }
                 startActivity(Intent(this, MainActivity::class.java))

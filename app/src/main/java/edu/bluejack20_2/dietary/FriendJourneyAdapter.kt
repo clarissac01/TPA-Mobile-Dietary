@@ -170,12 +170,11 @@ class FriendJourneyAdapter(private val journeyList: MutableList<JourneyItem>?, p
 
         db.collection("Journey").document(journeyId).get().addOnSuccessListener{
             if(it?.exists()!!){
-                var meal = it.data?.get(type) as Map<*, *>
-                meal["menuID"]
-                var ingredients = meal["ingredients"] as List<Map<*, *>>?
-                var weight = 0F
+                var meal = it.data?.get(type) as Map<*, *>?
+                var ingredients = meal?.get("ingredients") as List<Map<*, *>>?
                 var name = ""
                 ingredients?.forEach {
+                    var weight = 0F
                     weight = it["weight"].toString().toFloat()
                     val ingredientId = it["ingredientID"].toString()
                     db.collection("MainIngredients").document(it["ingredientID"].toString()).get().addOnSuccessListener {

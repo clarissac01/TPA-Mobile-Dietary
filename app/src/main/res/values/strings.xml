@@ -143,10 +143,10 @@
     <string name="unfriend">UNFRIEND</string>
 
     <!-- friend_journey_item -->
-    <string name="breakfast_detail">\t\tBreakfast Detail</string>
-    <string name="lunch_detail">\t\tLunch Detail</string>
-    <string name="dinner_detail">\t\tDinner Detail</string>
-    <string name="snack_detail">\t\tSnack Detail</string>
+    <string name="breakfast_detail">\t\t\t\tBreakfast Detail</string>
+    <string name="lunch_detail">\t\t\t\tLunch Detail</string>
+    <string name="dinner_detail">\t\t\t\tDinner Detail</string>
+    <string name="snack_detail">\t\t\t\tSnack Detail</string>
 
     <!-- ingredients_item -->
     <string name="in_G">(in g)</string>
